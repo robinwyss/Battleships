@@ -2,7 +2,6 @@ package com.jostrobin.battleships.service.network.rmi.game;
 
 import com.jostrobin.battleships.data.Cell;
 import com.jostrobin.battleships.data.Game;
-import com.jostrobin.battleships.data.Player;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -19,11 +18,10 @@ public interface GameCommunication extends Remote
 	 * of the method an IllegalStateException is thrown.
 	 *
 	 * @param cell
-	 * @param player
 	 * @throws RemoteException
 	 * @throws IllegalStateException
 	 */
-	HitType attack(Cell cell, Player player) throws RemoteException, IllegalStateException;
+	void attack(Cell cell) throws RemoteException, IllegalStateException;
 
 	/**
 	 * Returns the game, if the host on which the method is invoked has created one, otherwise returns null.
@@ -41,4 +39,12 @@ public interface GameCommunication extends Remote
 	 * @throws IllegalStateException
 	 */
 	void abortGame() throws RemoteException, IllegalStateException;
+
+	/**
+	 * Notifies the player about a previously happened move.
+	 *
+	 * @param  cell
+	 * @param hitType
+	 */
+	void notifyAboutMove(HitType hitType, Cell cell);
 }
