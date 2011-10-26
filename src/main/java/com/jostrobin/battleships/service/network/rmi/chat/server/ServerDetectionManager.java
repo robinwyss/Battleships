@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InterfaceAddress;
+import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -20,7 +23,7 @@ import com.jostrobin.battleships.exception.BattleshipServiceException;
  * @author joscht
  *
  */
-public class ServerDetectionManager extends Thread
+public class ServerDetectionManager implements Runnable
 {
 	private static final Logger LOG = LoggerFactory.getLogger(ServerDetectionManager.class);
 	
@@ -64,6 +67,7 @@ public class ServerDetectionManager extends Thread
 	@Override
 	public void run()
 	{
+		LOG.debug("Detection server up an running...");
 		while (running)
 		{
 			byte[] buffer = new byte[BUFFER_SIZE];
@@ -75,18 +79,39 @@ public class ServerDetectionManager extends Thread
 				
 				InetAddress address = packet.getAddress();
 				
-				String message = new String (buffer, "UTF-8");
+				String message = new String (buffer, "UTF-8").trim();
+				LOG.trace("Received a UDP message");
 				if (message.startsWith(VERSION))
 				{
 					// someone is looking for servers, answer him
 					if (message.equals(VERSION + ARE_YOU_THERE))
 					{
-						answer(address);
+						// we need to check if it was our own broadcast and ignore if that's the case
+						boolean isForeign = true;
+				        Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
+				        for (NetworkInterface netint : Collections.list(nets))
+				        {
+				            List<InterfaceAddress> interfaceAddresses = netint.getInterfaceAddresses();
+				            for (InterfaceAddress interfaceAddress : interfaceAddresses)
+				            {
+				            	if (interfaceAddress.getAddress().equals(address))
+				            	{
+				            		isForeign = false;
+				            	}
+				            }
+				        }
+				        
+				        // it's not our own broadcast
+				        if (isForeign)
+				        {
+							LOG.debug("received 'are you there' call from a client.", address);
+							answer(address);
+				        }
 					}
 					// we were looking for servers and found one
 					else if (message.equals(VERSION + YES_I_AM))
 					{
-						LOG.info("Server detected", address);
+						LOG.info("Server detected at" + address);
 						for (ServerDetectionListener callback : listeners)
 						{
 							callback.addServer(address);
@@ -114,18 +139,26 @@ public class ServerDetectionManager extends Thread
 		byte[] buffer = new byte[BUFFER_SIZE];
 		
 		// send UDP packets to all the possible server nodes
+		DatagramSocket socket = null;
 		try
 		{
 			String message = VERSION + YES_I_AM;
 			buffer = message.getBytes("UTF-8");
 			
-			DatagramSocket socket = new DatagramSocket();
+			socket = new DatagramSocket();
 			DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, DETECTION_PORT);
 			socket.send(packet);
 		}
 		catch (Exception e)
 		{
 			LOG.info("Could not respond to client.", e);
+		}
+		finally
+		{
+			if (socket != null)
+			{
+				socket.close();
+			}
 		}
 	}
 	
@@ -137,18 +170,31 @@ public class ServerDetectionManager extends Thread
 		byte[] buffer = new byte[BUFFER_SIZE];
 		
 		// send UDP packets to all the possible server nodes
+		DatagramSocket socket = null;
 		try
 		{
 			String message = VERSION + ARE_YOU_THERE;
 			buffer = message.getBytes("UTF-8");
 			
 			// TODO: Dynamically adapt to ip address and subnet mask of our network and exclude our own ip (we know we're running a server)
-			DatagramSocket socket = new DatagramSocket();
+			socket = new DatagramSocket();
 			socket.setBroadcast(true);
 			
-			InetAddress address = InetAddress.getByName("147.87.123.255");
-			DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, DETECTION_PORT);
-			socket.send(packet);
+			// send a broadcast to the broadcast addresses of any network interface available
+	        Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
+	        for (NetworkInterface netint : Collections.list(nets))
+	        {
+	            List<InterfaceAddress> interfaceAddresses = netint.getInterfaceAddresses();
+	            for (InterfaceAddress interfaceAddress : interfaceAddresses)
+	            {
+	            	if (interfaceAddress.getBroadcast() != null)
+	            	{
+	        			InetAddress address = interfaceAddress.getBroadcast();
+	        			DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, DETECTION_PORT);
+	        			socket.send(packet);
+	            	}
+	            }
+	        }
 		}
 		catch (SocketException e)
 		{
@@ -157,6 +203,13 @@ public class ServerDetectionManager extends Thread
 		catch (IOException e)
 		{
 			throw new BattleshipServiceException("Could not send UDP packet to detect other servers.", e);
+		}
+		finally
+		{
+			if (socket != null)
+			{
+				socket.close();
+			}
 		}
 	}
 }

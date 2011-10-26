@@ -28,10 +28,11 @@ public class App {
 			@Override
 			public void addServer(InetAddress address)
 			{
-				System.out.println("Found server at " + address);
 			}
 		});
         ServerDetectionManager detection = new ServerDetectionManager(listeners);
+        Thread thread = new Thread(detection);
+        thread.start();
         detection.findGames();
     }
 
