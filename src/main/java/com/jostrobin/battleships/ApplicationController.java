@@ -9,6 +9,7 @@ import com.jostrobin.battleships.service.network.rmi.chat.server.ChatServer;
 import com.jostrobin.battleships.service.network.rmi.chat.server.ServerDetectionListener;
 import com.jostrobin.battleships.service.network.rmi.chat.server.ServerDetectionManager;
 import com.jostrobin.battleships.ui.controller.RegistrationController;
+import com.jostrobin.battleships.ui.frames.GameSelectionFrame;
 
 /**
  * This is the entry point of the application.
@@ -29,6 +30,10 @@ public class ApplicationController
 
     public static void main(String... args) throws Exception
     {
+
+        GameSelectionFrame gameSelectionFrame = new GameSelectionFrame();
+        gameSelectionFrame.setVisible(true);
+        gameSelectionFrame.setSize(800, 600);
 
         new RegistrationController().showRegistrationDialog();
 
