@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -14,9 +16,13 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 
-public class GameSelectionFrame extends JFrame
+import com.jostrobin.battleships.ui.controller.GameSelectionController;
+
+public class GameSelectionFrame extends JFrame implements ActionListener
 {
 	private static final long serialVersionUID = 1L;
+	
+	private GameSelectionController controller;
 	
 	private JPanel availableGamesPanel;
 	
@@ -44,9 +50,14 @@ public class GameSelectionFrame extends JFrame
 	
 	int y = 0;
 	
-	public GameSelectionFrame()
+	public GameSelectionFrame(GameSelectionController controller)
 	{
+		this.controller = controller;
+		
 		buildGui();
+
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(800, 600);
 	}
 	
 	private void buildGui()
@@ -75,7 +86,8 @@ public class GameSelectionFrame extends JFrame
 	private void addTable()
 	{
 		String[] columnNames = {"Player", "Mode", "Number of players", "Date"};
-		Object[][] data = {};
+		Object[][] data = {{"joscht", "Hardcore", "13", "13.10.2011"},
+							{"samichlous", "Easy", "5", "14.10.2011"}};
 		availableGamesTable = new JTable(data, columnNames);
 		availableGamesTable.setVisible(true);
 		availableGamesTable.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -120,6 +132,7 @@ public class GameSelectionFrame extends JFrame
 		buttonsPanel.add(settingsButton, c);
 		
 		refreshButton = createButton("Refresh");
+		refreshButton.addActionListener(this);
 		c = createConstraint(0, buttonsY++);
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.insets = new Insets(buttonInsets, buttonInsets, buttonInsets, buttonInsets);
@@ -149,6 +162,7 @@ public class GameSelectionFrame extends JFrame
 		buttonsPanel.add(joinButton, c);
 		
 		exitButton = createButton("Exit");
+		exitButton.addActionListener(this);
 		c = createConstraint(0, buttonsY++);
 		c.weighty = 1;
 		c.anchor = GridBagConstraints.PAGE_END;
@@ -184,6 +198,20 @@ public class GameSelectionFrame extends JFrame
 		c.gridx = gridx;
 		c.gridy = gridy;
 		return c;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		Object source = e.getSource();
+		if (source == refreshButton)
+		{
+			controller.refresh();
+		}
+		else if (source == exitButton)
+		{
+			controller.exit();
+		}
 	}
 
 }
