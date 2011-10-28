@@ -151,7 +151,7 @@ public class ServerDetectionManager implements Runnable
 		}
 		catch (Exception e)
 		{
-			LOG.info("Could not respond to client.", e);
+			LOG.warn("Could not respond to client.", e);
 		}
 		finally
 		{
@@ -176,7 +176,6 @@ public class ServerDetectionManager implements Runnable
 			String message = VERSION + ARE_YOU_THERE;
 			buffer = message.getBytes("UTF-8");
 			
-			// TODO: Dynamically adapt to ip address and subnet mask of our network and exclude our own ip (we know we're running a server)
 			socket = new DatagramSocket();
 			socket.setBroadcast(true);
 			
