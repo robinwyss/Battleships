@@ -1,21 +1,15 @@
 package com.jostrobin.battleships.service.network.rmi.chat.server;
 
+import com.jostrobin.battleships.exception.BattleshipServiceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.InterfaceAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.jostrobin.battleships.exception.BattleshipServiceException;
 
 /**
  * The UDP server dealing with all the incoming network packets in the process of finding the servers in the network.
@@ -139,7 +133,6 @@ public class ServerDetectionManager implements Runnable
 		byte[] buffer = new byte[BUFFER_SIZE];
 		
 		// send UDP packets to all the possible server nodes
-		DatagramSocket socket = null;
 		try
 		{
 			String message = VERSION + YES_I_AM;
@@ -165,7 +158,7 @@ public class ServerDetectionManager implements Runnable
 	/**
 	 * Sends a broadcast to all the nodes in the network to find other games.
 	 */
-	public void findGames()
+	public void sendBroadcast()
 	{
 		byte[] buffer = new byte[BUFFER_SIZE];
 		

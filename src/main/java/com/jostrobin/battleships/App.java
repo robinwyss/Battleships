@@ -1,13 +1,13 @@
 package com.jostrobin.battleships;
 
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.jostrobin.battleships.service.network.rmi.chat.Client.ChatClient;
 import com.jostrobin.battleships.service.network.rmi.chat.server.ChatServer;
 import com.jostrobin.battleships.service.network.rmi.chat.server.ServerDetectionListener;
 import com.jostrobin.battleships.service.network.rmi.chat.server.ServerDetectionManager;
+import com.jostrobin.battleships.ui.controller.RegistrationCtrl;
+
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is the entry point of the application.
@@ -17,10 +17,23 @@ import com.jostrobin.battleships.service.network.rmi.chat.server.ServerDetection
  */
 public class App {
     public static void main(String... args) throws Exception {
+
+		// thread rmi
+
+		// thread broadcast
+
+		// gui
+
+
+		new RegistrationCtrl().showRegistrationDialog();
+
+
+
+
+
+
         new ChatServer();
 
-        new ChatClient().sendMessage("Hello");
-        
         
         List<ServerDetectionListener> listeners = new ArrayList<ServerDetectionListener>();
         listeners.add(new ServerDetectionListener()
@@ -28,12 +41,13 @@ public class App {
 			@Override
 			public void addServer(InetAddress address)
 			{
+				System.out.println("Found server at " + address.getHostName());
 			}
 		});
         ServerDetectionManager detection = new ServerDetectionManager(listeners);
         Thread thread = new Thread(detection);
         thread.start();
-        detection.findGames();
+        detection.sendBroadcast();
     }
 
 }

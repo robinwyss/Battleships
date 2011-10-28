@@ -13,28 +13,36 @@ import java.rmi.registry.Registry;
  * @author rowyss
  *         Date: 19.10.11 Time: 22:30
  */
-public class ChatClient {
-    private Logger logger = LoggerFactory.getLogger(ChatClient.class);
+public class ChatClient
+{
+	private Logger logger = LoggerFactory.getLogger(ChatClient.class);
 
-    Chat chat;
+	Chat chat;
 
-    public ChatClient() {
-        try {
-            Registry registry = LocateRegistry.getRegistry();
-            chat = (Chat) registry.lookup("Chat");
+	public ChatClient(String hostname)
+	{
+		try
+		{
+			Registry registry = LocateRegistry.getRegistry(hostname);
+			chat = (Chat) registry.lookup("Chat");
 
-        } catch (RemoteException e) {
-            logger.error("Failed to initialize chat client", e);
-        } catch (NotBoundException e) {
-            logger.error("Failed to initialize chat client", e);
-        }
-    }
+		} catch (RemoteException e)
+		{
+			logger.error("Failed to initialize chat client", e);
+		} catch (NotBoundException e)
+		{
+			logger.error("Failed to initialize chat client", e);
+		}
+	}
 
-    public void sendMessage(String message) {
-        try {
-            chat.sendMessage("Robin", message);
-        } catch (RemoteException e) {
-            logger.error("Could not send message", e);
-        }
-    }
+	public void sendMessage(String message)
+	{
+		try
+		{
+			chat.sendMessage("Robin", message);
+		} catch (RemoteException e)
+		{
+			logger.error("Could not send message", e);
+		}
+	}
 }

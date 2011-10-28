@@ -13,22 +13,27 @@ import java.rmi.registry.Registry;
  * @author rowyss
  *         Date: 19.10.11 Time: 22:25
  */
-public class ChatServer {
-    private static final Logger logger = LoggerFactory.getLogger(ChatServer.class);
+public class ChatServer
+{
+	private static final Logger logger = LoggerFactory.getLogger(ChatServer.class);
 
-    private Chat chat;
+	private Chat chat;
 
-    public ChatServer() {
-        try {
-            chat = new ChatImpl();
-            Registry registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
-            registry.bind("Chat", new ChatImpl());
-            logger.debug("Initialized Chat Server");
+	public ChatServer()
+	{
+		try
+		{
+			chat = new ChatImpl();
+			Registry registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
+			registry.bind("Chat", new ChatImpl());
+			logger.debug("Initialized Chat Server");
 
-        } catch (RemoteException e) {
-            logger.error("Failed to initialize chat server", e);
-        } catch (AlreadyBoundException e) {
-            logger.error("Failed to initialize chat server", e);
-        }
-    }
+		} catch (RemoteException e)
+		{
+			logger.error("Failed to initialize chat server", e);
+		} catch (AlreadyBoundException e)
+		{
+			logger.error("Failed to initialize chat server", e);
+		}
+	}
 }
