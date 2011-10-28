@@ -4,10 +4,13 @@ import com.jostrobin.battleships.service.network.rmi.chat.server.ChatServer;
 import com.jostrobin.battleships.service.network.rmi.chat.server.ServerDetectionListener;
 import com.jostrobin.battleships.service.network.rmi.chat.server.ServerDetectionManager;
 import com.jostrobin.battleships.ui.controller.RegistrationCtrl;
+import com.jostrobin.battleships.ui.frames.GameSelectionFrame;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JFrame;
 
 /**
  * This is the entry point of the application.
@@ -48,6 +51,11 @@ public class App {
         Thread thread = new Thread(detection);
         thread.start();
         detection.sendBroadcast();
+        
+        GameSelectionFrame f= new GameSelectionFrame();
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setVisible(true);
+        f.setSize(800, 600);
     }
 
 }
