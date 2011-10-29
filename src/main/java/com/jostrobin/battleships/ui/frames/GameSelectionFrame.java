@@ -46,6 +46,8 @@ public class GameSelectionFrame extends JFrame implements ActionListener
 	
 	private JTable availableGamesTable;
 	
+	private BattleshipTableModel tableModel;
+	
 	int x = 0;
 	
 	int y = 0;
@@ -86,12 +88,12 @@ public class GameSelectionFrame extends JFrame implements ActionListener
 	private void addTable()
 	{
 		String[] columnNames = {"Player", "Mode", "Number of players", "Date"};
-		Object[][] data = {{"joscht", "Hardcore", "13", "13.10.2011"},
-							{"samichlous", "Easy", "5", "14.10.2011"}};
-		availableGamesTable = new JTable(data, columnNames);
+		Object[][] data = {};
+		tableModel = new BattleshipTableModel(columnNames, data);
+		availableGamesTable = new JTable(tableModel);
 		availableGamesTable.setVisible(true);
 		availableGamesTable.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		
+
 		JPanel tablePanel = new JPanel(new GridBagLayout());
 		GridBagConstraints c = createConstraint(0, 0);
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -213,5 +215,9 @@ public class GameSelectionFrame extends JFrame implements ActionListener
 			controller.exit();
 		}
 	}
-
+	
+	public void addServer(Object[] data)
+	{
+		tableModel.addRow(data);
+	}
 }
