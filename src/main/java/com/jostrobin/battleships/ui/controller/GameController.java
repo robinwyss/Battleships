@@ -15,42 +15,32 @@
 
 package com.jostrobin.battleships.ui.controller;
 
-import java.rmi.RemoteException;
-
 import com.jostrobin.battleships.listener.ChatListener;
+import com.jostrobin.battleships.service.network.rmi.ApplicationInterface;
 import com.jostrobin.battleships.service.network.rmi.chat.Chat;
-import com.jostrobin.battleships.ui.panels.ChatPanel;
 
 /**
  * @author rowyss
- *         Date: 28.10.11 Time: 18:02
+ *         Date: 02.11.11 Time: 19:53
  */
-public class ChatController implements ChatListener
+public class GameController
 {
+    private ApplicationInterface appInterface;
     private ChatController chatController;
-    private ChatPanel chatPanel;
-    private Chat chat;
 
-    public ChatController(Chat chat)
+    public GameController(Chat chat, ApplicationInterface appInterface)
+    {
+        this.appInterface = appInterface;
+        chatController = new ChatController(chat);
+    }
+
+    public void showFrame()
     {
 
     }
 
-    @Override
-    public void receiveMessage(String username, String message)
+    public ChatListener getChatListener()
     {
-
-    }
-
-    public void sendMessage(String message)
-    {
-        try
-        {
-            chat.sendMessage("Bilbo", message);
-        }
-        catch (RemoteException e)
-        {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        return chatController;
     }
 }

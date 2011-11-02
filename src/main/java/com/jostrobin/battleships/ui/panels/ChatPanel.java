@@ -35,6 +35,7 @@ public class ChatPanel extends JPanel
 
     public ChatPanel(ChatController chatController)
     {
+        this.chatController = chatController;
         initUI();
     }
 
@@ -83,5 +84,10 @@ public class ChatPanel extends JPanel
         textConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
         textConstraints.fill = GridBagConstraints.BOTH;
         add(displayArea, textConstraints);
+    }
+
+    public void displayMessage(String username, String message)
+    {
+        displayArea.append(String.format("%s: %s", username, message));
     }
 }
