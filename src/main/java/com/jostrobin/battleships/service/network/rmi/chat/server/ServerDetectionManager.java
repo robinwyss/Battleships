@@ -99,7 +99,7 @@ public class ServerDetectionManager implements Runnable
                             {
                                 if (interfaceAddress.getAddress().equals(address))
                                 {
-//                                    isForeign = false;
+                                    isForeign = false;
                                 }
                             }
                         }
