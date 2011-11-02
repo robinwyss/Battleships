@@ -15,6 +15,7 @@
 
 package com.jostrobin.battleships.ui.panels;
 
+import java.awt.*;
 import javax.swing.*;
 
 import com.jostrobin.battleships.ui.controller.ChatController;
@@ -27,9 +28,60 @@ public class ChatPanel extends JPanel
 {
 
     public ChatController chatController;
+    private JTextArea displayArea;
+    private JTextField messageField;
+    private JButton sendButton;
+    private int y;
 
     public ChatPanel(ChatController chatController)
     {
+        initUI();
+    }
 
+    private void initUI()
+    {
+        setLayout(new GridBagLayout());
+
+        addChatDisplay();
+
+        addInputField();
+
+        addSendButton();
+    }
+
+    private void addSendButton()
+    {
+        sendButton = new JButton("Send");
+        GridBagConstraints sendButtonConstraints = new GridBagConstraints();
+        sendButtonConstraints.gridy = y++;
+        sendButtonConstraints.anchor = GridBagConstraints.BASELINE_TRAILING;
+        sendButtonConstraints.gridx = 1;
+        add(sendButton, sendButtonConstraints);
+    }
+
+    private void addInputField()
+    {
+        messageField = new JTextField();
+        GridBagConstraints messageFieldConstraints = new GridBagConstraints();
+        messageFieldConstraints.gridy = y;
+        messageFieldConstraints.weightx = 1.0;
+        messageFieldConstraints.fill = GridBagConstraints.HORIZONTAL;
+        messageFieldConstraints.anchor = GridBagConstraints.BASELINE_LEADING;
+        add(messageField, messageFieldConstraints);
+    }
+
+    private void addChatDisplay()
+    {
+        displayArea = new JTextArea();
+        displayArea.setEditable(false);
+        displayArea.setFocusable(false);
+        GridBagConstraints textConstraints = new GridBagConstraints();
+        textConstraints.gridy = y++;
+        textConstraints.gridwidth = 2;
+        textConstraints.weightx = 1.0;
+        textConstraints.weighty = 1.0;
+        textConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
+        textConstraints.fill = GridBagConstraints.BOTH;
+        add(displayArea, textConstraints);
     }
 }

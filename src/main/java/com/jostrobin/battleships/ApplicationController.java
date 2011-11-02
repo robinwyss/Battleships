@@ -3,6 +3,7 @@ package com.jostrobin.battleships;
 import com.jostrobin.battleships.service.network.rmi.chat.server.ChatServer;
 import com.jostrobin.battleships.ui.controller.GameSelectionController;
 import com.jostrobin.battleships.ui.controller.RegistrationController;
+import com.jostrobin.battleships.ui.frames.GameFrame;
 import com.jostrobin.battleships.ui.frames.GameSelectionFrame;
 
 /**
@@ -26,7 +27,7 @@ public class ApplicationController
 
         new RegistrationController().showRegistrationDialog();
 
-
+        new GameFrame();
         new ChatServer();
 
         GameSelectionFrame f = new GameSelectionFrame(new GameSelectionController());

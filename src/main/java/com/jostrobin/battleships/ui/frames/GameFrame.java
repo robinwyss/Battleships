@@ -15,7 +15,12 @@
 
 package com.jostrobin.battleships.ui.frames;
 
+import java.awt.*;
 import javax.swing.*;
+
+import com.jostrobin.battleships.ui.controller.ChatController;
+import com.jostrobin.battleships.ui.panels.ChatPanel;
+import com.jostrobin.battleships.ui.panels.GamePanel;
 
 /**
  * @author rowyss
@@ -23,6 +28,36 @@ import javax.swing.*;
  */
 public class GameFrame extends JFrame
 {
-    JPanel chatPanel;
-    JPanel gamePanel;
+    private int y;
+
+    public GameFrame() throws HeadlessException
+    {
+        initUI();
+    }
+
+    private void initUI()
+    {
+        setLayout(new GridBagLayout());
+
+        GamePanel gamePanel = new GamePanel();
+        GridBagConstraints battlefieldConstraints = new GridBagConstraints();
+        battlefieldConstraints.weightx = 1.0;
+        battlefieldConstraints.weighty = 0.8;
+        battlefieldConstraints.gridy = y++;
+        battlefieldConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
+        battlefieldConstraints.fill = GridBagConstraints.BOTH;
+        add(gamePanel, battlefieldConstraints);
+
+        GridBagConstraints chatPanelConstraints = new GridBagConstraints();
+        chatPanelConstraints.gridy = y++;
+        chatPanelConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
+        chatPanelConstraints.fill = GridBagConstraints.BOTH;
+        chatPanelConstraints.weightx = 1.0;
+        chatPanelConstraints.weighty = 0.2;
+        add(new ChatPanel(new ChatController()), chatPanelConstraints);
+
+        setVisible(true);
+        setSize(600, 600);
+    }
+
 }
