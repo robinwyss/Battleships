@@ -19,7 +19,7 @@ public class ApplicationController
     {
 
         // thread rmi
-        RmiManager rmiManager = new RmiManager();
+        RmiManager rmiManager = RmiManager.getInstance();
         rmiManager.startupRmiServices();
 
         // thread broadcast

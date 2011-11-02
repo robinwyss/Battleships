@@ -35,6 +35,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
+import com.jostrobin.battleships.service.network.rmi.chat.Chat;
 import com.jostrobin.battleships.service.network.rmi.chat.server.ChatImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +47,22 @@ import org.slf4j.LoggerFactory;
 public class RmiManager
 {
     private static final Logger logger = LoggerFactory.getLogger(RmiManager.class);
+    
+    private static final RmiManager rmiManager = new RmiManager();
+    
+    private Chat chat;
+    
+    private RmiManager()
+    {
+    	try
+		{
+			chat = new ChatImpl();
+		}
+    	catch (RemoteException e)
+		{
+            logger.error("Failed to initialize RMI object", e);
+		}
+    }
 
     /**
      * Creates the RMI registry and exports all the used RMI
@@ -56,7 +73,7 @@ public class RmiManager
         {
             Registry registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
             registry.bind("ApplicationInterface", new DefaultApplicationInterface());
-            registry.bind("Chat", new ChatImpl());
+            registry.bind("Chat", chat);
             logger.trace("Exported objects to RMI registry");
         }
         catch (RemoteException e)
@@ -67,5 +84,15 @@ public class RmiManager
         {
             logger.error("Failed to initialize RMI objects", e);
         }
+    }
+    
+    public Chat getChat()
+    {
+    	return chat;
+    }
+    
+    public static RmiManager getInstance()
+    {
+    	return rmiManager;
     }
 }

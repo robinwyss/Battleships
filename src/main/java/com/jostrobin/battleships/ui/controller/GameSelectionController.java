@@ -26,6 +26,7 @@ import java.util.List;
 import com.jostrobin.battleships.data.ServerInformation;
 import com.jostrobin.battleships.service.network.rmi.ApplicationInterface;
 import com.jostrobin.battleships.service.network.rmi.GameState;
+import com.jostrobin.battleships.service.network.rmi.RmiManager;
 import com.jostrobin.battleships.service.network.rmi.chat.Chat;
 import com.jostrobin.battleships.service.network.rmi.chat.server.ServerDetectionListener;
 import com.jostrobin.battleships.service.network.rmi.chat.server.ServerDetectionManager;
@@ -112,6 +113,8 @@ public class GameSelectionController implements ServerDetectionListener
         {
             Registry registry = LocateRegistry.getRegistry(address.getHostName());
             Chat chat = (Chat) registry.lookup("Chat");
+
+            RmiManager rmiManager = RmiManager.getInstance();
         }
         catch (RemoteException e)
         {
