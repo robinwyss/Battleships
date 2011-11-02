@@ -48,16 +48,21 @@ public class GameFrame extends JFrame
         battlefieldConstraints.fill = GridBagConstraints.BOTH;
         add(gamePanel, battlefieldConstraints);
 
+
+        setVisible(true);
+        setSize(600, 600);
+    }
+
+    public void addChatPanel(ChatController chatController)
+    {
+        ChatPanel chatPanel = new ChatPanel(chatController);
         GridBagConstraints chatPanelConstraints = new GridBagConstraints();
         chatPanelConstraints.gridy = y++;
         chatPanelConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
         chatPanelConstraints.fill = GridBagConstraints.BOTH;
         chatPanelConstraints.weightx = 1.0;
         chatPanelConstraints.weighty = 0.2;
-        add(new ChatPanel(new ChatController()), chatPanelConstraints);
-
-        setVisible(true);
-        setSize(600, 600);
+        add(chatPanel, chatPanelConstraints);
     }
 
 }

@@ -18,8 +18,6 @@ package com.jostrobin.battleships.ui.components;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import javax.swing.*;
 
 import com.jostrobin.battleships.data.Cell;
@@ -31,7 +29,7 @@ import org.slf4j.LoggerFactory;
  * @author rowyss
  *         Date: 02.11.11 Time: 17:20
  */
-public class BattleFieldComponent extends JComponent implements MouseMotionListener, MouseListener
+public class BattleFieldComponent extends JComponent
 {
     int size = 10;
     int cellSize = 25;
@@ -41,9 +39,9 @@ public class BattleFieldComponent extends JComponent implements MouseMotionListe
     public BattleFieldComponent()
     {
         setDoubleBuffered(true);
-
-        addMouseListener(this);
-        addMouseMotionListener(this);
+        BattleFieldMouseAdapter adapter = new BattleFieldMouseAdapter();
+        addMouseListener(adapter);
+        addMouseMotionListener(adapter);
     }
 
     @Override
@@ -60,7 +58,7 @@ public class BattleFieldComponent extends JComponent implements MouseMotionListe
                 {
                     Color initialColor = graphics.getColor();
                     graphics.setColor(Color.LIGHT_GRAY);
-                    graphics.fillRect(i * cellSize, j * cellSize, cellSize, cellSize);
+                    graphics.fillRect(i * cellSize + 1, j * cellSize + 1, cellSize - 1, cellSize - 1);
                     graphics.setColor(initialColor);
                 }
             }
@@ -72,65 +70,23 @@ public class BattleFieldComponent extends JComponent implements MouseMotionListe
     {
         int cellX = x / cellSize;
         int cellY = y / cellSize;
-        LOG.debug("user clicked on cell {} {}", cellX, cellY);
         return new Cell(cellX, cellY);
     }
 
-
-    @Override
-    public void mouseMoved(MouseEvent mouseEvent)
-    {
-        currentCell = getCell(mouseEvent.getX(), mouseEvent.getY());
-        repaint();
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent mouseEvent)
-    {
-        // not used
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent mouseEvent)
-    {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void mousePressed(MouseEvent mouseEvent)
-    {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent mouseEvent)
-    {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent mouseEvent)
-    {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void mouseExited(MouseEvent mouseEvent)
-    {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
 
     private class BattleFieldMouseAdapter extends MouseAdapter
     {
         @Override
         public void mouseExited(MouseEvent mouseEvent)
         {
+            currentCell = null;
         }
 
         @Override
         public void mouseClicked(MouseEvent mouseEvent)
         {
-            currentCell = null;
+            Cell cell = getCell(mouseEvent.getX(), mouseEvent.getY());
+            LOG.debug("user clicked on cell {} {}", cell.getX(), cell.getY());
         }
 
         @Override
