@@ -140,9 +140,9 @@ public class ServerDetectionManager implements Runnable
             String message = VERSION + YES_I_AM;
             buffer = message.getBytes("UTF-8");
 
-            socket = new DatagramSocket();
+            DatagramSocket answerSocket = new DatagramSocket();
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, DETECTION_PORT);
-            socket.send(packet);
+            answerSocket.send(packet);
         }
         catch (Exception e)
         {
