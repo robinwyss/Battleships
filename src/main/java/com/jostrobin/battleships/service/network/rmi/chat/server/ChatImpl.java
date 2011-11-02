@@ -2,7 +2,10 @@ package com.jostrobin.battleships.service.network.rmi.chat.server;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.jostrobin.battleships.listener.ChatListener;
 import com.jostrobin.battleships.service.network.rmi.chat.Chat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +17,8 @@ import org.slf4j.LoggerFactory;
 public class ChatImpl extends UnicastRemoteObject implements Chat
 {
     private static final Logger logger = LoggerFactory.getLogger(ChatImpl.class);
+    
+    private List<ChatListener> listeners = new ArrayList<ChatListener>();
 
     public ChatImpl() throws RemoteException
     {
@@ -24,9 +29,18 @@ public class ChatImpl extends UnicastRemoteObject implements Chat
     {
         return true;
     }
+    
+    public void addListener(ChatListener listener)
+    {
+    	listeners.add(listener);
+    }
 
     public void sendMessage(String username, String message) throws RemoteException
     {
-        logger.debug(username + ": " + message);
+    	logger.trace(username + ": " + message);
+    	for (ChatListener listener : listeners)
+    	{
+    		listener.receiveMessage(username, message);
+    	}
     }
 }

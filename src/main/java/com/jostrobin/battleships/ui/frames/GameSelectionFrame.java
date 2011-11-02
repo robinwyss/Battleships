@@ -125,7 +125,7 @@ public class GameSelectionFrame extends JFrame implements ActionListener
         		ServerInformation server = tableModel.getServerAtRow(row);
         		if (server != null)
         		{
-        			System.out.println(server);
+        			controller.joinGame(server);
         		}
         	}
         }

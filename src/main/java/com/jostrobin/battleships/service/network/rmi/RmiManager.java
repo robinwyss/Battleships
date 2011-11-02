@@ -65,7 +65,7 @@ public class RmiManager
     
     private static final RmiManager rmiManager = new RmiManager();
     
-    private Chat chat;
+    private ChatImpl chat;
     
     private RmiManager()
     {
@@ -101,7 +101,7 @@ public class RmiManager
         }
     }
     
-    public Chat getChat()
+    public ChatImpl getChat()
     {
     	return chat;
     }
