@@ -117,11 +117,31 @@ public class GameSelectionFrame extends JFrame implements ActionListener
         {
             controller.exit();
         }
+        else if (source == joinButton)
+        {
+        	int row = availableGamesTable.getSelectedRow();
+        	if (row > -1)
+        	{
+        		ServerInformation server = tableModel.getServerAtRow(row);
+        		if (server != null)
+        		{
+        			System.out.println(server);
+        		}
+        	}
+        }
     }
 
     public void setServers(java.util.List<ServerInformation> servers)
     {
         tableModel.setServers(servers);
+    }
+    
+    /**
+     * Empties the list of currently displayed servers.
+     */
+    public void resetServerList()
+    {
+    	tableModel.setServers(new ArrayList<ServerInformation>());
     }
 
     private void addButtonsPanel()
@@ -168,6 +188,7 @@ public class GameSelectionFrame extends JFrame implements ActionListener
         buttonsPanel.add(detailsTextArea, c);
 
         joinButton = createButton("Join");
+        joinButton.addActionListener(this);
         c = createConstraint(0, buttonsY++);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(buttonInsets, buttonInsets, buttonInsets, buttonInsets);

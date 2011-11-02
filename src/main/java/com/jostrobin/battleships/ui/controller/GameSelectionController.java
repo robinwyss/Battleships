@@ -26,6 +26,7 @@ import java.util.List;
 import com.jostrobin.battleships.data.ServerInformation;
 import com.jostrobin.battleships.service.network.rmi.ApplicationInterface;
 import com.jostrobin.battleships.service.network.rmi.GameState;
+import com.jostrobin.battleships.service.network.rmi.chat.Chat;
 import com.jostrobin.battleships.service.network.rmi.chat.server.ServerDetectionListener;
 import com.jostrobin.battleships.service.network.rmi.chat.server.ServerDetectionManager;
 import com.jostrobin.battleships.ui.frames.GameSelectionFrame;
@@ -55,6 +56,7 @@ public class GameSelectionController implements ServerDetectionListener
 
     public void refresh()
     {
+    	gameSelectionFrame.resetServerList();
         serverDetectionManager.sendBroadcast();
     }
 
@@ -96,6 +98,28 @@ public class GameSelectionController implements ServerDetectionListener
         catch (NotBoundException e)
         {
             logger.error("Failed to connect to the server at {}", address, e);
+        }
+    }
+    
+    /**
+     * Joins the specified server. Loads RMI objects and instantiates the game frame.
+     * @param server
+     */
+    public void joinGame(ServerInformation server)
+    {
+    	InetAddress address = server.getAddress();
+        try
+        {
+            Registry registry = LocateRegistry.getRegistry(address.getHostName());
+            Chat chat = (Chat) registry.lookup("Chat");
+        }
+        catch (RemoteException e)
+        {
+            logger.error("Failed to join server at {}", address, e);
+        }
+        catch (NotBoundException e)
+        {
+            logger.error("Failed to join server at {}", address, e);
         }
     }
 

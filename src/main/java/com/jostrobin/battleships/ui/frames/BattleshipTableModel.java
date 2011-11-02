@@ -1,5 +1,6 @@
 package com.jostrobin.battleships.ui.frames;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
@@ -10,7 +11,7 @@ public class BattleshipTableModel extends AbstractTableModel
 {
     private String[] columnNames;
 
-    private List<ServerInformation> servers;
+    private List<ServerInformation> servers = new ArrayList<ServerInformation>();
 
     public BattleshipTableModel(String[] columnNames, List<ServerInformation> servers)
     {
@@ -41,7 +42,7 @@ public class BattleshipTableModel extends AbstractTableModel
         }
         else if (columnIndex == 3)
         {
-            return info.getAddress().toString();
+            return info.getAddress().getCanonicalHostName();
         }
         return "";
     }
@@ -68,5 +69,14 @@ public class BattleshipTableModel extends AbstractTableModel
     {
         this.servers = servers;
         fireTableDataChanged();
+    }
+    
+    public ServerInformation getServerAtRow(int row)
+    {
+    	if (servers != null && row >= 0 && row < servers.size())
+    	{
+    		return servers.get(row);
+    	}
+    	return null;
     }
 }
