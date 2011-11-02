@@ -1,10 +1,10 @@
 package com.jostrobin.battleships.data;
 
 
-import com.jostrobin.battleships.data.enums.ShipType;
-
 import java.util.LinkedHashSet;
 import java.util.Set;
+
+import com.jostrobin.battleships.data.enums.ShipType;
 
 /**
  * @author rowyss
@@ -12,6 +12,6 @@ import java.util.Set;
  */
 public class Ship
 {
-	private ShipType type;
-	private Set<Cell> cells = new LinkedHashSet<Cell>();
+    private ShipType type;
+    private Set<Cell> cells = new LinkedHashSet<Cell>();
 }
