@@ -21,11 +21,14 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jostrobin.battleships.data.ServerInformation;
 import com.jostrobin.battleships.service.network.rmi.ApplicationInterface;
 import com.jostrobin.battleships.service.network.rmi.GameState;
 import com.jostrobin.battleships.service.network.rmi.chat.server.ServerDetectionListener;
@@ -39,6 +42,8 @@ public class GameSelectionController implements ServerDetectionListener
 	private ServerDetectionManager serverDetectionManager;
 	
 	private GameSelectionFrame gameSelectionFrame;
+	
+	private List<ServerInformation> servers = new ArrayList<ServerInformation>();
 	
 	public GameSelectionController()
 	{
@@ -64,7 +69,6 @@ public class GameSelectionController implements ServerDetectionListener
 	@Override
 	public void addServer(InetAddress address)
 	{
-		System.out.println("Server found at " + address);
 		ApplicationInterface applicationInterface;
 
 		try
@@ -73,9 +77,20 @@ public class GameSelectionController implements ServerDetectionListener
 			applicationInterface = (ApplicationInterface) registry.lookup("ApplicationInterface");
 			GameState state = applicationInterface.getGameState();
 			
-			Object[] row = new Object[4];
-			row[0] = state.getUsername();
-			gameSelectionFrame.addServer(row);
+			ServerInformation newServer = new ServerInformation(address, state);
+			int index = servers.indexOf(newServer);
+			if (index > -1)
+			{
+				// update existing information
+				ServerInformation oldServer = servers.get(index);
+				oldServer.setState(newServer.getState());
+			}
+			else
+			{
+				servers.add(newServer);
+			}
+			
+			gameSelectionFrame.setServers(servers);
 		}
 		catch (RemoteException e)
 		{

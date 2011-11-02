@@ -15,7 +15,7 @@ public class ChatImpl extends UnicastRemoteObject implements Chat
 {
 	private static final Logger logger = LoggerFactory.getLogger(ChatImpl.class);
 
-	protected ChatImpl() throws RemoteException
+	public ChatImpl() throws RemoteException
 	{
 		super();
 	}

@@ -30,11 +30,43 @@
 
 package com.jostrobin.battleships.service.network.rmi;
 
+import java.rmi.AlreadyBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.jostrobin.battleships.service.network.rmi.chat.server.ChatImpl;
+
 /**
  * @author rowyss
  *         Date: 28.10.11 Time: 17:10
  */
-public class RmiService
+public class RmiManager
 {
-
+	private static final Logger logger = LoggerFactory.getLogger(RmiManager.class);
+	
+	/**
+	 * Creates the RMI registry and exports all the used RMI 
+	 */
+	public void startupRmiServices()
+	{
+		try
+		{
+			Registry registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
+			registry.bind("ApplicationInterface", new DefaultApplicationInterface());
+			registry.bind("Chat", new ChatImpl());
+			logger.trace("Exported objects to RMI registry");
+		}
+		catch (RemoteException e)
+		{
+			logger.error("Failed to initialize RMI object", e);
+		}
+		catch (AlreadyBoundException e)
+		{
+			logger.error("Failed to initialize RMI objects", e);
+		}
+	}
 }

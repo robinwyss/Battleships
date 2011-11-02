@@ -1,23 +1,28 @@
 package com.jostrobin.battleships.ui.frames;
 
+import java.util.List;
+
 import javax.swing.table.AbstractTableModel;
+
+import com.jostrobin.battleships.data.ServerInformation;
+import com.jostrobin.battleships.service.network.rmi.GameState;
 
 public class BattleshipTableModel extends AbstractTableModel
 {
 	private String[] columnNames;
 	
-	private Object[][] rowData;
+	private List<ServerInformation> servers;
 	
-	public BattleshipTableModel(String[] columnNames, Object[][] rowData)
+	public BattleshipTableModel(String[] columnNames, List<ServerInformation> servers)
 	{
 		this.columnNames = columnNames;
-		this.rowData = rowData;
+		this.servers = servers;
 	}
 
 	@Override
 	public int getRowCount()
 	{
-		return rowData.length;
+		return servers.size();
 	}
 
 	@Override
@@ -29,7 +34,17 @@ public class BattleshipTableModel extends AbstractTableModel
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex)
 	{
-		return rowData[rowIndex][columnIndex];
+		ServerInformation info = servers.get(rowIndex);
+		GameState state = info.getState();
+		if (columnIndex == 0)
+		{
+			return state.getUsername();
+		}
+		else if (columnIndex == 3)
+		{
+			return info.getAddress().toString();
+		}
+		return "";
 	}
 
 	@Override
@@ -47,19 +62,12 @@ public class BattleshipTableModel extends AbstractTableModel
 	@Override
 	public void setValueAt(Object value, int row, int col)
 	{
-		rowData[row][col] = value;
-		fireTableCellUpdated(row, col);
+		// ignore this, we are not editable
 	}
 	
-	public void addRow(Object[] data)
+	public void setServers(List<ServerInformation> servers)
 	{
-		Object[][] temp = new Object[rowData.length+1][columnNames.length];
-		int i = 0;
-		for (Object[] row : rowData)
-		{
-			temp[i++] = row;
-		}
-		temp[temp.length] = data;
+		this.servers = servers;
 		fireTableDataChanged();
 	}
 }

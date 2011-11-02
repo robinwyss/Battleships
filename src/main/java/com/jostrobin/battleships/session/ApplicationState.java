@@ -4,7 +4,7 @@ public class ApplicationState
 {
 	private static final ApplicationState applicationState = new ApplicationState();
 	
-	private String username;
+	private String username = "joscht";
 
 	private ApplicationState()
 	{

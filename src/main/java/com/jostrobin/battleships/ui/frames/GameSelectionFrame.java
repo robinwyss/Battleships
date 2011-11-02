@@ -3,8 +3,11 @@ package com.jostrobin.battleships.ui.frames;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.*;
 
+import com.jostrobin.battleships.data.ServerInformation;
 import com.jostrobin.battleships.ui.controller.GameSelectionController;
 
 public class GameSelectionFrame extends JFrame implements ActionListener
@@ -76,9 +79,9 @@ public class GameSelectionFrame extends JFrame implements ActionListener
 	
 	private void addTable()
 	{
-		String[] columnNames = {"Player", "Mode", "Number of players", "Date"};
-		Object[][] data = {};
-		tableModel = new BattleshipTableModel(columnNames, data);
+		String[] columnNames = {"Player", "Mode", "Number of players", "IP"};
+		java.util.List<ServerInformation> servers = new ArrayList<ServerInformation>();
+		tableModel = new BattleshipTableModel(columnNames, servers);
 		availableGamesTable = new JTable(tableModel);
 		availableGamesTable.setVisible(true);
 		availableGamesTable.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -117,9 +120,9 @@ public class GameSelectionFrame extends JFrame implements ActionListener
 		}
 	}
 	
-	public void addServer(Object[] data)
+	public void setServers(java.util.List<ServerInformation> servers)
 	{
-		tableModel.addRow(data);
+		tableModel.setServers(servers);
 	}
 
     private void addButtonsPanel()
