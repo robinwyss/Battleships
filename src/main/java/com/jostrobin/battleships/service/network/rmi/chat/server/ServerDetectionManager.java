@@ -135,12 +135,13 @@ public class ServerDetectionManager implements Runnable
         byte[] buffer = new byte[BUFFER_SIZE];
 
         // send UDP packets to all the possible server nodes
+        DatagramSocket answerSocket = null;
         try
         {
             String message = VERSION + YES_I_AM;
             buffer = message.getBytes("UTF-8");
 
-            DatagramSocket answerSocket = new DatagramSocket();
+            answerSocket = new DatagramSocket();
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, DETECTION_PORT);
             answerSocket.send(packet);
         }
@@ -150,9 +151,9 @@ public class ServerDetectionManager implements Runnable
         }
         finally
         {
-            if (socket != null)
+            if (answerSocket != null)
             {
-                socket.close();
+            	answerSocket.close();
             }
         }
     }
