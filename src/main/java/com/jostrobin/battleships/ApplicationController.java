@@ -1,6 +1,6 @@
 package com.jostrobin.battleships;
 
-import com.jostrobin.battleships.service.network.rmi.chat.server.ChatServer;
+import com.jostrobin.battleships.service.network.rmi.RmiManager;
 import com.jostrobin.battleships.ui.controller.GameSelectionController;
 import com.jostrobin.battleships.ui.controller.RegistrationController;
 import com.jostrobin.battleships.ui.frames.GameFrame;
@@ -19,6 +19,8 @@ public class ApplicationController
     {
 
         // thread rmi
+        RmiManager rmiManager = new RmiManager();
+        rmiManager.startupRmiServices();
 
         // thread broadcast
 
@@ -28,9 +30,10 @@ public class ApplicationController
         new RegistrationController().showRegistrationDialog();
 
         new GameFrame();
-        new ChatServer();
 
-        GameSelectionFrame f = new GameSelectionFrame(new GameSelectionController());
+        GameSelectionController gameSelectionController = new GameSelectionController();
+        GameSelectionFrame f = new GameSelectionFrame(gameSelectionController);
+        gameSelectionController.setGameSelectionFrame(f);
         f.setVisible(true);
     }
 

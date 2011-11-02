@@ -22,7 +22,15 @@ public class ServerDetectionManager implements Runnable
 {
     private static final Logger LOG = LoggerFactory.getLogger(ServerDetectionManager.class);
 
+    /**
+     * Port on which we try to find other servers.
+     */
     private static final int DETECTION_PORT = 4242;
+
+    /**
+     * Port on which we run
+     */
+    private static final int LISTENING_PORT = 4242;
 
     private static final int BUFFER_SIZE = 64;
 
@@ -46,7 +54,7 @@ public class ServerDetectionManager implements Runnable
     {
         try
         {
-            socket = new DatagramSocket(DETECTION_PORT);
+            socket = new DatagramSocket(LISTENING_PORT);
         }
         catch (SocketException e)
         {
@@ -142,7 +150,7 @@ public class ServerDetectionManager implements Runnable
             buffer = message.getBytes("UTF-8");
 
             answerSocket = new DatagramSocket();
-            DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, DETECTION_PORT);
+            DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, LISTENING_PORT);
             answerSocket.send(packet);
         }
         catch (Exception e)
@@ -153,7 +161,7 @@ public class ServerDetectionManager implements Runnable
         {
             if (answerSocket != null)
             {
-            	answerSocket.close();
+                answerSocket.close();
             }
         }
     }

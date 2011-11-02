@@ -1,44 +1,23 @@
 package com.jostrobin.battleships.service.network.rmi;
 
-import java.rmi.AlreadyBoundException;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
+import java.io.Serializable;
 
+import com.jostrobin.battleships.session.ApplicationState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jostrobin.battleships.session.ApplicationState;
-
-public class DefaultApplicationInterface implements ApplicationInterface
+public class DefaultApplicationInterface implements ApplicationInterface, Serializable
 {
-	private static final Logger logger = LoggerFactory.getLogger(DefaultApplicationInterface.class);
-	
-	public DefaultApplicationInterface()
-	{
-		try
-		{
-			Registry registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
-			registry.bind("ApplicationInterface", this);
-			logger.trace("Exported ApplicationInterface to RMI registry");
+    private static final long serialVersionUID = 1L;
 
-		}
-		catch (RemoteException e)
-		{
-			logger.error("Failed to initialize ApplicationInterface", e);
-		}
-		catch (AlreadyBoundException e)
-		{
-			logger.error("Failed to initialize ApplicationInterface", e);
-		}
-	}
-	
-	@Override
-	public GameState getGameState()
-	{
-		ApplicationState state = ApplicationState.getInstance();
-		GameState gameState = new GameState();
-		gameState.setUsername(state.getUsername());
-		return gameState;
-	}
+    private static final Logger logger = LoggerFactory.getLogger(DefaultApplicationInterface.class);
+
+    @Override
+    public GameState getGameState()
+    {
+        ApplicationState state = ApplicationState.getInstance();
+        GameState gameState = new GameState();
+        gameState.setUsername(state.getUsername());
+        return gameState;
+    }
 }

@@ -1,65 +1,72 @@
 package com.jostrobin.battleships.ui.frames;
 
+import java.util.List;
 import javax.swing.table.AbstractTableModel;
+
+import com.jostrobin.battleships.data.ServerInformation;
+import com.jostrobin.battleships.service.network.rmi.GameState;
 
 public class BattleshipTableModel extends AbstractTableModel
 {
-	private String[] columnNames;
-	
-	private Object[][] rowData;
-	
-	public BattleshipTableModel(String[] columnNames, Object[][] rowData)
-	{
-		this.columnNames = columnNames;
-		this.rowData = rowData;
-	}
+    private String[] columnNames;
 
-	@Override
-	public int getRowCount()
-	{
-		return rowData.length;
-	}
+    private List<ServerInformation> servers;
 
-	@Override
-	public int getColumnCount()
-	{
-		return columnNames.length;
-	}
+    public BattleshipTableModel(String[] columnNames, List<ServerInformation> servers)
+    {
+        this.columnNames = columnNames;
+        this.servers = servers;
+    }
 
-	@Override
-	public Object getValueAt(int rowIndex, int columnIndex)
-	{
-		return rowData[rowIndex][columnIndex];
-	}
+    @Override
+    public int getRowCount()
+    {
+        return servers.size();
+    }
 
-	@Override
-	public String getColumnName(int col)
-	{
-		return columnNames[col].toString();
-	}
+    @Override
+    public int getColumnCount()
+    {
+        return columnNames.length;
+    }
 
-	@Override
-	public boolean isCellEditable(int row, int col)
-	{
-		return false;
-	}
+    @Override
+    public Object getValueAt(int rowIndex, int columnIndex)
+    {
+        ServerInformation info = servers.get(rowIndex);
+        GameState state = info.getState();
+        if (columnIndex == 0)
+        {
+            return state.getUsername();
+        }
+        else if (columnIndex == 3)
+        {
+            return info.getAddress().toString();
+        }
+        return "";
+    }
 
-	@Override
-	public void setValueAt(Object value, int row, int col)
-	{
-		rowData[row][col] = value;
-		fireTableCellUpdated(row, col);
-	}
-	
-	public void addRow(Object[] data)
-	{
-		Object[][] temp = new Object[rowData.length+1][columnNames.length];
-		int i = 0;
-		for (Object[] row : rowData)
-		{
-			temp[i++] = row;
-		}
-		temp[temp.length] = data;
-		fireTableDataChanged();
-	}
+    @Override
+    public String getColumnName(int col)
+    {
+        return columnNames[col].toString();
+    }
+
+    @Override
+    public boolean isCellEditable(int row, int col)
+    {
+        return false;
+    }
+
+    @Override
+    public void setValueAt(Object value, int row, int col)
+    {
+        // ignore this, we are not editable
+    }
+
+    public void setServers(List<ServerInformation> servers)
+    {
+        this.servers = servers;
+        fireTableDataChanged();
+    }
 }

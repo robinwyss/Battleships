@@ -3,91 +3,93 @@ package com.jostrobin.battleships.ui.frames;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.*;
 
+import com.jostrobin.battleships.data.ServerInformation;
 import com.jostrobin.battleships.ui.controller.GameSelectionController;
 
 public class GameSelectionFrame extends JFrame implements ActionListener
 {
-	private static final long serialVersionUID = 1L;
-	
-	private GameSelectionController controller;
-	
-	private JPanel availableGamesPanel;
-	
-	private JPanel buttonsPanel;
-	
-	private JLabel availableGamesLabel;
-	
-	private JButton createGameButton;
-	
-	private JButton settingsButton;
-	
-	private JButton refreshButton;
-	
-	private JButton filterButton;
-	
-	private JButton joinButton;
-	
-	private JButton exitButton;
-	
-	private JTextArea detailsTextArea;
-	
-	private JTable availableGamesTable;
-	
-	private BattleshipTableModel tableModel;
-	
-	int x = 0;
-	
-	int y = 0;
-	
-	public GameSelectionFrame(GameSelectionController controller)
-	{
-		this.controller = controller;
-		
-		buildGui();
+    private static final long serialVersionUID = 1L;
+
+    private GameSelectionController controller;
+
+    private JPanel availableGamesPanel;
+
+    private JPanel buttonsPanel;
+
+    private JLabel availableGamesLabel;
+
+    private JButton createGameButton;
+
+    private JButton settingsButton;
+
+    private JButton refreshButton;
+
+    private JButton filterButton;
+
+    private JButton joinButton;
+
+    private JButton exitButton;
+
+    private JTextArea detailsTextArea;
+
+    private JTable availableGamesTable;
+
+    private BattleshipTableModel tableModel;
+
+    int x = 0;
+
+    int y = 0;
+
+    public GameSelectionFrame(GameSelectionController controller)
+    {
+        this.controller = controller;
+
+        buildGui();
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(800, 600);
-	}
-	
-	private void buildGui()
-	{
-		this.setLayout(new GridBagLayout());
-		
-		availableGamesPanel = new JPanel(new GridBagLayout());
-		this.setMinimumSize(new Dimension(700, 500));
-		GridBagConstraints c = createConstraint(0, 0);
-		c.insets = new Insets(15, 15, 15, 15);
-		c.fill = GridBagConstraints.BOTH;
-		c.weightx = 1;
-		c.weighty = 1;
-		this.add(availableGamesPanel, c);
-		
-		availableGamesLabel = new JLabel("Available games");
-		c = createConstraint(x, y++, 2, 1);
-		c.anchor = GridBagConstraints.FIRST_LINE_START;
-		c.insets = new Insets(0, 5, 0, 0);
-		availableGamesPanel.add(availableGamesLabel, c);
-		
-		addTable();
-		addButtonsPanel();
-	}
-	
-	private void addTable()
-	{
-		String[] columnNames = {"Player", "Mode", "Number of players", "Date"};
-		Object[][] data = {};
-		tableModel = new BattleshipTableModel(columnNames, data);
-		availableGamesTable = new JTable(tableModel);
-		availableGamesTable.setVisible(true);
-		availableGamesTable.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+    }
 
-		JPanel tablePanel = new JPanel(new GridBagLayout());
-		GridBagConstraints c = createConstraint(0, 0);
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = 1;
-		tablePanel.add(availableGamesTable.getTableHeader(), c);
+    private void buildGui()
+    {
+        this.setLayout(new GridBagLayout());
+
+        availableGamesPanel = new JPanel(new GridBagLayout());
+        this.setMinimumSize(new Dimension(700, 500));
+        GridBagConstraints c = createConstraint(0, 0);
+        c.insets = new Insets(15, 15, 15, 15);
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.weighty = 1;
+        this.add(availableGamesPanel, c);
+
+        availableGamesLabel = new JLabel("Available games");
+        c = createConstraint(x, y++, 2, 1);
+        c.anchor = GridBagConstraints.FIRST_LINE_START;
+        c.insets = new Insets(0, 5, 0, 0);
+        availableGamesPanel.add(availableGamesLabel, c);
+
+        addTable();
+        addButtonsPanel();
+    }
+
+    private void addTable()
+    {
+        String[] columnNames = {"Player", "Mode", "Number of players", "IP"};
+        java.util.List<ServerInformation> servers = new ArrayList<ServerInformation>();
+        tableModel = new BattleshipTableModel(columnNames, servers);
+        availableGamesTable = new JTable(tableModel);
+        availableGamesTable.setVisible(true);
+        availableGamesTable.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+        JPanel tablePanel = new JPanel(new GridBagLayout());
+        GridBagConstraints c = createConstraint(0, 0);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        tablePanel.add(availableGamesTable.getTableHeader(), c);
 
         c = createConstraint(0, 1);
         c.fill = GridBagConstraints.BOTH;
@@ -103,24 +105,24 @@ public class GameSelectionFrame extends JFrame implements ActionListener
         availableGamesPanel.add(tablePanel, c);
     }
 
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		Object source = e.getSource();
-		if (source == refreshButton)
-		{
-			controller.refresh();
-		}
-		else if (source == exitButton)
-		{
-			controller.exit();
-		}
-	}
-	
-	public void addServer(Object[] data)
-	{
-		tableModel.addRow(data);
-	}
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        Object source = e.getSource();
+        if (source == refreshButton)
+        {
+            controller.refresh();
+        }
+        else if (source == exitButton)
+        {
+            controller.exit();
+        }
+    }
+
+    public void setServers(java.util.List<ServerInformation> servers)
+    {
+        tableModel.setServers(servers);
+    }
 
     private void addButtonsPanel()
     {
