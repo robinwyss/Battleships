@@ -18,6 +18,7 @@ package com.jostrobin.battleships.ui.controller;
 import com.jostrobin.battleships.listener.ChatListener;
 import com.jostrobin.battleships.service.network.rmi.ApplicationInterface;
 import com.jostrobin.battleships.service.network.rmi.chat.Chat;
+import com.jostrobin.battleships.ui.frames.GameFrame;
 
 /**
  * @author rowyss
@@ -27,6 +28,7 @@ public class GameController
 {
     private ApplicationInterface appInterface;
     private ChatController chatController;
+    private GameFrame gameFrame;
 
     public GameController(Chat chat, ApplicationInterface appInterface)
     {
@@ -36,7 +38,8 @@ public class GameController
 
     public void showFrame()
     {
-
+        gameFrame = new GameFrame();
+        gameFrame.addChatPanel(chatController);
     }
 
     public ChatListener getChatListener()

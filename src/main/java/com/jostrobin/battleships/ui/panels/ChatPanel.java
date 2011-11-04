@@ -16,6 +16,8 @@
 package com.jostrobin.battleships.ui.panels;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import com.jostrobin.battleships.ui.controller.ChatController;
@@ -24,7 +26,7 @@ import com.jostrobin.battleships.ui.controller.ChatController;
  * @author rowyss
  *         Date: 28.10.11 Time: 18:01
  */
-public class ChatPanel extends JPanel
+public class ChatPanel extends JPanel implements ActionListener
 {
 
     public ChatController chatController;
@@ -36,6 +38,7 @@ public class ChatPanel extends JPanel
     public ChatPanel(ChatController chatController)
     {
         this.chatController = chatController;
+        chatController.setChatPanel(this);
         initUI();
     }
 
@@ -53,6 +56,7 @@ public class ChatPanel extends JPanel
     private void addSendButton()
     {
         sendButton = new JButton("Send");
+        sendButton.addActionListener(this);
         GridBagConstraints sendButtonConstraints = new GridBagConstraints();
         sendButtonConstraints.gridy = y++;
         sendButtonConstraints.anchor = GridBagConstraints.BASELINE_TRAILING;
@@ -89,5 +93,12 @@ public class ChatPanel extends JPanel
     public void displayMessage(String username, String message)
     {
         displayArea.append(String.format("%s: %s", username, message));
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent actionEvent)
+    {
+        chatController.sendMessage(messageField.getText());
+        messageField.setText("");
     }
 }
