@@ -36,9 +36,6 @@ public class ApplicationController
         GameSelectionFrame f = new GameSelectionFrame(gameSelectionController);
         gameSelectionController.setGameSelectionFrame(f);
         f.setVisible(true);
-        
-        CreateGameController createGameController = new CreateGameController();
-        CreateGameFrame gameFrame = new CreateGameFrame(createGameController);
     }
 
 }

@@ -31,6 +31,7 @@ import com.jostrobin.battleships.service.network.rmi.chat.Chat;
 import com.jostrobin.battleships.service.network.rmi.chat.server.ChatImpl;
 import com.jostrobin.battleships.service.network.rmi.chat.server.ServerDetectionListener;
 import com.jostrobin.battleships.service.network.rmi.chat.server.ServerDetectionManager;
+import com.jostrobin.battleships.ui.frames.CreateGameFrame;
 import com.jostrobin.battleships.ui.frames.GameSelectionFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -131,6 +132,12 @@ public class GameSelectionController implements ServerDetectionListener
         {
             logger.error("Failed to join server at {}", address, e);
         }
+    }
+    
+    public void createGame()
+    {
+        CreateGameController createGameController = new CreateGameController(serverDetectionManager);
+        CreateGameFrame gameFrame = new CreateGameFrame(createGameController);
     }
 
 	@Override

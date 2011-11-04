@@ -129,6 +129,10 @@ public class GameSelectionFrame extends JFrame implements ActionListener
         		}
         	}
         }
+        else if (source == createGameButton)
+        {
+        	controller.createGame();
+        }
     }
 
     public void setServers(java.util.List<ServerInformation> servers)
@@ -152,6 +156,7 @@ public class GameSelectionFrame extends JFrame implements ActionListener
         buttonsPanel = new JPanel(new GridBagLayout());
 
         createGameButton = createButton("Create game");
+        createGameButton.addActionListener(this);
         GridBagConstraints c = createConstraint(0, buttonsY++);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(buttonInsets, buttonInsets, buttonInsets, buttonInsets);

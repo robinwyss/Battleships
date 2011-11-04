@@ -124,11 +124,14 @@ public class ServerDetectionManager implements Runnable
                     }
                     else if (message.equals(VERSION + UPDATE_NOTIFICATION))
                     {
-                        LOG.debug("Server " + address + " has an update");
-                        for (ServerDetectionListener callback : listeners)
-                        {
-                            callback.updateServer(address);
-                        }
+                    	if (isForeign)
+                    	{
+	                        LOG.debug("Server " + address + " has an update");
+	                        for (ServerDetectionListener callback : listeners)
+	                        {
+	                            callback.updateServer(address);
+	                        }
+                    	}
                     }
                 }
                 else
