@@ -89,7 +89,7 @@ public class RegistrationDialog extends JDialog implements ActionListener, KeyLi
         textField.addKeyListener(this);
         okButton.addKeyListener(this);
 
-        setSize(300, 100);
+        setSize(300, 90);
         setResizable(false);
         setVisible(true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
