@@ -37,7 +37,7 @@ public class ChatImpl extends UnicastRemoteObject implements Chat
 
     public void sendMessage(String username, String message) throws RemoteException
     {
-    	logger.trace(username + ": " + message);
+    	logger.debug(username + ": " + message);
     	for (ChatListener listener : listeners)
     	{
     		listener.receiveMessage(username, message);
