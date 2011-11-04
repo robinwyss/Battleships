@@ -44,6 +44,10 @@ public class BattleshipTableModel extends AbstractTableModel
         {
             return info.getAddress().getCanonicalHostName();
         }
+        else if (columnIndex == 4)
+        {
+            return info.getState().getState();
+        }
         return "";
     }
 

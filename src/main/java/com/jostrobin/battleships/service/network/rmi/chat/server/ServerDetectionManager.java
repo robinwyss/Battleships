@@ -40,6 +40,8 @@ public class ServerDetectionManager implements Runnable
     private static final String ARE_YOU_THERE = "areyouthere";
 
     private static final String YES_I_AM = "yesiam";
+    
+    private static final String UPDATE_NOTIFICATION = "gotsomeupdate";
 
     private DatagramSocket socket;
 
@@ -86,24 +88,24 @@ public class ServerDetectionManager implements Runnable
                 LOG.trace("Received a UDP message");
                 if (message.startsWith(VERSION))
                 {
+                    // we need to check if it was our own message and ignore if that's the case
+                    boolean isForeign = true;
+                    Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
+                    for (NetworkInterface netint : Collections.list(nets))
+                    {
+                        List<InterfaceAddress> interfaceAddresses = netint.getInterfaceAddresses();
+                        for (InterfaceAddress interfaceAddress : interfaceAddresses)
+                        {
+                            if (interfaceAddress.getAddress().equals(address))
+                            {
+                                isForeign = false;
+                            }
+                        }
+                    }
+                    
                     // someone is looking for servers, answer him
                     if (message.equals(VERSION + ARE_YOU_THERE))
                     {
-                        // we need to check if it was our own broadcast and ignore if that's the case
-                        boolean isForeign = true;
-                        Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
-                        for (NetworkInterface netint : Collections.list(nets))
-                        {
-                            List<InterfaceAddress> interfaceAddresses = netint.getInterfaceAddresses();
-                            for (InterfaceAddress interfaceAddress : interfaceAddresses)
-                            {
-                                if (interfaceAddress.getAddress().equals(address))
-                                {
-                                    isForeign = false;
-                                }
-                            }
-                        }
-
                         // it's not our own broadcast
                         if (isForeign)
                         {
@@ -118,6 +120,14 @@ public class ServerDetectionManager implements Runnable
                         for (ServerDetectionListener callback : listeners)
                         {
                             callback.addServer(address);
+                        }
+                    }
+                    else if (message.equals(VERSION + UPDATE_NOTIFICATION))
+                    {
+                        LOG.debug("Server " + address + " has an update");
+                        for (ServerDetectionListener callback : listeners)
+                        {
+                            callback.updateServer(address);
                         }
                     }
                 }
@@ -171,14 +181,18 @@ public class ServerDetectionManager implements Runnable
      */
     public void sendBroadcast()
     {
+        String message = VERSION + ARE_YOU_THERE;
+        broadcast(message);
+    }
+    
+    public void broadcast(String message)
+    {
         byte[] buffer = new byte[BUFFER_SIZE];
-
         // send UDP packets to all the possible server nodes
         DatagramSocket socket = null;
         try
         {
-            String message = VERSION + ARE_YOU_THERE;
-            buffer = message.getBytes("UTF-8");
+        	buffer = message.getBytes("UTF-8");
 
             socket = new DatagramSocket();
             socket.setBroadcast(true);
@@ -214,5 +228,11 @@ public class ServerDetectionManager implements Runnable
                 socket.close();
             }
         }
+    }
+    
+    public void broadcastUpdate()
+    {
+        String message = VERSION + UPDATE_NOTIFICATION;
+        broadcast(message);
     }
 }

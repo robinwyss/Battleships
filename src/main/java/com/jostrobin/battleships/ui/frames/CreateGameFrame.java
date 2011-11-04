@@ -4,12 +4,17 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class CreateGameFrame extends JFrame
+import com.jostrobin.battleships.ui.controller.CreateGameController;
+
+public class CreateGameFrame extends JFrame implements ActionListener
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -17,13 +22,20 @@ public class CreateGameFrame extends JFrame
 	
 	private JPanel optionsPanel;
 	
+	private JButton createGameButton;
+	
 	private int x = 0;
 	
 	private int y = 0;
+	
+	private CreateGameController controller;
 
-	public CreateGameFrame()
+	public CreateGameFrame(CreateGameController controller)
 	{
+		this.controller = controller;
 		
+		buildGui();
+		this.setVisible(true);
 	}
 	
     private void buildGui()
@@ -38,6 +50,14 @@ public class CreateGameFrame extends JFrame
         c.weightx = 1;
         c.weighty = 1;
         this.add(optionsPanel, c);
+        
+        createGameButton = new JButton("Create");
+        createGameButton.addActionListener(this);
+        c = createConstraint(0, 1);
+        c.insets = new Insets(15, 15, 15, 15);
+        c.anchor = GridBagConstraints.LAST_LINE_END;
+        this.add(createGameButton, c);
+        
 
 //        optionsPanel = new JLabel("Available games");
 //        c = createConstraint(x, y++, 2, 1);
@@ -63,4 +83,14 @@ public class CreateGameFrame extends JFrame
         c.gridy = gridy;
         return c;
     }
+
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		Object source = e.getSource();
+		if (source == createGameButton)
+		{
+			controller.createGame();
+		}
+	}
 }

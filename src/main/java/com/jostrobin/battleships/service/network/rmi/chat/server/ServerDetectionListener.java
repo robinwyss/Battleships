@@ -17,4 +17,10 @@ public interface ServerDetectionListener
 	 * @param address The address of the server. At this address the RMI registry should be available.
 	 */
 	public void addServer(InetAddress address);
+	
+	/**
+	 * Called when a server has new information which we need to fetch.
+	 * @param address
+	 */
+	public void updateServer(InetAddress address);
 }

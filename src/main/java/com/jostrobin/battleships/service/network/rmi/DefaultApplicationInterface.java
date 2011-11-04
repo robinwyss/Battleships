@@ -16,7 +16,7 @@ public class DefaultApplicationInterface implements ApplicationInterface, Serial
     public GameState getGameState()
     {
         ApplicationState state = ApplicationState.getInstance();
-        GameState gameState = new GameState();
+        GameState gameState = GameState.getInstance();
         gameState.setUsername(state.getUsername());
         return gameState;
     }

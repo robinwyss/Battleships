@@ -78,7 +78,7 @@ public class GameSelectionController implements ServerDetectionListener
             applicationInterface = (ApplicationInterface) registry.lookup("ApplicationInterface");
             GameState state = applicationInterface.getGameState();
 
-            ServerInformation newServer = new ServerInformation(address, state);
+            ServerInformation newServer = new ServerInformation(address, state, applicationInterface);
             int index = servers.indexOf(newServer);
             if (index > -1)
             {
@@ -114,7 +114,7 @@ public class GameSelectionController implements ServerDetectionListener
         {
             Registry registry = LocateRegistry.getRegistry(address.getHostName());
             Chat chatClient = (Chat) registry.lookup("Chat");
-            ApplicationInterface appInterface = (ApplicationInterface) registry.lookup("ApplicationInterface");
+            ApplicationInterface appInterface = server.getApplicationInterface();
 
             RmiManager rmiManager = RmiManager.getInstance();
             GameController gameController = new GameController(chatClient, appInterface);
@@ -132,6 +132,21 @@ public class GameSelectionController implements ServerDetectionListener
             logger.error("Failed to join server at {}", address, e);
         }
     }
+
+	@Override
+	public void updateServer(InetAddress address)
+	{
+		for (ServerInformation server : servers)
+		{
+			if (server.getAddress().equals(address))
+			{
+				ApplicationInterface applicationInterface = server.getApplicationInterface();
+				GameState state = applicationInterface.getGameState();
+				server.setState(state);
+			}
+		}
+		gameSelectionFrame.setServers(servers);
+	}
 
     public GameSelectionFrame getGameSelectionFrame()
     {

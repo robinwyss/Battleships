@@ -1,8 +1,10 @@
 package com.jostrobin.battleships;
 
 import com.jostrobin.battleships.service.network.rmi.RmiManager;
+import com.jostrobin.battleships.ui.controller.CreateGameController;
 import com.jostrobin.battleships.ui.controller.GameSelectionController;
 import com.jostrobin.battleships.ui.controller.RegistrationController;
+import com.jostrobin.battleships.ui.frames.CreateGameFrame;
 import com.jostrobin.battleships.ui.frames.GameSelectionFrame;
 
 /**
@@ -34,6 +36,9 @@ public class ApplicationController
         GameSelectionFrame f = new GameSelectionFrame(gameSelectionController);
         gameSelectionController.setGameSelectionFrame(f);
         f.setVisible(true);
+        
+        CreateGameController createGameController = new CreateGameController();
+        CreateGameFrame gameFrame = new CreateGameFrame(createGameController);
     }
 
 }

@@ -6,11 +6,24 @@ public class GameState implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
+	private static final GameState gameState = new GameState();
+	
 	private String username;
 	
 	private int currentPlayers;
 	
 	private int maxPlayers;
+	
+	private String state = "new";
+	
+	private GameState()
+	{
+	}
+	
+	public static GameState getInstance()
+	{
+		return gameState;
+	}
 
 	public String getUsername()
 	{
@@ -25,6 +38,16 @@ public class GameState implements Serializable
 	public int getCurrentPlayers()
 	{
 		return currentPlayers;
+	}
+
+	public String getState()
+	{
+		return state;
+	}
+
+	public void setState(String state)
+	{
+		this.state = state;
 	}
 
 	public void setCurrentPlayers(int currentPlayers)

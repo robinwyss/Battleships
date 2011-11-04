@@ -2,6 +2,7 @@ package com.jostrobin.battleships.data;
 
 import java.net.InetAddress;
 
+import com.jostrobin.battleships.service.network.rmi.ApplicationInterface;
 import com.jostrobin.battleships.service.network.rmi.GameState;
 
 public class ServerInformation
@@ -9,15 +10,18 @@ public class ServerInformation
     private InetAddress address;
 
     private GameState state;
+    
+    private ApplicationInterface applicationInterface;
 
     public ServerInformation()
     {
     }
 
-    public ServerInformation(InetAddress address, GameState state)
+    public ServerInformation(InetAddress address, GameState state, ApplicationInterface applicationInterface)
     {
         this.address = address;
         this.state = state;
+        this.applicationInterface = applicationInterface;
     }
 
     public InetAddress getAddress()
@@ -40,7 +44,17 @@ public class ServerInformation
         this.state = state;
     }
 
-    @Override
+    public ApplicationInterface getApplicationInterface()
+	{
+		return applicationInterface;
+	}
+
+	public void setApplicationInterface(ApplicationInterface applicationInterface)
+	{
+		this.applicationInterface = applicationInterface;
+	}
+
+	@Override
     public int hashCode()
     {
         final int prime = 31;

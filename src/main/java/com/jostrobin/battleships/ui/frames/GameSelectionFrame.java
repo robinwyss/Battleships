@@ -78,7 +78,7 @@ public class GameSelectionFrame extends JFrame implements ActionListener
 
     private void addTable()
     {
-        String[] columnNames = {"Player", "Mode", "Number of players", "IP"};
+        String[] columnNames = {"Player", "Mode", "Number of players", "IP", "State"};
         java.util.List<ServerInformation> servers = new ArrayList<ServerInformation>();
         tableModel = new BattleshipTableModel(columnNames, servers);
         availableGamesTable = new JTable(tableModel);
