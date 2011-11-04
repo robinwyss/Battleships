@@ -75,22 +75,28 @@ public class GameSelectionController implements ServerDetectionListener
 
         try
         {
-            Registry registry = LocateRegistry.getRegistry(address.getHostName());
-            applicationInterface = (ApplicationInterface) registry.lookup("ApplicationInterface");
-            GameState state = applicationInterface.getGameState();
+        	boolean serverExists = false;
+        	for (ServerInformation server : servers)
+        	{
+        		if (server.getAddress().equals(address))
+        		{
+                    // update existing information
+        			GameState state = server.getApplicationInterface().getGameState();
+                    server.setState(state);
+                    serverExists = true;
+        		}
+        	}
+        	
+        	if (!serverExists)
+        	{
+                Registry registry = LocateRegistry.getRegistry(address.getHostName());
+                applicationInterface = (ApplicationInterface) registry.lookup("ApplicationInterface");
+                GameState state = applicationInterface.getGameState();
 
-            ServerInformation newServer = new ServerInformation(address, state, applicationInterface);
-            int index = servers.indexOf(newServer);
-            if (index > -1)
-            {
-                // update existing information
-                ServerInformation oldServer = servers.get(index);
-                oldServer.setState(newServer.getState());
-            }
-            else
-            {
+                ServerInformation newServer = new ServerInformation(address, state, applicationInterface);
                 servers.add(newServer);
-            }
+        		
+        	}
 
             gameSelectionFrame.setServers(servers);
         }
