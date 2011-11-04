@@ -33,7 +33,7 @@ public class ChatController implements ChatListener
 
     public ChatController(Chat chat)
     {
-
+        this.chat = chat;
     }
 
     @Override
@@ -44,13 +44,20 @@ public class ChatController implements ChatListener
 
     public void sendMessage(String message)
     {
+        chatPanel.displayMessage("Me", message);
         try
         {
             chat.sendMessage("Bilbo", message);
+            chatPanel.displayMessage("Me", message);
         }
         catch (RemoteException e)
         {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
+    }
+
+    public void setChatPanel(ChatPanel chatPanel)
+    {
+        this.chatPanel = chatPanel;
     }
 }
