@@ -1,10 +1,22 @@
 package com.jostrobin.battleships.session;
 
-public class ApplicationState
-{
-    private static final ApplicationState applicationState = new ApplicationState();
+import java.io.Serializable;
 
-    private String username = "joscht";
+import enumerations.State;
+
+public class ApplicationState implements Serializable
+{
+	private static final long serialVersionUID = 1L;
+
+	private static final ApplicationState applicationState = new ApplicationState();
+	
+	private String username;
+	
+	private int currentPlayers;
+	
+	private int maxPlayers;
+	
+	private State state = State.NEW;
 
     private ApplicationState()
     {
@@ -15,14 +27,43 @@ public class ApplicationState
         return applicationState;
     }
 
-    public String getUsername()
-    {
-        return username;
-    }
+	public String getUsername()
+	{
+		return username;
+	}
 
-    public void setUsername(String username)
-    {
-        this.username = username;
-    }
+	public void setUsername(String username)
+	{
+		this.username = username;
+	}
 
+	public int getCurrentPlayers()
+	{
+		return currentPlayers;
+	}
+
+	public void setCurrentPlayers(int currentPlayers)
+	{
+		this.currentPlayers = currentPlayers;
+	}
+
+	public int getMaxPlayers()
+	{
+		return maxPlayers;
+	}
+
+	public void setMaxPlayers(int maxPlayers)
+	{
+		this.maxPlayers = maxPlayers;
+	}
+
+	public State getState()
+	{
+		return state;
+	}
+
+	public void setState(State state)
+	{
+		this.state = state;
+	}
 }

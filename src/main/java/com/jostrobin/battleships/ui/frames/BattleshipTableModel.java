@@ -5,7 +5,7 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import com.jostrobin.battleships.data.ServerInformation;
-import com.jostrobin.battleships.service.network.rmi.GameState;
+import com.jostrobin.battleships.session.ApplicationState;
 
 public class BattleshipTableModel extends AbstractTableModel
 {
@@ -35,7 +35,7 @@ public class BattleshipTableModel extends AbstractTableModel
     public Object getValueAt(int rowIndex, int columnIndex)
     {
         ServerInformation info = servers.get(rowIndex);
-        GameState state = info.getState();
+        ApplicationState state = info.getState();
         if (columnIndex == 0)
         {
             return state.getUsername();

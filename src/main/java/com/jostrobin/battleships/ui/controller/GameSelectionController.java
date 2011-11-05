@@ -25,12 +25,12 @@ import java.util.List;
 
 import com.jostrobin.battleships.data.ServerInformation;
 import com.jostrobin.battleships.service.network.rmi.ApplicationInterface;
-import com.jostrobin.battleships.service.network.rmi.GameState;
 import com.jostrobin.battleships.service.network.rmi.RmiManager;
 import com.jostrobin.battleships.service.network.rmi.chat.Chat;
 import com.jostrobin.battleships.service.network.rmi.chat.server.ChatImpl;
 import com.jostrobin.battleships.service.network.rmi.chat.server.ServerDetectionListener;
 import com.jostrobin.battleships.service.network.rmi.chat.server.ServerDetectionManager;
+import com.jostrobin.battleships.session.ApplicationState;
 import com.jostrobin.battleships.ui.frames.CreateGameFrame;
 import com.jostrobin.battleships.ui.frames.GameSelectionFrame;
 import org.slf4j.Logger;
@@ -81,17 +81,18 @@ public class GameSelectionController implements ServerDetectionListener
         		if (server.getAddress().equals(address))
         		{
                     // update existing information
-        			GameState state = server.getApplicationInterface().getGameState();
+        			ApplicationState state = server.getApplicationInterface().getApplicationState();
                     server.setState(state);
                     serverExists = true;
         		}
         	}
         	
+        	// create a new server object
         	if (!serverExists)
         	{
                 Registry registry = LocateRegistry.getRegistry(address.getHostName());
                 applicationInterface = (ApplicationInterface) registry.lookup("ApplicationInterface");
-                GameState state = applicationInterface.getGameState();
+                ApplicationState state = applicationInterface.getApplicationState();
 
                 ServerInformation newServer = new ServerInformation(address, state, applicationInterface);
                 servers.add(newServer);
@@ -154,7 +155,7 @@ public class GameSelectionController implements ServerDetectionListener
 			if (server.getAddress().equals(address))
 			{
 				ApplicationInterface applicationInterface = server.getApplicationInterface();
-				GameState state = applicationInterface.getGameState();
+				ApplicationState state = applicationInterface.getApplicationState();
 				server.setState(state);
 			}
 		}

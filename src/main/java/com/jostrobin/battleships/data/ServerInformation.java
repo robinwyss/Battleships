@@ -3,13 +3,13 @@ package com.jostrobin.battleships.data;
 import java.net.InetAddress;
 
 import com.jostrobin.battleships.service.network.rmi.ApplicationInterface;
-import com.jostrobin.battleships.service.network.rmi.GameState;
+import com.jostrobin.battleships.session.ApplicationState;
 
 public class ServerInformation
 {
     private InetAddress address;
 
-    private GameState state;
+    private ApplicationState state;
     
     private ApplicationInterface applicationInterface;
 
@@ -17,7 +17,7 @@ public class ServerInformation
     {
     }
 
-    public ServerInformation(InetAddress address, GameState state, ApplicationInterface applicationInterface)
+    public ServerInformation(InetAddress address, ApplicationState state, ApplicationInterface applicationInterface)
     {
         this.address = address;
         this.state = state;
@@ -34,12 +34,12 @@ public class ServerInformation
         this.address = address;
     }
 
-    public GameState getState()
+    public ApplicationState getState()
     {
         return state;
     }
 
-    public void setState(GameState state)
+    public void setState(ApplicationState state)
     {
         this.state = state;
     }

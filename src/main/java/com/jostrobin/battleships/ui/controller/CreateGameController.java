@@ -1,7 +1,9 @@
 package com.jostrobin.battleships.ui.controller;
 
-import com.jostrobin.battleships.service.network.rmi.GameState;
 import com.jostrobin.battleships.service.network.rmi.chat.server.ServerDetectionManager;
+import com.jostrobin.battleships.session.ApplicationState;
+
+import enumerations.State;
 
 public class CreateGameController
 {
@@ -14,8 +16,8 @@ public class CreateGameController
 	
 	public void createGame()
 	{
-		GameState state = GameState.getInstance();
-		state.setState("waiting for players");
+		ApplicationState state = ApplicationState.getInstance();
+		state.setState(State.WAITING_FOR_PLAYERS);
 		serverDetectionManager.broadcastUpdate();
 	}
 }

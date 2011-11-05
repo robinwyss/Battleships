@@ -13,11 +13,9 @@ public class DefaultApplicationInterface implements ApplicationInterface, Serial
     private static final Logger logger = LoggerFactory.getLogger(DefaultApplicationInterface.class);
 
     @Override
-    public GameState getGameState()
+    public ApplicationState getApplicationState()
     {
         ApplicationState state = ApplicationState.getInstance();
-        GameState gameState = GameState.getInstance();
-        gameState.setUsername(state.getUsername());
-        return gameState;
+        return state;
     }
 }

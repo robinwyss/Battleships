@@ -50,7 +50,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import com.jostrobin.battleships.service.network.rmi.chat.Chat;
 import com.jostrobin.battleships.service.network.rmi.chat.server.ChatImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
