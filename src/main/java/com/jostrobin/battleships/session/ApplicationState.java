@@ -2,7 +2,9 @@ package com.jostrobin.battleships.session;
 
 import java.io.Serializable;
 
+import com.jostrobin.battleships.data.GameSettings;
 import com.jostrobin.battleships.enumerations.State;
+import com.jostrobin.battleships.service.network.detection.ServerDetectionManager;
 
 
 public class ApplicationState implements Serializable
@@ -13,13 +15,13 @@ public class ApplicationState implements Serializable
 	
 	private String username;
 	
-	private int currentPlayers;
-	
-	private int maxPlayers;
-	
 	private State state = State.NEW;
 	
 	private boolean debug;
+	
+	private GameSettings settings;
+	
+	private transient ServerDetectionManager serverDetectionManager;
 
     private ApplicationState()
     {
@@ -40,26 +42,6 @@ public class ApplicationState implements Serializable
 		this.username = username;
 	}
 
-	public int getCurrentPlayers()
-	{
-		return currentPlayers;
-	}
-
-	public void setCurrentPlayers(int currentPlayers)
-	{
-		this.currentPlayers = currentPlayers;
-	}
-
-	public int getMaxPlayers()
-	{
-		return maxPlayers;
-	}
-
-	public void setMaxPlayers(int maxPlayers)
-	{
-		this.maxPlayers = maxPlayers;
-	}
-
 	public State getState()
 	{
 		return state;
@@ -78,5 +60,26 @@ public class ApplicationState implements Serializable
 	public void setDebug(boolean debug)
 	{
 		this.debug = debug;
+	}
+
+	public GameSettings getSettings()
+	{
+		return settings;
+	}
+
+	public void setSettings(GameSettings settings)
+	{
+		this.settings = settings;
+	}
+
+	public ServerDetectionManager getServerDetectionManager()
+	{
+		return serverDetectionManager;
+	}
+
+	public void setServerDetectionManager(
+			ServerDetectionManager serverDetectionManager)
+	{
+		this.serverDetectionManager = serverDetectionManager;
 	}
 }

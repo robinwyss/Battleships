@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import com.jostrobin.battleships.data.GameSettings;
 import com.jostrobin.battleships.enumerations.GameMode;
 import com.jostrobin.battleships.ui.components.ComboBoxItem;
 import com.jostrobin.battleships.ui.controller.CreateGameController;
@@ -171,7 +172,14 @@ public class CreateGameFrame extends JFrame implements ActionListener
 	    	GameMode mode = (GameMode) item.getKey();
 			if (mode == GameMode.CLASSIC)
 			{
-				controller.createGame();
+				GameSettings settings = new GameSettings();
+				settings.setMode(mode);
+				settings.setCanMove(false);
+				settings.setFieldHeight(10);
+				settings.setFieldWidth(10);
+				settings.setNumberOfPlayers(2);
+				
+				controller.createGame(settings);
 			}
 			else
 			{

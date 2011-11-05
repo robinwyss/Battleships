@@ -119,12 +119,12 @@ public class ServerDetectionManager implements Runnable
                         {
                             LOG.debug("received 'are you there' call from a client.", address);
                             answer(address);
-                        }
-                        
-                        // if the other is a new player, we want to refresh our list too
-                        if (message.equals(VERSION + ARE_YOU_THERE + I_AM_NEW))
-                        {
-                        	broadcastFindGames(false);
+
+                            // if the other is a new player, we want to refresh our list too
+                            if (message.equals(VERSION + ARE_YOU_THERE + I_AM_NEW))
+                            {
+                            	broadcastFindGames(false);
+                            }
                         }
                     }
                     // we were looking for servers and found one

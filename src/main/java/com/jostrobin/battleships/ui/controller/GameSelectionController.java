@@ -23,10 +23,14 @@ import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jostrobin.battleships.data.GameSettings;
 import com.jostrobin.battleships.data.ServerInformation;
+import com.jostrobin.battleships.exception.BattleshipServiceException;
 import com.jostrobin.battleships.service.network.detection.ServerDetectionListener;
 import com.jostrobin.battleships.service.network.detection.ServerDetectionManager;
 import com.jostrobin.battleships.service.network.rmi.ApplicationInterface;
@@ -53,7 +57,10 @@ public class GameSelectionController implements ServerDetectionListener
         listeners.add(this);
 
         serverDetectionManager = new ServerDetectionManager(listeners);
-
+        
+        ApplicationState state = ApplicationState.getInstance();
+        state.setServerDetectionManager(serverDetectionManager);
+        
         Thread thread = new Thread(serverDetectionManager);
         thread.start();
     }
@@ -121,16 +128,29 @@ public class GameSelectionController implements ServerDetectionListener
     	InetAddress address = server.getAddress();
         try
         {
-            Registry registry = LocateRegistry.getRegistry(address.getHostName());
-            Chat chatClient = (Chat) registry.lookup("Chat");
-            ApplicationInterface appInterface = server.getApplicationInterface();
-
-            RmiManager rmiManager = RmiManager.getInstance();
-            GameController gameController = new GameController(chatClient, appInterface);
-            gameController.showFrame();
-            
-            DefaultChatServer chatServer = rmiManager.getChat();
-            chatServer.addListener(gameController.getChatListener());
+        	ApplicationInterface applicationInterface = server.getApplicationInterface();
+        	GameSettings settings = applicationInterface.joinGame();
+        	if (settings == null)
+        	{
+        		JOptionPane.showMessageDialog(null, "Could not join game.", "Error", JOptionPane.ERROR_MESSAGE);
+        	}
+        	else
+        	{
+        		ApplicationState state = ApplicationState.getInstance();
+        		state.setSettings(settings);
+        		
+	            Registry registry = LocateRegistry.getRegistry(address.getHostName());
+	            Chat chatClient = (Chat) registry.lookup("Chat");
+	
+	            // connect our gui to the rmi objects
+	            RmiManager rmiManager = RmiManager.getInstance();
+	            GameController gameController = new GameController(chatClient, applicationInterface);
+	            gameController.showFrame();
+	            
+	            // forward our input to the other client
+	            DefaultChatServer chatServer = rmiManager.getChat();
+	            chatServer.addListener(gameController.getChatListener());
+        	}
         }
         catch (RemoteException e)
         {
@@ -155,9 +175,16 @@ public class GameSelectionController implements ServerDetectionListener
 		{
 			if (server.getAddress().equals(address))
 			{
-				ApplicationInterface applicationInterface = server.getApplicationInterface();
-				ApplicationState state = applicationInterface.getApplicationState();
-				server.setState(state);
+				try
+				{
+					ApplicationInterface applicationInterface = server.getApplicationInterface();
+					ApplicationState state = applicationInterface.getApplicationState();
+					server.setState(state);
+				}
+				catch (RemoteException e)
+				{
+					throw new BattleshipServiceException("could not get state", e);
+				}
 			}
 		}
 		gameSelectionFrame.setServers(servers);

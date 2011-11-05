@@ -2,9 +2,12 @@ package com.jostrobin.battleships.ui.frames;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.table.AbstractTableModel;
 
+import com.jostrobin.battleships.data.GameSettings;
 import com.jostrobin.battleships.data.ServerInformation;
+import com.jostrobin.battleships.enumerations.State;
 import com.jostrobin.battleships.session.ApplicationState;
 
 public class BattleshipTableModel extends AbstractTableModel
@@ -36,9 +39,22 @@ public class BattleshipTableModel extends AbstractTableModel
     {
         ServerInformation info = servers.get(rowIndex);
         ApplicationState state = info.getState();
+        State gameState = info.getState().getState();
         if (columnIndex == 0)
         {
             return state.getUsername();
+        }
+        else if (columnIndex == 2)
+        {
+        	if (gameState == State.WAITING_FOR_PLAYERS || gameState == State.RUNNING)
+        	{
+        		GameSettings settings = state.getSettings();
+        		return settings.getCurrentNumberOfPlayers() + " / " + settings.getNumberOfPlayers();
+        	}
+        	else
+        	{
+        		return "";
+        	}
         }
         else if (columnIndex == 3)
         {
