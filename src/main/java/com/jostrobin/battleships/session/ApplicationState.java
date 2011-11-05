@@ -2,7 +2,8 @@ package com.jostrobin.battleships.session;
 
 import java.io.Serializable;
 
-import enumerations.State;
+import com.jostrobin.battleships.enumerations.State;
+
 
 public class ApplicationState implements Serializable
 {

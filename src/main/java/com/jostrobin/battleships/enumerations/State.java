@@ -1,4 +1,4 @@
-package enumerations;
+package com.jostrobin.battleships.enumerations;
 
 public enum State
 {

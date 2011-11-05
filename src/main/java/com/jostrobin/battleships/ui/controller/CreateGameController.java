@@ -1,9 +1,9 @@
 package com.jostrobin.battleships.ui.controller;
 
+import com.jostrobin.battleships.enumerations.State;
 import com.jostrobin.battleships.service.network.rmi.chat.server.ServerDetectionManager;
 import com.jostrobin.battleships.session.ApplicationState;
 
-import enumerations.State;
 
 public class CreateGameController
 {
