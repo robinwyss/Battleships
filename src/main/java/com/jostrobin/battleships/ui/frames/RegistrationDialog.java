@@ -30,16 +30,24 @@
 
 package com.jostrobin.battleships.ui.frames;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import javax.swing.*;
 
-import com.jostrobin.battleships.ui.controller.RegistrationController;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.jostrobin.battleships.ui.controller.RegistrationController;
 
 /**
  * @author rowyss
@@ -47,7 +55,9 @@ import org.slf4j.LoggerFactory;
  */
 public class RegistrationDialog extends JDialog implements ActionListener, KeyListener
 {
-    private static final Logger LOG = LoggerFactory.getLogger(RegistrationDialog.class);
+	private static final long serialVersionUID = 1L;
+
+	private static final Logger LOG = LoggerFactory.getLogger(RegistrationDialog.class);
 
     private JLabel messageLabel;
     private JPanel panel;

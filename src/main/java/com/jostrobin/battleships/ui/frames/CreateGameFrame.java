@@ -153,16 +153,6 @@ public class CreateGameFrame extends JFrame implements ActionListener
     	}
     }
 
-    private GridBagConstraints createConstraint(int gridx, int gridy, int width, int height)
-    {
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = gridx;
-        c.gridy = gridy;
-        c.gridwidth = width;
-        c.gridheight = height;
-        return c;
-    }
-
     private GridBagConstraints createConstraint(int gridx, int gridy)
     {
         GridBagConstraints c = new GridBagConstraints();

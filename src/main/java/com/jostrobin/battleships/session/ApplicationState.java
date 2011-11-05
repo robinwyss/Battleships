@@ -18,6 +18,8 @@ public class ApplicationState implements Serializable
 	private int maxPlayers;
 	
 	private State state = State.NEW;
+	
+	private boolean debug;
 
     private ApplicationState()
     {
@@ -66,5 +68,15 @@ public class ApplicationState implements Serializable
 	public void setState(State state)
 	{
 		this.state = state;
+	}
+
+	public boolean isDebug()
+	{
+		return debug;
+	}
+
+	public void setDebug(boolean debug)
+	{
+		this.debug = debug;
 	}
 }

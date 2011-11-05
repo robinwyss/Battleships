@@ -1,5 +1,8 @@
 package com.jostrobin.battleships.ui.controller;
 
+import com.jostrobin.battleships.service.network.rmi.RmiManager;
+import com.jostrobin.battleships.session.ApplicationState;
+import com.jostrobin.battleships.ui.frames.GameSelectionFrame;
 import com.jostrobin.battleships.ui.frames.RegistrationDialog;
 
 /**
@@ -8,7 +11,6 @@ import com.jostrobin.battleships.ui.frames.RegistrationDialog;
  */
 public class RegistrationController
 {
-
     RegistrationDialog dialog;
 
     public void showRegistrationDialog()
@@ -25,6 +27,22 @@ public class RegistrationController
         else
         {
             dialog.dispose();
+            
+            ApplicationState state = ApplicationState.getInstance();
+            state.setUsername(username);
+
+            // prepare rmi things
+	        RmiManager rmiManager = RmiManager.getInstance();
+	        rmiManager.startupRmiServices();
+
+	        // show the next frame
+	        GameSelectionController gameSelectionController = new GameSelectionController();
+	        GameSelectionFrame f = new GameSelectionFrame(gameSelectionController);
+	        gameSelectionController.setGameSelectionFrame(f);
+	        f.setVisible(true);
+
+	        // try to find games
+	        gameSelectionController.refresh(true);
         }
     }
 

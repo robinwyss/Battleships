@@ -1,15 +1,21 @@
 package com.jostrobin.battleships.service.network.detection;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.InterfaceAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 
-import com.jostrobin.battleships.exception.BattleshipServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.jostrobin.battleships.exception.BattleshipServiceException;
 
 /**
  * The UDP server dealing with all the incoming network packets in the process of finding the servers in the network.
@@ -42,6 +48,8 @@ public class ServerDetectionManager implements Runnable
     private static final String YES_I_AM = "yesiam";
     
     private static final String UPDATE_NOTIFICATION = "gotsomeupdate";
+    
+    private static final String I_AM_NEW = "iamnew";
 
     private DatagramSocket socket;
 
@@ -104,13 +112,19 @@ public class ServerDetectionManager implements Runnable
                     }
                     
                     // someone is looking for servers, answer him
-                    if (message.equals(VERSION + ARE_YOU_THERE))
+                    if (message.startsWith(VERSION + ARE_YOU_THERE))
                     {
                         // it's not our own broadcast
                         if (isForeign)
                         {
                             LOG.debug("received 'are you there' call from a client.", address);
                             answer(address);
+                        }
+                        
+                        // if the other is a new player, we want to refresh our list too
+                        if (message.equals(VERSION + ARE_YOU_THERE + I_AM_NEW))
+                        {
+                        	broadcastFindGames(false);
                         }
                     }
                     // we were looking for servers and found one
@@ -181,14 +195,15 @@ public class ServerDetectionManager implements Runnable
 
     /**
      * Sends a broadcast to all the nodes in the network to find other games.
+     * @param firstBroadcast If firstBroadcast is true, we tell the others that we are new.
      */
-    public void sendBroadcast()
+    public void broadcastFindGames(boolean firstBroadcast)
     {
-        String message = VERSION + ARE_YOU_THERE;
-        broadcast(message);
+        String message = VERSION + ARE_YOU_THERE + ((firstBroadcast) ? I_AM_NEW : "");
+        broadcastMessage(message);
     }
     
-    public void broadcast(String message)
+    private void broadcastMessage(String message)
     {
         byte[] buffer = new byte[BUFFER_SIZE];
         // send UDP packets to all the possible server nodes
@@ -236,6 +251,6 @@ public class ServerDetectionManager implements Runnable
     public void broadcastUpdate()
     {
         String message = VERSION + UPDATE_NOTIFICATION;
-        broadcast(message);
+        broadcastMessage(message);
     }
 }

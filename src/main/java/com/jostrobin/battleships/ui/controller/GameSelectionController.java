@@ -23,6 +23,9 @@ import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.jostrobin.battleships.data.ServerInformation;
 import com.jostrobin.battleships.service.network.detection.ServerDetectionListener;
 import com.jostrobin.battleships.service.network.detection.ServerDetectionManager;
@@ -33,8 +36,6 @@ import com.jostrobin.battleships.service.network.rmi.chat.server.DefaultChatServ
 import com.jostrobin.battleships.session.ApplicationState;
 import com.jostrobin.battleships.ui.frames.CreateGameFrame;
 import com.jostrobin.battleships.ui.frames.GameSelectionFrame;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class GameSelectionController implements ServerDetectionListener
 {
@@ -57,10 +58,10 @@ public class GameSelectionController implements ServerDetectionListener
         thread.start();
     }
 
-    public void refresh()
+    public void refresh(boolean firstBroadcast)
     {
     	gameSelectionFrame.resetServerList();
-        serverDetectionManager.sendBroadcast();
+        serverDetectionManager.broadcastFindGames(firstBroadcast);
     }
 
     public void exit()
