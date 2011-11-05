@@ -50,7 +50,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import com.jostrobin.battleships.service.network.rmi.chat.server.ChatImpl;
+import com.jostrobin.battleships.service.network.rmi.chat.server.DefaultChatServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,13 +64,13 @@ public class RmiManager
     
     private static final RmiManager rmiManager = new RmiManager();
     
-    private ChatImpl chat;
+    private DefaultChatServer chat;
     
     private RmiManager()
     {
     	try
 		{
-			chat = new ChatImpl();
+			chat = new DefaultChatServer();
 		}
     	catch (RemoteException e)
 		{
@@ -100,7 +100,7 @@ public class RmiManager
         }
     }
     
-    public ChatImpl getChat()
+    public DefaultChatServer getChat()
     {
     	return chat;
     }

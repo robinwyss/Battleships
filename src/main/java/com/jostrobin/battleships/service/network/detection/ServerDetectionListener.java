@@ -1,4 +1,4 @@
-package com.jostrobin.battleships.service.network.rmi.chat.server;
+package com.jostrobin.battleships.service.network.detection;
 
 import java.net.InetAddress;
 
