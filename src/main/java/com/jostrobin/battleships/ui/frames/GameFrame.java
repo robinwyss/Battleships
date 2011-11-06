@@ -19,8 +19,9 @@ import java.awt.*;
 import javax.swing.*;
 
 import com.jostrobin.battleships.ui.controller.ChatController;
+import com.jostrobin.battleships.ui.panels.BattleFieldPanel;
 import com.jostrobin.battleships.ui.panels.ChatPanel;
-import com.jostrobin.battleships.ui.panels.GamePanel;
+import com.jostrobin.battleships.ui.panels.PlacementPanel;
 
 /**
  * @author rowyss
@@ -29,6 +30,8 @@ import com.jostrobin.battleships.ui.panels.GamePanel;
 public class GameFrame extends JFrame
 {
     private int y;
+    private BattleFieldPanel gamePanel;
+    private PlacementPanel placementPanel;
 
     public GameFrame() throws HeadlessException
     {
@@ -39,15 +42,25 @@ public class GameFrame extends JFrame
     {
         setLayout(new GridBagLayout());
 
-        GamePanel gamePanel = new GamePanel();
+        gamePanel = new BattleFieldPanel();
         GridBagConstraints battlefieldConstraints = new GridBagConstraints();
         battlefieldConstraints.weightx = 1.0;
         battlefieldConstraints.weighty = 0.8;
-        battlefieldConstraints.gridy = y++;
+        battlefieldConstraints.gridy = y;
         battlefieldConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
         battlefieldConstraints.fill = GridBagConstraints.BOTH;
         add(gamePanel, battlefieldConstraints);
+        gamePanel.setVisible(false);
 
+        placementPanel = new PlacementPanel();
+        GridBagConstraints placementPanelConstraints = new GridBagConstraints();
+        placementPanelConstraints.weightx = 1.0;
+        placementPanelConstraints.weighty = 0.8;
+        placementPanelConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
+        placementPanelConstraints.fill = GridBagConstraints.BOTH;
+        placementPanelConstraints.gridy = y++;
+        add(placementPanel, placementPanelConstraints);
+        placementPanel.setVisible(true);
 
         setVisible(true);
         setSize(600, 600);
@@ -57,12 +70,24 @@ public class GameFrame extends JFrame
     {
         ChatPanel chatPanel = new ChatPanel(chatController);
         GridBagConstraints chatPanelConstraints = new GridBagConstraints();
-        chatPanelConstraints.gridy = y++;
+        chatPanelConstraints.gridy = 1;
         chatPanelConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
         chatPanelConstraints.fill = GridBagConstraints.BOTH;
         chatPanelConstraints.weightx = 1.0;
         chatPanelConstraints.weighty = 0.2;
         add(chatPanel, chatPanelConstraints);
+    }
+
+    public void showGameWindow()
+    {
+        gamePanel.setVisible(true);
+        placementPanel.setVisible(false);
+    }
+
+    public void showPlacementWindow()
+    {
+        gamePanel.setVisible(false);
+        placementPanel.setVisible(true);
     }
 
 }

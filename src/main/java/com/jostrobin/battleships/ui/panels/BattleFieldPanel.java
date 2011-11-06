@@ -21,6 +21,8 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import com.jostrobin.battleships.ui.components.CellComponent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author rowyss
@@ -29,11 +31,12 @@ import com.jostrobin.battleships.ui.components.CellComponent;
 public class BattleFieldPanel extends JPanel implements ActionListener
 {
     private int size = 10;
+    public static final Logger LOG = LoggerFactory.getLogger(BattleFieldPanel.class);
 
     public BattleFieldPanel()
     {
-        GridLayout layout = new GridLayout(size, size);
-        setLayout(layout);
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new GridLayout(size, size));
 
         for (int x = 0; x < size; x++)
         {
@@ -41,14 +44,19 @@ public class BattleFieldPanel extends JPanel implements ActionListener
             {
                 CellComponent cell = new CellComponent(x, y);
                 cell.addActionListener(this);
-                add(new CellComponent(x, y));
+                contentPanel.add(cell);
             }
         }
+        contentPanel.setPreferredSize(new Dimension(size * 25, size * 25));
+
+        setLayout(new FlowLayout());
+        add(contentPanel);
     }
 
     @Override
     public void actionPerformed(ActionEvent actionEvent)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        CellComponent cell = (CellComponent) actionEvent.getSource();
+        LOG.debug("user clicked on cell {} {}", cell.getBoardX(), cell.getBoardY());
     }
 }

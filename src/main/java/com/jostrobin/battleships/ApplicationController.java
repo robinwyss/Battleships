@@ -1,13 +1,13 @@
 package com.jostrobin.battleships;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.jostrobin.battleships.service.network.rmi.RmiManager;
 import com.jostrobin.battleships.session.ApplicationState;
 import com.jostrobin.battleships.ui.controller.GameSelectionController;
 import com.jostrobin.battleships.ui.controller.RegistrationController;
+import com.jostrobin.battleships.ui.frames.GameFrame;
 import com.jostrobin.battleships.ui.frames.GameSelectionFrame;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This is the entry point of the application.
@@ -17,42 +17,44 @@ import com.jostrobin.battleships.ui.frames.GameSelectionFrame;
  */
 public class ApplicationController
 {
-	private static final Logger logger = LoggerFactory.getLogger(ApplicationController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ApplicationController.class);
 
     public static void main(String... args)
     {
-		ApplicationState state = ApplicationState.getInstance();
-    	for (String arg : args)
-    	{
-    		if (arg != null && (arg.equals("debug") || arg.equals("-debug") || arg.equals("-Ddebug")))
-    		{
-    			state.setDebug(true);
-    		}
-    	}
-    	if (!state.isDebug())
-    	{
-    		logger.debug("Starting application in production mode");
-	        new RegistrationController().showRegistrationDialog();
-    	}
-    	else
-    	{
-			logger.debug("Starting application in debug mode");
+        ApplicationState state = ApplicationState.getInstance();
+        for (String arg : args)
+        {
+            if (arg != null && (arg.equals("debug") || arg.equals("-debug") || arg.equals("-Ddebug")))
+            {
+                state.setDebug(true);
+            }
+        }
+        if (!state.isDebug())
+        {
+            logger.debug("Starting application in production mode");
+            new RegistrationController().showRegistrationDialog();
+        }
+        else
+        {
+            logger.debug("Starting application in debug mode");
 
-	        // thread rmi
-	        RmiManager rmiManager = RmiManager.getInstance();
-	        rmiManager.startupRmiServices();
+            // thread rmi
+            RmiManager rmiManager = RmiManager.getInstance();
+            rmiManager.startupRmiServices();
 
-	        // thread broadcast
+            // thread broadcast
 
-	        // gui
+            // gui
 
-	        new RegistrationController().showRegistrationDialog();
+            new GameFrame();
 
-	        GameSelectionController gameSelectionController = new GameSelectionController();
-	        GameSelectionFrame f = new GameSelectionFrame(gameSelectionController);
-	        gameSelectionController.setGameSelectionFrame(f);
-	        f.setVisible(true);
-    	}
+            new RegistrationController().showRegistrationDialog();
+
+            GameSelectionController gameSelectionController = new GameSelectionController();
+            GameSelectionFrame f = new GameSelectionFrame(gameSelectionController);
+            gameSelectionController.setGameSelectionFrame(f);
+            f.setVisible(true);
+        }
 
     }
 

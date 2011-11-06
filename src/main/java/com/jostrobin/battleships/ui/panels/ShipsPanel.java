@@ -18,38 +18,33 @@ package com.jostrobin.battleships.ui.panels;
 import java.awt.*;
 import javax.swing.*;
 
-import com.jostrobin.battleships.ui.components.BattleFieldComponent;
-
 /**
  * @author rowyss
- *         Date: 02.11.11 Time: 18:08
+ *         Date: 05.11.11 Time: 18:52
  */
-public class GamePanel extends JPanel
+public class ShipsPanel extends JPanel
 {
-    private BattleFieldComponent battleFieldComponent;
+    private JButton rotateLeftButton;
+    private JButton rotateRightButton;
+    private int y;
 
-    public GamePanel()
+    public ShipsPanel()
     {
-        initUI();
+        initUi();
     }
 
-    private void initUI()
+    private void initUi()
     {
         setLayout(new GridBagLayout());
+        rotateLeftButton = new JButton("Rotate left");
+        GridBagConstraints leftButtonConstraints = new GridBagConstraints();
+        leftButtonConstraints.gridy = y;
+        add(rotateLeftButton, leftButtonConstraints);
 
-        addGameComponent();
-
-        this.setVisible(true);
-    }
-
-    private void addGameComponent()
-    {
-        battleFieldComponent = new BattleFieldComponent();
-        GridBagConstraints gameConstraints = new GridBagConstraints();
-        gameConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
-        gameConstraints.fill = GridBagConstraints.BOTH;
-        gameConstraints.weightx = 1.0;
-        gameConstraints.weighty = 1.0;
-        add(battleFieldComponent, gameConstraints);
+        rotateRightButton = new JButton("Rotate right");
+        GridBagConstraints rightButtonConstraints = new GridBagConstraints();
+        rightButtonConstraints.gridy = y++;
+        rightButtonConstraints.gridx = 1;
+        add(rotateRightButton, rightButtonConstraints);
     }
 }

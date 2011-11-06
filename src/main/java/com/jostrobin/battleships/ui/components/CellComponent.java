@@ -20,7 +20,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 
 /**
@@ -33,13 +34,17 @@ public class CellComponent extends JComponent
     private int cellSize = 25;
     private boolean hover;
     private Color grey = new Color(127, 127, 127, 64);
-    private int x, y;
-    private ActionListener actionListener;
+    private int boardX;
+    private int boardY;
+    private List<ActionListener> actionListeners = new ArrayList<ActionListener>();
 
-    public CellComponent(int x, int y)
+    public CellComponent(int boardX, int boardY)
     {
-        this.x = x;
-        this.y = y;
+        this.boardX = boardX;
+        this.boardY = boardY;
+        BattleFieldMouseAdapter mouseAdapter = new BattleFieldMouseAdapter();
+        addMouseListener(mouseAdapter);
+        addMouseMotionListener(mouseAdapter);
     }
 
     @Override
@@ -55,21 +60,46 @@ public class CellComponent extends JComponent
 
     public void addActionListener(ActionListener actionListener)
     {
-        this.actionListener = actionListener;
+        actionListeners.add(actionListener);
     }
+
+    public int getBoardX()
+    {
+        return boardX;
+    }
+
+    public void setBoardX(int boardX)
+    {
+        this.boardX = boardX;
+    }
+
+    public int getBoardY()
+    {
+        return boardY;
+    }
+
+    public void setBoardY(int boardY)
+    {
+        this.boardY = boardY;
+    }
+
 
     private class BattleFieldMouseAdapter extends MouseAdapter
     {
         @Override
         public void mouseExited(MouseEvent mouseEvent)
         {
-            hover = true;
+            hover = false;
+            repaint();
         }
 
         @Override
         public void mouseClicked(MouseEvent mouseEvent)
         {
-            actionListener.actionPerformed(new ActionEvent(this, UUID.randomUUID().clockSequence(), "cellClicked"));
+            for (ActionListener actionListener : actionListeners)
+            {
+                actionListener.actionPerformed(new ActionEvent(CellComponent.this, mouseEvent.hashCode(), "cellClicked"));
+            }
         }
 
 
