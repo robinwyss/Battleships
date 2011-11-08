@@ -20,42 +20,157 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
+
+import com.jostrobin.battleships.data.Cell;
+import com.jostrobin.battleships.data.Ship;
+import com.jostrobin.battleships.data.enums.CellType;
 
 /**
  * @author rowyss
  *         Date: 04.11.11 Time: 17:06
  */
-public class CellComponent extends JComponent
+public class CellComponent extends JComponent implements Cell
 {
 
-    private int cellSize = 25;
+    public static final int CELL_SIZE = 25;
     private boolean hover;
     private Color grey = new Color(127, 127, 127, 64);
-    private int x, y;
-    private ActionListener actionListener;
+    private List<ActionListener> actionListeners = new ArrayList<ActionListener>();
+    private boolean highlight = true;
+    private int boardX;
+    private int boardY;
+    private boolean selected;
+    private boolean hit;
+    private CellType type = CellType.WATER;
+    private Ship ship;
 
-    public CellComponent(int x, int y)
+
+    public CellComponent(int boardX, int boardY)
     {
-        this.x = x;
-        this.y = y;
+        this.boardX = boardX;
+        this.boardY = boardY;
+        BattleFieldMouseAdapter mouseAdapter = new BattleFieldMouseAdapter();
+        addMouseListener(mouseAdapter);
+        addMouseMotionListener(mouseAdapter);
     }
 
     @Override
     public void paint(Graphics graphics)
     {
-        graphics.drawRect(0, 0, cellSize, cellSize);
+        drawBackground(graphics);
+
         if (hover)
         {
             graphics.setColor(grey);
-            graphics.fillRect(0, 0, cellSize, cellSize);
+            graphics.fillRect(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
         }
+        if (hit)
+        {
+            graphics.drawLine(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
+            graphics.drawLine(1, CELL_SIZE - 1, CELL_SIZE - 1, 1);
+        }
+        if (selected)
+        {
+            graphics.setColor(new Color(255, 255, 128, 128));
+            graphics.fillRect(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
+        }
+//        graphics.setColor(Color.BLACK);
+//        graphics.drawRect(0, 0, CELL_SIZE - 1, CELL_SIZE - 1);
+    }
+
+    private void drawBackground(Graphics graphics)
+    {
+        if (CellType.SHIP.equals(type))
+        {
+            graphics.setColor(Color.GRAY);
+
+        }
+        else
+        {
+            graphics.setColor(Color.BLUE);
+        }
+        graphics.fillRect(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
     }
 
     public void addActionListener(ActionListener actionListener)
     {
-        this.actionListener = actionListener;
+        actionListeners.add(actionListener);
+    }
+
+    public int getBoardX()
+    {
+        return boardX;
+    }
+
+    public void setBoardX(int boardX)
+    {
+        this.boardX = boardX;
+    }
+
+    public int getBoardY()
+    {
+        return boardY;
+    }
+
+    public void setBoardY(int boardY)
+    {
+        this.boardY = boardY;
+    }
+
+    public boolean isHighlight()
+    {
+        return highlight;
+    }
+
+    public void setHighlight(boolean highlight)
+    {
+        this.highlight = highlight;
+    }
+
+    public CellType getType()
+    {
+        return type;
+    }
+
+    public void setType(CellType type)
+    {
+        this.type = type;
+    }
+
+    public boolean isHit()
+    {
+        return hit;
+    }
+
+    public void setHit(boolean hit)
+    {
+        this.hit = hit;
+        repaint();
+    }
+
+    public Ship getShip()
+    {
+        return ship;
+    }
+
+    public void setShip(Ship ship)
+    {
+        this.ship = ship;
+        type = CellType.SHIP;
+    }
+
+    public boolean isSelected()
+    {
+        return selected;
+    }
+
+    public void setSelected(boolean selected)
+    {
+        this.selected = selected;
+        repaint();
     }
 
     private class BattleFieldMouseAdapter extends MouseAdapter
@@ -63,21 +178,31 @@ public class CellComponent extends JComponent
         @Override
         public void mouseExited(MouseEvent mouseEvent)
         {
-            hover = true;
+            if (highlight)
+            {
+                hover = false;
+                repaint();
+            }
         }
 
         @Override
         public void mouseClicked(MouseEvent mouseEvent)
         {
-            actionListener.actionPerformed(new ActionEvent(this, UUID.randomUUID().clockSequence(), "cellClicked"));
+            for (ActionListener actionListener : actionListeners)
+            {
+                actionListener.actionPerformed(new ActionEvent(CellComponent.this, mouseEvent.hashCode(), "cellClicked"));
+            }
         }
 
 
         @Override
         public void mouseEntered(MouseEvent mouseEvent)
         {
-            hover = true;
-            repaint();
+            if (highlight)
+            {
+                hover = true;
+                repaint();
+            }
         }
     }
 

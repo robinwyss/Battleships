@@ -13,37 +13,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.jostrobin.battleships.data;
-
-import com.jostrobin.battleships.data.enums.CellType;
+package com.jostrobin.battleships.ui.listeners;
 
 /**
  * @author rowyss
- *         Date: 08.11.11 Time: 19:09
+ *         Date: 06.11.11 Time: 20:28
  */
-public interface Cell
+public interface SelectionListener<T>
 {
-    int getBoardX();
-
-    void setBoardX(int boardX);
-
-    int getBoardY();
-
-    void setBoardY(int boardY);
-
-    boolean isHit();
-
-    void setHit(boolean hit);
-
-    boolean isSelected();
-
-    void setSelected(boolean selected);
-
-    Ship getShip();
-
-    void setShip(Ship ship);
-
-    CellType getType();
-
-    void setType(CellType type);
+    void selected(T t);
 }

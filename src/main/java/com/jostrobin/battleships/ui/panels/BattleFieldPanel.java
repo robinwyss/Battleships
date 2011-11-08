@@ -18,9 +18,16 @@ package com.jostrobin.battleships.ui.panels;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 
+import com.jostrobin.battleships.data.Cell;
+import com.jostrobin.battleships.data.Ship;
 import com.jostrobin.battleships.ui.components.CellComponent;
+import com.jostrobin.battleships.ui.listeners.SelectionListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author rowyss
@@ -29,26 +36,71 @@ import com.jostrobin.battleships.ui.components.CellComponent;
 public class BattleFieldPanel extends JPanel implements ActionListener
 {
     private int size = 10;
+    public static final Logger LOG = LoggerFactory.getLogger(BattleFieldPanel.class);
+    private List<SelectionListener<Cell>> selectionListeners = new ArrayList<SelectionListener<Cell>>();
+    private final JPanel contentPanel;
+    private List<Cell> cells = new ArrayList<Cell>();
 
     public BattleFieldPanel()
     {
-        GridLayout layout = new GridLayout(size, size);
-        setLayout(layout);
+        contentPanel = new JPanel();
+        contentPanel.setLayout(new GridLayout(size, size));
 
-        for (int x = 0; x < size; x++)
+        for (int y = 0; y < size; y++)
         {
-            for (int y = 0; y < size; y++)
+            for (int x = 0; x < size; x++)
             {
                 CellComponent cell = new CellComponent(x, y);
                 cell.addActionListener(this);
-                add(new CellComponent(x, y));
+                cells.add(cell);
+                contentPanel.add(cell);
             }
         }
+        Dimension dimension = new Dimension(size * CellComponent.CELL_SIZE, size * CellComponent.CELL_SIZE);
+        contentPanel.setPreferredSize(dimension);
+
+        setLayout(new FlowLayout());
+        add(contentPanel);
     }
 
     @Override
     public void actionPerformed(ActionEvent actionEvent)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        Cell cell = (Cell) actionEvent.getSource();
+        LOG.debug("user clicked on cell {} {}", cell.getBoardX(), cell.getBoardY());
+        for (SelectionListener<Cell> selectionListener : selectionListeners)
+        {
+            selectionListener.selected(cell);
+        }
+    }
+
+    public void addSelectionListener(SelectionListener<Cell> selectionListener)
+    {
+        selectionListeners.add(selectionListener);
+    }
+
+    public void placeShip(Ship ship)
+    {
+        // TODO: check positions;
+        int x = ship.getPositionX();
+        int y = ship.getPositionY();
+        for (int i = 0; i < ship.getSize(); i++)
+        {
+            ship.addCell(findCellAt(x, y));
+            x++;
+        }
+        ship.setSelected(false);
+    }
+
+    private Cell findCellAt(int x, int y)
+    {
+        for (Cell cell : cells)
+        {
+            if (cell.getBoardX() == x && cell.getBoardY() == y)
+            {
+                return cell;
+            }
+        }
+        return null;
     }
 }
