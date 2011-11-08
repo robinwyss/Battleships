@@ -16,7 +16,15 @@
 package com.jostrobin.battleships.ui.panels;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
+
+import com.jostrobin.battleships.data.Cell;
+import com.jostrobin.battleships.data.Ship;
+import com.jostrobin.battleships.ui.listeners.SelectionListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author rowyss
@@ -24,25 +32,35 @@ import javax.swing.*;
  */
 public class PlacementPanel extends JPanel
 {
-    private BattleFieldPanel gamePanel;
+    public static final Logger LOG = LoggerFactory.getLogger(PlacementPanel.class);
+    private BattleFieldPanel battleField;
     private ShipsPanel shipsPanel;
     private int y;
+    private List<Ship> ships = new ArrayList<Ship>()
+    {{
+            add(new Ship(2));
+            add(new Ship(3));
+            add(new Ship(4));
+            add(new Ship(1));
+        }};
 
     public PlacementPanel()
     {
         setLayout(new GridBagLayout());
 
-        gamePanel = new BattleFieldPanel();
+        battleField = new BattleFieldPanel();
         GridBagConstraints gamePanelConstraints = new GridBagConstraints();
         gamePanelConstraints.weightx = 0.6;
         gamePanelConstraints.weighty = 1.0;
         gamePanelConstraints.gridy = y;
         gamePanelConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
         gamePanelConstraints.fill = GridBagConstraints.BOTH;
-        gamePanel.setBackground(Color.BLUE);
-        add(gamePanel, gamePanelConstraints);
+//        battleField.setBackground(Color.BLUE);
+        battleField.addSelectionListener(new CellSelectionListener());
+        add(battleField, gamePanelConstraints);
 
         shipsPanel = new ShipsPanel();
+        shipsPanel.addShips(ships);
         GridBagConstraints shipsPanelConstraints = new GridBagConstraints();
         shipsPanelConstraints.weightx = 0.1;
         shipsPanelConstraints.weighty = 1.0;
@@ -50,10 +68,65 @@ public class PlacementPanel extends JPanel
         shipsPanelConstraints.fill = GridBagConstraints.BOTH;
         shipsPanelConstraints.gridy = y;
         shipsPanelConstraints.gridx = 1;
-        shipsPanel.setBackground(Color.GRAY);
+//        shipsPanel.setBackground(Color.GRAY);
+        shipsPanel.addSelectionListener(new ShipSelectionListener());
         add(shipsPanel, shipsPanelConstraints);
 
-        setSize(300, 300);
+    }
 
+    private void deselectOtherShips(Ship ship)
+    {
+        ship.setSelected(true);
+        for (Ship otherShip : ships)
+        {
+            if (otherShip != ship)
+            {
+                otherShip.setSelected(false);
+            }
+        }
+    }
+
+    private class ShipSelectionListener implements SelectionListener<Ship>
+    {
+
+        @Override
+        public void selected(Ship ship)
+        {
+            if (ship.isSelected())
+            {
+                ship.setSelected(false);
+            }
+            else
+            {
+                deselectOtherShips(ship);
+            }
+        }
+    }
+
+    private class CellSelectionListener implements SelectionListener<Cell>
+    {
+
+        @Override
+        public void selected(Cell cell)
+        {
+            if (cell.getShip() != null)
+            {
+                Ship ship = cell.getShip();
+                cell.getShip().setSelected(true);
+                deselectOtherShips(ship);
+            }
+            else
+            {
+                for (Ship ship : ships)
+                {
+                    if (ship.isSelected())
+                    {
+                        ship.clearCells();
+                        ship.setPosition(cell.getBoardX(), cell.getBoardY());
+                        battleField.placeShip(ship);
+                    }
+                }
+            }
+        }
     }
 }

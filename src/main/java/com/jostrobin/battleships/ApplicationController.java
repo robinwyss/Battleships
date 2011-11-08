@@ -1,5 +1,7 @@
 package com.jostrobin.battleships;
 
+import javax.swing.*;
+
 import com.jostrobin.battleships.service.network.rmi.RmiManager;
 import com.jostrobin.battleships.session.ApplicationState;
 import com.jostrobin.battleships.ui.controller.GameSelectionController;
@@ -21,6 +23,7 @@ public class ApplicationController
 
     public static void main(String... args)
     {
+        setLookAndFeel();
         ApplicationState state = ApplicationState.getInstance();
         for (String arg : args)
         {
@@ -56,6 +59,22 @@ public class ApplicationController
             f.setVisible(true);
         }
 
+    }
+
+    private static void setLookAndFeel()
+    {
+        // set the name of the application menu item
+        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Battleships");
+
+        // set the look and feel
+        try
+        {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }
+        catch (Exception e)
+        {
+            logger.warn("Could not set system look and fell", e);
+        }
     }
 
 }
