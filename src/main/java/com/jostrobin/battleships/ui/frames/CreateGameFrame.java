@@ -1,6 +1,5 @@
 package com.jostrobin.battleships.ui.frames;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -57,15 +56,16 @@ public class CreateGameFrame extends JFrame implements ActionListener
     private void buildGui()
     {
         this.setLayout(new GridBagLayout());
+        this.setSize(350, 200);
+        this.setResizable(false);
 
         createGameLabel = new JLabel("New game");
         GridBagConstraints c = createConstraint(0, 0);
 		c.anchor = GridBagConstraints.FIRST_LINE_START;
-		c.insets = new Insets(0, 5, 0, 0);
+		c.insets = new Insets(5, 5, 0, 0);
 		this.add(createGameLabel, c);
         
         optionsPanel = new JPanel(new GridBagLayout());
-        this.setMinimumSize(new Dimension(700, 500));
         c = createConstraint(0, 1);
     	c.anchor = GridBagConstraints.LINE_START;
         c.insets = new Insets(0, 0, 0, 0);
@@ -89,6 +89,7 @@ public class CreateGameFrame extends JFrame implements ActionListener
     	modeLabel = new JLabel("Mode");
     	GridBagConstraints c = createConstraint(0, y);
     	c.anchor = GridBagConstraints.LINE_START;
+        c.insets = new Insets(5, 0, 0, 0);
     	optionsPanel.add(modeLabel, c);
 
     	// add all the game modes to a dropdown
@@ -102,11 +103,13 @@ public class CreateGameFrame extends JFrame implements ActionListener
     	modeComboBox = new JComboBox(modes);
     	modeComboBox.addActionListener(this);
     	c = createConstraint(1, y++);
+        c.insets = new Insets(5, 0, 0, 0);
     	c.anchor = GridBagConstraints.LINE_START;
     	optionsPanel.add(modeComboBox, c);
 
     	nrOfPlayersLabel = new JLabel("Number of players");
     	c = createConstraint(0, y);
+        c.insets = new Insets(5, 0, 0, 0);
     	c.anchor = GridBagConstraints.LINE_START;
     	optionsPanel.add(nrOfPlayersLabel, c);
     	
@@ -114,11 +117,13 @@ public class CreateGameFrame extends JFrame implements ActionListener
     	nrOfPlayerItems[0] = "2";
     	nrOfPlayersComboBox = new JComboBox(nrOfPlayerItems);
     	c = createConstraint(1, y++);
+        c.insets = new Insets(5, 0, 0, 0);
     	c.anchor = GridBagConstraints.LINE_START;
     	optionsPanel.add(nrOfPlayersComboBox, c);
 
     	fieldSizeLabel = new JLabel("Field size");
     	c = createConstraint(0, y);
+        c.insets = new Insets(5, 0, 0, 0);
     	c.anchor = GridBagConstraints.LINE_START;
     	optionsPanel.add(fieldSizeLabel, c);
     	
@@ -126,6 +131,7 @@ public class CreateGameFrame extends JFrame implements ActionListener
     	fieldSizeItems[0] = "10 x 10";
     	fieldSizeComboBox = new JComboBox(fieldSizeItems);
     	c = createConstraint(1, y++);
+        c.insets = new Insets(5, 0, 0, 0);
     	c.anchor = GridBagConstraints.LINE_START;
     	optionsPanel.add(fieldSizeComboBox, c);
     }

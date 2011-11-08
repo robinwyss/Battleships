@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import com.jostrobin.battleships.data.GameSettings;
 import com.jostrobin.battleships.data.ServerInformation;
+import com.jostrobin.battleships.enumerations.State;
 import com.jostrobin.battleships.exception.BattleshipServiceException;
 import com.jostrobin.battleships.service.network.detection.ServerDetectionListener;
 import com.jostrobin.battleships.service.network.detection.ServerDetectionManager;
@@ -125,10 +126,18 @@ public class GameSelectionController implements ServerDetectionListener
      */
     public void joinGame(ServerInformation server)
     {
+    	ApplicationState state = ApplicationState.getInstance();
+    	
     	InetAddress address = server.getAddress();
         try
         {
         	ApplicationInterface applicationInterface = server.getApplicationInterface();
+        	if (applicationInterface.getApplicationState().getState() != State.WAITING_FOR_PLAYERS)
+        	{
+        		// we can only join games waiting for more players
+        		return;
+        	}
+        	
         	GameSettings settings = applicationInterface.joinGame();
         	if (settings == null)
         	{
@@ -136,7 +145,6 @@ public class GameSelectionController implements ServerDetectionListener
         	}
         	else
         	{
-        		ApplicationState state = ApplicationState.getInstance();
         		state.setSettings(settings);
         		
 	            Registry registry = LocateRegistry.getRegistry(address.getHostName());
