@@ -95,7 +95,7 @@ public class BattleshipTableModel extends AbstractTableModel
         ApplicationState state = ApplicationState.getInstance();
         if (state.isDebug() && servers.size() < 1)
         {
-        	// add a dummyserver
+        	// add a dummyserver if there is no other so far
         	try
 			{
 				servers.add(new ServerInformation(InetAddress.getLocalHost(), state, new DefaultApplicationInterface()));

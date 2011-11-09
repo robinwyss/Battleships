@@ -1,15 +1,12 @@
 package com.jostrobin.battleships;
 
-import javax.swing.*;
+import javax.swing.UIManager;
 
-import com.jostrobin.battleships.service.network.rmi.RmiManager;
-import com.jostrobin.battleships.session.ApplicationState;
-import com.jostrobin.battleships.ui.controller.GameSelectionController;
-import com.jostrobin.battleships.ui.controller.RegistrationController;
-import com.jostrobin.battleships.ui.frames.GameFrame;
-import com.jostrobin.battleships.ui.frames.GameSelectionFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.jostrobin.battleships.session.ApplicationState;
+import com.jostrobin.battleships.ui.controller.RegistrationController;
 
 /**
  * This is the entry point of the application.
@@ -35,29 +32,12 @@ public class ApplicationController
         if (!state.isDebug())
         {
             logger.debug("Starting application in production mode");
-            new RegistrationController().showRegistrationDialog();
         }
         else
         {
             logger.debug("Starting application in debug mode");
-
-            // thread rmi
-            RmiManager rmiManager = RmiManager.getInstance();
-            rmiManager.startupRmiServices();
-
-            // thread broadcast
-
-            // gui
-
-            new GameFrame();
-
-            new RegistrationController().showRegistrationDialog();
-
-            GameSelectionController gameSelectionController = new GameSelectionController();
-            GameSelectionFrame f = new GameSelectionFrame(gameSelectionController);
-            gameSelectionController.setGameSelectionFrame(f);
-            f.setVisible(true);
         }
+        new RegistrationController().showRegistrationDialog();
 
     }
 

@@ -158,6 +158,8 @@ public class GameSelectionController implements ServerDetectionListener
 	            // forward our input to the other client
 	            DefaultChatServer chatServer = rmiManager.getChat();
 	            chatServer.addListener(gameController.getChatListener());
+	            
+	            gameSelectionFrame.dispose();
         	}
         }
         catch (RemoteException e)

@@ -15,8 +15,11 @@
 
 package com.jostrobin.battleships.ui.frames;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.HeadlessException;
+
+import javax.swing.JFrame;
 
 import com.jostrobin.battleships.ui.controller.ChatController;
 import com.jostrobin.battleships.ui.panels.BattleFieldPanel;
@@ -64,6 +67,7 @@ public class GameFrame extends JFrame
 
         setVisible(true);
         setSize(600, 600);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     public void addChatPanel(ChatController chatController)
