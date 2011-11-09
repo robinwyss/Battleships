@@ -14,7 +14,7 @@ public class DefaultApplicationInterface extends UnicastRemoteObject implements 
 {
 	private static final long serialVersionUID = 1L;
 	
-    protected DefaultApplicationInterface() throws RemoteException
+    public DefaultApplicationInterface() throws RemoteException
 	{
 		super();
 	}
