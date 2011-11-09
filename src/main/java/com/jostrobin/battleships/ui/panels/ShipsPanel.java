@@ -36,11 +36,11 @@ import org.slf4j.LoggerFactory;
  */
 public class ShipsPanel extends JPanel
 {
-    private JButton rotateLeftButton;
+    private JButton rotate;
     private JButton rotateRightButton;
     private int y;
     private List<SelectionListener<Ship>> selectionListeners = new ArrayList<SelectionListener<Ship>>();
-    private Map<JPanel, Ship> shipPanels = new HashMap<JPanel, Ship>();
+    private Map<Ship, JPanel> shipPanels = new HashMap<Ship, JPanel>();
     private static final Logger LOG = LoggerFactory.getLogger(ShipsPanel.class);
 
     public ShipsPanel()
@@ -51,18 +51,11 @@ public class ShipsPanel extends JPanel
     private void initUi()
     {
         setLayout(new GridBagLayout());
-        rotateLeftButton = new JButton("Rotate left");
+        rotate = new JButton("Rotate left");
         GridBagConstraints leftButtonConstraints = new GridBagConstraints();
-        leftButtonConstraints.gridy = y;
+        leftButtonConstraints.gridy = y++;
         leftButtonConstraints.anchor = GridBagConstraints.ABOVE_BASELINE;
-        add(rotateLeftButton, leftButtonConstraints);
-
-        rotateRightButton = new JButton("Rotate right");
-        GridBagConstraints rightButtonConstraints = new GridBagConstraints();
-        rightButtonConstraints.gridy = y++;
-        rightButtonConstraints.gridx = 1;
-        rightButtonConstraints.anchor = GridBagConstraints.ABOVE_BASELINE;
-        add(rotateRightButton, rightButtonConstraints);
+        add(rotate, leftButtonConstraints);
     }
 
     public void addShips(List<Ship> ships)
@@ -84,10 +77,9 @@ public class ShipsPanel extends JPanel
             }
             GridBagConstraints shipConstraints = new GridBagConstraints();
             shipConstraints.gridy = y++;
-            shipConstraints.gridwidth = 2;
             shipConstraints.anchor = GridBagConstraints.BASELINE;
             shipConstraints.insets = new Insets(2, 2, 2, 2);
-            shipPanels.put(shipPanel, ship);
+            shipPanels.put(ship, shipPanel);
             add(shipPanel, shipConstraints);
         }
     }
@@ -95,6 +87,16 @@ public class ShipsPanel extends JPanel
     public void addSelectionListener(SelectionListener<Ship> selectionListener)
     {
         selectionListeners.add(selectionListener);
+    }
+
+    public void removeShip(Ship ship)
+    {
+        JPanel shipPanel = shipPanels.get(ship);
+        if (shipPanel != null)
+        {
+            remove(shipPanel);
+            repaint();
+        }
     }
 
     private class MouseListener extends MouseAdapter
@@ -107,15 +109,6 @@ public class ShipsPanel extends JPanel
                 CellComponent cell = (CellComponent) mouseEvent.getSource();
                 cell.setSelected(true);
                 Ship ship = cell.getShip();
-//                if(ship.isSelected())
-//                {
-//                    ship.setSelected(false);
-//                }
-//                else
-//                {
-//                    ship.setSelected(true);
-//                }
-
                 // TODO: deselect other ships
                 LOG.debug("Ship with size {} was selected", ship.getSize());
                 for (SelectionListener<Ship> selectionListener : selectionListeners)

@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.jostrobin.battleships.data.enums.CellType;
+import com.jostrobin.battleships.data.enums.Orientation;
 import com.jostrobin.battleships.data.enums.ShipType;
 
 /**
@@ -19,6 +20,7 @@ public class Ship
     private int positionY;
     private Set<Cell> cells = new HashSet<Cell>();
     private boolean selected;
+    private Orientation orientation = Orientation.HORIZONTAL;
 
     public Ship(int size)
     {
@@ -43,8 +45,20 @@ public class Ship
         for (Cell cell : cells)
         {
             cell.setSelected(false);
+            cell.setType(CellType.WATER);
+            cell.setShip(null);
         }
         cells.clear();
+    }
+
+
+    public void setSelected(boolean selected)
+    {
+        for (Cell cell : cells)
+        {
+            cell.setSelected(selected);
+        }
+        this.selected = selected;
     }
 
     public int getSize()
@@ -82,12 +96,23 @@ public class Ship
         return selected;
     }
 
-    public void setSelected(boolean selected)
+    public Set<Cell> getCells()
     {
-        for (Cell cell : cells)
-        {
-            cell.setSelected(selected);
-        }
-        this.selected = selected;
+        return cells;
+    }
+
+    public void setCells(Set<Cell> cells)
+    {
+        this.cells = cells;
+    }
+
+    public Orientation getOrientation()
+    {
+        return orientation;
+    }
+
+    public void setOrientation(Orientation orientation)
+    {
+        this.orientation = orientation;
     }
 }

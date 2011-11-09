@@ -24,6 +24,8 @@ import javax.swing.*;
 
 import com.jostrobin.battleships.data.Cell;
 import com.jostrobin.battleships.data.Ship;
+import com.jostrobin.battleships.data.enums.CellType;
+import com.jostrobin.battleships.data.enums.Orientation;
 import com.jostrobin.battleships.ui.components.CellComponent;
 import com.jostrobin.battleships.ui.listeners.SelectionListener;
 import org.slf4j.Logger;
@@ -58,7 +60,7 @@ public class BattleFieldPanel extends JPanel implements ActionListener
         }
         Dimension dimension = new Dimension(size * CellComponent.CELL_SIZE, size * CellComponent.CELL_SIZE);
         contentPanel.setPreferredSize(dimension);
-
+        setMinimumSize(dimension);
         setLayout(new FlowLayout());
         add(contentPanel);
     }
@@ -79,17 +81,41 @@ public class BattleFieldPanel extends JPanel implements ActionListener
         selectionListeners.add(selectionListener);
     }
 
-    public void placeShip(Ship ship)
+    public boolean placeShip(Ship ship, int x, int y)
     {
-        // TODO: check positions;
-        int x = ship.getPositionX();
-        int y = ship.getPositionY();
+        boolean placed = false;
+        if (canBePlaced(ship, x, y))
+        {
+            ship.setPosition(x, y);
+            ship.clearCells();
+            for (int i = 0; i < ship.getSize(); i++)
+            {
+                ship.addCell(findCellAt(x, y));
+                x++;
+            }
+            ship.setSelected(false);
+            placed = true;
+        }
+        return placed;
+    }
+
+    private boolean canBePlaced(Ship ship, int x, int y)
+    {
+        boolean ok = true;
         for (int i = 0; i < ship.getSize(); i++)
         {
-            ship.addCell(findCellAt(x, y));
-            x++;
+            Cell cell = findCellAt(x, y);
+            ok &= (cell != null && (cell.getType().equals(CellType.WATER) || ship.getCells().contains(cell)));
+            if (ship.getOrientation() == Orientation.HORIZONTAL)
+            {
+                x++;
+            }
+            else
+            {
+                y++;
+            }
         }
-        ship.setSelected(false);
+        return ok;
     }
 
     private Cell findCellAt(int x, int y)

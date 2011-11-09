@@ -138,6 +138,7 @@ public class CellComponent extends JComponent implements Cell
     public void setType(CellType type)
     {
         this.type = type;
+        repaint();
     }
 
     public boolean isHit()
@@ -159,7 +160,10 @@ public class CellComponent extends JComponent implements Cell
     public void setShip(Ship ship)
     {
         this.ship = ship;
-        type = CellType.SHIP;
+        if (ship != null)
+        {
+            type = CellType.SHIP;
+        }
     }
 
     public boolean isSelected()

@@ -55,7 +55,6 @@ public class PlacementPanel extends JPanel
         gamePanelConstraints.gridy = y;
         gamePanelConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
         gamePanelConstraints.fill = GridBagConstraints.BOTH;
-//        battleField.setBackground(Color.BLUE);
         battleField.addSelectionListener(new CellSelectionListener());
         add(battleField, gamePanelConstraints);
 
@@ -68,7 +67,6 @@ public class PlacementPanel extends JPanel
         shipsPanelConstraints.fill = GridBagConstraints.BOTH;
         shipsPanelConstraints.gridy = y;
         shipsPanelConstraints.gridx = 1;
-//        shipsPanel.setBackground(Color.GRAY);
         shipsPanel.addSelectionListener(new ShipSelectionListener());
         add(shipsPanel, shipsPanelConstraints);
 
@@ -112,8 +110,15 @@ public class PlacementPanel extends JPanel
             if (cell.getShip() != null)
             {
                 Ship ship = cell.getShip();
-                cell.getShip().setSelected(true);
-                deselectOtherShips(ship);
+                if (ship.isSelected())
+                {
+                    ship.setSelected(false);
+                }
+                else
+                {
+                    cell.getShip().setSelected(true);
+                    deselectOtherShips(ship);
+                }
             }
             else
             {
@@ -121,9 +126,10 @@ public class PlacementPanel extends JPanel
                 {
                     if (ship.isSelected())
                     {
-                        ship.clearCells();
-                        ship.setPosition(cell.getBoardX(), cell.getBoardY());
-                        battleField.placeShip(ship);
+                        if (battleField.placeShip(ship, cell.getBoardX(), cell.getBoardY()))
+                        {
+                            shipsPanel.removeShip(ship);
+                        }
                     }
                 }
             }
