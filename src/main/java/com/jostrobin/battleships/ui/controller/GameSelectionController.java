@@ -16,10 +16,7 @@
 package com.jostrobin.battleships.ui.controller;
 
 import java.net.InetAddress;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,6 +99,7 @@ public class GameSelectionController implements ServerDetectionListener
         	{
         		RmiManager rmiManager = RmiManager.getInstance();
                 applicationInterface = rmiManager.findApplicationInterface(address, id);
+                rmiManager.findChat(address, id);
                 ApplicationState state = applicationInterface.getApplicationState();
 
                 ServerInformation newServer = new ServerInformation(address, state, applicationInterface);
@@ -145,8 +143,9 @@ public class GameSelectionController implements ServerDetectionListener
         	{
         		state.setSettings(settings);
         		
-	            Registry registry = LocateRegistry.getRegistry(address.getHostName());
-	            Chat chatClient = (Chat) registry.lookup("Chat");
+        		RmiManager manager = RmiManager.getInstance();
+        		Configuration config = Configuration.getInstance();
+	            Chat chatClient = manager.getChat(config.getId());
 	
 	            // connect our gui to the rmi objects
 	            GameController gameController = new GameController(chatClient, applicationInterface);
@@ -161,10 +160,6 @@ public class GameSelectionController implements ServerDetectionListener
         	}
         }
         catch (RemoteException e)
-        {
-            logger.error("Failed to join server at {}", address, e);
-        }
-        catch (NotBoundException e)
         {
             logger.error("Failed to join server at {}", address, e);
         }
