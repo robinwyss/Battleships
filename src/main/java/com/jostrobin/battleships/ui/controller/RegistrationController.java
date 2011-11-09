@@ -1,5 +1,8 @@
 package com.jostrobin.battleships.ui.controller;
 
+import java.util.UUID;
+
+import com.jostrobin.battleships.data.Configuration;
 import com.jostrobin.battleships.service.network.rmi.RmiManager;
 import com.jostrobin.battleships.session.ApplicationState;
 import com.jostrobin.battleships.ui.frames.GameSelectionFrame;
@@ -27,6 +30,10 @@ public class RegistrationController
         else
         {
             dialog.dispose();
+            
+            String id = username + UUID.randomUUID().getLeastSignificantBits();
+            Configuration config = Configuration.getInstance();
+            config.setId(id);
             
             ApplicationState state = ApplicationState.getInstance();
             state.setUsername(username);

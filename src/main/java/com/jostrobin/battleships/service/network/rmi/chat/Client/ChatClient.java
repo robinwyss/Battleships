@@ -1,13 +1,13 @@
 package com.jostrobin.battleships.service.network.rmi.chat.Client;
 
-import com.jostrobin.battleships.service.network.rmi.chat.Chat;
+import java.net.InetAddress;
+import java.rmi.RemoteException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
+import com.jostrobin.battleships.service.network.rmi.RmiManager;
+import com.jostrobin.battleships.service.network.rmi.chat.Chat;
 
 /**
  * @author rowyss
@@ -19,20 +19,15 @@ public class ChatClient
 
 	Chat chat;
 
-	public ChatClient(String hostname)
+	/**
+	 * 
+	 * @param address The remote address from where we get rmi objects.
+	 * @param id The id of the remote server.
+	 */
+	public ChatClient(InetAddress address, String id)
 	{
-		try
-		{
-			Registry registry = LocateRegistry.getRegistry(hostname);
-			chat = (Chat) registry.lookup("Chat");
-
-		} catch (RemoteException e)
-		{
-			logger.error("Failed to initialize chat client", e);
-		} catch (NotBoundException e)
-		{
-			logger.error("Failed to initialize chat client", e);
-		}
+		RmiManager manager = RmiManager.getInstance();
+		chat = manager.findChat(address, id);
 	}
 
 	public void sendMessage(String message)

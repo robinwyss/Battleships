@@ -16,8 +16,9 @@ public interface ApplicationInterface extends Remote
 	
 	/**
 	 * Tries to join a game. If the remote client is allowed to join, returns the GameSettings, null if he's not allowed (game full for example).
+	 * @param identification The identification of the remote client.
 	 * @return
 	 * @throws RemoteException
 	 */
-	public GameSettings joinGame() throws RemoteException;
+	public GameSettings joinGame(String id) throws RemoteException;
 }

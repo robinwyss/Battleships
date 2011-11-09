@@ -41,12 +41,20 @@ public class BattleshipTableModel extends AbstractTableModel
     @Override
     public Object getValueAt(int rowIndex, int columnIndex)
     {
-        ServerInformation info = servers.get(rowIndex);
-        ApplicationState state = info.getState();
-        State gameState = info.getState().getState();
+        ServerInformation serverInfo = servers.get(rowIndex);
+        ApplicationState state = serverInfo.getState();
+        State gameState = serverInfo.getState().getState();
         if (columnIndex == 0)
         {
             return state.getUsername();
+        }
+        else if (columnIndex == 1)
+        {
+        	GameSettings remoteSettings = state.getSettings();
+        	if (remoteSettings != null)
+    		{
+        		return remoteSettings.getMode();
+    		}
         }
         else if (columnIndex == 2)
         {
@@ -62,11 +70,11 @@ public class BattleshipTableModel extends AbstractTableModel
         }
         else if (columnIndex == 3)
         {
-            return info.getAddress().getCanonicalHostName();
+            return serverInfo.getAddress().getCanonicalHostName();
         }
         else if (columnIndex == 4)
         {
-            return info.getState().getState();
+            return serverInfo.getState().getState();
         }
         return "";
     }
@@ -93,16 +101,18 @@ public class BattleshipTableModel extends AbstractTableModel
     {
         this.servers = servers;
         ApplicationState state = ApplicationState.getInstance();
-        if (state.isDebug() && servers.size() < 1)
+        if (state.isDebug() && servers.size() < 2)
         {
         	// add a dummyserver if there is no other so far
         	try
 			{
 				servers.add(new ServerInformation(InetAddress.getLocalHost(), state, new DefaultApplicationInterface()));
-			} catch (UnknownHostException e)
+			}
+        	catch (UnknownHostException e)
 			{
 				e.printStackTrace();
-			} catch (RemoteException e)
+			}
+        	catch (RemoteException e)
 			{
 				e.printStackTrace();
 			}

@@ -21,6 +21,8 @@ public class CreateGameController
 		state.setState(State.WAITING_FOR_PLAYERS);
 		settings.setCurrentNumberOfPlayers(1); // we are in it
 		state.setSettings(settings);
+		
+		// tell the others we're ready
 		serverDetectionManager.broadcastUpdate();
 	}
 }
