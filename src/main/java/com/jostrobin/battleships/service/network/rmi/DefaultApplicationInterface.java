@@ -8,13 +8,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jostrobin.battleships.data.GameSettings;
+import com.jostrobin.battleships.enumerations.State;
+import com.jostrobin.battleships.service.network.rmi.chat.Chat;
 import com.jostrobin.battleships.session.ApplicationState;
+import com.jostrobin.battleships.ui.controller.GameController;
 
 public class DefaultApplicationInterface extends UnicastRemoteObject implements ApplicationInterface, Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
-    protected DefaultApplicationInterface() throws RemoteException
+    public DefaultApplicationInterface() throws RemoteException
 	{
 		super();
 	}
@@ -30,7 +33,7 @@ public class DefaultApplicationInterface extends UnicastRemoteObject implements 
     }
 
 	@Override
-	public GameSettings joinGame() throws RemoteException
+	public GameSettings joinGame(String id) throws RemoteException
 	{
 		ApplicationState state = ApplicationState.getInstance();
 		GameSettings settings = state.getSettings();
@@ -39,6 +42,19 @@ public class DefaultApplicationInterface extends UnicastRemoteObject implements 
 			// add the client
 			settings.setCurrentNumberOfPlayers(settings.getCurrentNumberOfPlayers()+1);
 			
+			// if there are enough players for this game, start up the screens
+			if (settings.getCurrentNumberOfPlayers() == settings.getNumberOfPlayers())
+			{
+				state.setState(State.RUNNING);
+
+				RmiManager manager = RmiManager.getInstance();
+				ApplicationInterface applicationInterface = manager.getApplicationInterface(id);
+				Chat chatClient = manager.getChat(id);
+	        	
+	            GameController gameController = new GameController(chatClient, applicationInterface);
+	            gameController.showFrame();
+			}
+
 			// broadcast about the new player
 			state.getServerDetectionManager().broadcastUpdate();
 			

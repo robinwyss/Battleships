@@ -45,14 +45,18 @@
 
 package com.jostrobin.battleships.service.network.rmi;
 
+import java.net.InetAddress;
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jostrobin.battleships.service.network.rmi.chat.Chat;
 import com.jostrobin.battleships.service.network.rmi.chat.server.DefaultChatServer;
 
 /**
@@ -67,6 +71,10 @@ public class RmiManager
     
     private DefaultChatServer chat;
     
+    private Map<String, ApplicationInterface> remoteInterfaces = new HashMap<String, ApplicationInterface>();
+    
+    private Map<String, Chat> remoteChats = new HashMap<String, Chat>();
+    
     private RmiManager()
     {
     	try
@@ -77,6 +85,80 @@ public class RmiManager
 		{
             logger.error("Failed to initialize RMI object", e);
 		}
+    }
+    
+    /**
+     * Locates the ApplicationInterface for the remote server at the specified address with the specified id.
+     * @param address
+     * @param id
+     * @return
+     * @throws RemoteException 
+     */
+    public synchronized ApplicationInterface findApplicationInterface(InetAddress address, String id)
+    {
+		ApplicationInterface appInterface = null;
+		try
+		{
+			Registry registry = LocateRegistry.getRegistry(address.getHostName());
+			appInterface = (ApplicationInterface) registry.lookup("ApplicationInterface");
+			this.remoteInterfaces.put(id, appInterface);
+		}
+		catch (Exception e)
+		{
+			logger.error("Can't get remote app interface", e);
+		}
+		return appInterface;
+    }
+    
+    /**
+     * Returns the ApplicationInterface belonging to the specified id or null if it does not exist.
+     * @param id
+     * @return
+     */
+    public ApplicationInterface getApplicationInterface(String id)
+    {
+    	if (remoteInterfaces.containsKey(id))
+    	{
+    		return remoteInterfaces.get(id);
+    	}
+    	return null;
+    }
+    
+    /**
+     * Locates the chat for the remote server at the specified address with the specified id.
+     * @param address
+     * @param id
+     * @return
+     * @throws RemoteException 
+     */
+    public synchronized Chat findChat(InetAddress address, String id)
+    {
+		Chat chat = null;
+		try
+		{
+			Registry registry = LocateRegistry.getRegistry(address.getHostName());
+			chat = (Chat) registry.lookup("Chat");
+			this.remoteChats.put(id, chat);
+		}
+		catch (Exception e)
+		{
+			logger.error("Can't get remote app interface", e);
+		}
+		return chat;
+    }
+    
+    /**
+     * Returns the chat belonging to the specified id or null if it does not exist.
+     * @param id
+     * @return
+     */
+    public Chat getChat(String id)
+    {
+    	if (remoteChats.containsKey(id))
+    	{
+    		return remoteChats.get(id);
+    	}
+    	return null;
     }
 
     /**

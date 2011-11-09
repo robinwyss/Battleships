@@ -16,8 +16,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import com.jostrobin.battleships.data.ServerInformation;
+import com.jostrobin.battleships.enumerations.State;
 import com.jostrobin.battleships.ui.controller.GameSelectionController;
 
 public class GameSelectionFrame extends JFrame implements ActionListener
@@ -60,6 +64,7 @@ public class GameSelectionFrame extends JFrame implements ActionListener
 
         buildGui();
 
+        refreshState();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(800, 600);
     }
@@ -89,10 +94,19 @@ public class GameSelectionFrame extends JFrame implements ActionListener
 
     private void addTable()
     {
-        String[] columnNames = {"Player", "Mode", "Number of players", "IP", "State"};
+        String[] columnNames = {"Player", "Mode", "Number of players", "Host", "State"};
         java.util.List<ServerInformation> servers = new ArrayList<ServerInformation>();
         tableModel = new BattleshipTableModel(columnNames, servers);
         availableGamesTable = new JTable(tableModel);
+        availableGamesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        availableGamesTable.getSelectionModel().addListSelectionListener(new ListSelectionListener()
+		{
+			@Override
+			public void valueChanged(ListSelectionEvent e)
+			{
+				refreshState();
+			}
+		});
         availableGamesTable.setVisible(true);
         availableGamesTable.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
@@ -149,6 +163,7 @@ public class GameSelectionFrame extends JFrame implements ActionListener
     public void setServers(java.util.List<ServerInformation> servers)
     {
         tableModel.setServers(servers);
+        refreshState();
     }
     
     /**
@@ -247,5 +262,23 @@ public class GameSelectionFrame extends JFrame implements ActionListener
         c.gridx = gridx;
         c.gridy = gridy;
         return c;
+    }
+    
+    /**
+     * Reevaluates which components should be enabled/disabled.
+     */
+    public void refreshState()
+    {
+    	int row = availableGamesTable.getSelectedRow();
+    	boolean enableJoinButton = false;
+    	if (row > -1)
+    	{
+    		ServerInformation server = tableModel.getServerAtRow(row);
+    		if (server != null && server.getState().getState() == State.WAITING_FOR_PLAYERS)
+    		{
+    			enableJoinButton = true;
+    		}
+    	}
+		joinButton.setEnabled(enableJoinButton);
     }
 }

@@ -28,8 +28,10 @@ import javax.swing.JOptionPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jostrobin.battleships.data.Configuration;
 import com.jostrobin.battleships.data.GameSettings;
 import com.jostrobin.battleships.data.ServerInformation;
+import com.jostrobin.battleships.enumerations.State;
 import com.jostrobin.battleships.exception.BattleshipServiceException;
 import com.jostrobin.battleships.service.network.detection.ServerDetectionListener;
 import com.jostrobin.battleships.service.network.detection.ServerDetectionManager;
@@ -77,7 +79,7 @@ public class GameSelectionController implements ServerDetectionListener
     }
 
     @Override
-    public void addServer(InetAddress address)
+    public void addServer(InetAddress address, String id)
     {
         ApplicationInterface applicationInterface;
 
@@ -98,8 +100,8 @@ public class GameSelectionController implements ServerDetectionListener
         	// create a new server object
         	if (!serverExists)
         	{
-                Registry registry = LocateRegistry.getRegistry(address.getHostName());
-                applicationInterface = (ApplicationInterface) registry.lookup("ApplicationInterface");
+        		RmiManager rmiManager = RmiManager.getInstance();
+                applicationInterface = rmiManager.findApplicationInterface(address, id);
                 ApplicationState state = applicationInterface.getApplicationState();
 
                 ServerInformation newServer = new ServerInformation(address, state, applicationInterface);
@@ -113,10 +115,6 @@ public class GameSelectionController implements ServerDetectionListener
         {
             logger.error("Failed to connect to the server at {}", address, e);
         }
-        catch (NotBoundException e)
-        {
-            logger.error("Failed to connect to the server at {}", address, e);
-        }
     }
     
     /**
@@ -125,31 +123,41 @@ public class GameSelectionController implements ServerDetectionListener
      */
     public void joinGame(ServerInformation server)
     {
+    	ApplicationState state = ApplicationState.getInstance();
+    	
     	InetAddress address = server.getAddress();
         try
         {
         	ApplicationInterface applicationInterface = server.getApplicationInterface();
-        	GameSettings settings = applicationInterface.joinGame();
+        	if (applicationInterface.getApplicationState().getState() != State.WAITING_FOR_PLAYERS)
+        	{
+        		// we can only join games waiting for more players
+        		return;
+        	}
+        	
+        	Configuration configuration = Configuration.getInstance();
+        	GameSettings settings = applicationInterface.joinGame(configuration.getId());
         	if (settings == null)
         	{
         		JOptionPane.showMessageDialog(null, "Could not join game.", "Error", JOptionPane.ERROR_MESSAGE);
         	}
         	else
         	{
-        		ApplicationState state = ApplicationState.getInstance();
         		state.setSettings(settings);
         		
 	            Registry registry = LocateRegistry.getRegistry(address.getHostName());
 	            Chat chatClient = (Chat) registry.lookup("Chat");
 	
 	            // connect our gui to the rmi objects
-	            RmiManager rmiManager = RmiManager.getInstance();
 	            GameController gameController = new GameController(chatClient, applicationInterface);
 	            gameController.showFrame();
 	            
 	            // forward our input to the other client
+	            RmiManager rmiManager = RmiManager.getInstance();
 	            DefaultChatServer chatServer = rmiManager.getChat();
 	            chatServer.addListener(gameController.getChatListener());
+	            
+	            gameSelectionFrame.dispose();
         	}
         }
         catch (RemoteException e)

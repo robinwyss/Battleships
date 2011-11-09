@@ -15,8 +15,9 @@ public interface ServerDetectionListener
 	 * Called when a new server has been found in the network.
 	 *
 	 * @param address The address of the server. At this address the RMI registry should be available.
+	 * @param id The identification of the server.
 	 */
-	public void addServer(InetAddress address);
+	public void addServer(InetAddress address, String id);
 	
 	/**
 	 * Called when a server has new information which we need to fetch.

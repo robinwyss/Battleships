@@ -15,6 +15,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jostrobin.battleships.data.Configuration;
 import com.jostrobin.battleships.exception.BattleshipServiceException;
 
 /**
@@ -128,12 +129,13 @@ public class ServerDetectionManager implements Runnable
                         }
                     }
                     // we were looking for servers and found one
-                    else if (message.equals(VERSION + YES_I_AM))
+                    else if (message.startsWith(VERSION + YES_I_AM))
                     {
                         LOG.info("Server detected at" + address);
+                        String id = message.substring((VERSION + YES_I_AM).length());
                         for (ServerDetectionListener callback : listeners)
                         {
-                            callback.addServer(address);
+                            callback.addServer(address, id);
                         }
                     }
                     else if (message.equals(VERSION + UPDATE_NOTIFICATION))
@@ -173,7 +175,8 @@ public class ServerDetectionManager implements Runnable
         DatagramSocket answerSocket = null;
         try
         {
-            String message = VERSION + YES_I_AM;
+        	Configuration config = Configuration.getInstance();
+            String message = VERSION + YES_I_AM + config.getId();
             buffer = message.getBytes("UTF-8");
 
             answerSocket = new DatagramSocket();
