@@ -12,16 +12,15 @@ public class ServerInformation
     private ApplicationState state;
     
     private ApplicationInterface applicationInterface;
+    
+    private String id;
 
-    public ServerInformation()
-    {
-    }
-
-    public ServerInformation(InetAddress address, ApplicationState state, ApplicationInterface applicationInterface)
+    public ServerInformation(InetAddress address, ApplicationState state, ApplicationInterface applicationInterface, String id)
     {
         this.address = address;
         this.state = state;
         this.applicationInterface = applicationInterface;
+        this.id = id;
     }
 
     public InetAddress getAddress()
@@ -52,6 +51,16 @@ public class ServerInformation
 	public void setApplicationInterface(ApplicationInterface applicationInterface)
 	{
 		this.applicationInterface = applicationInterface;
+	}
+
+	public String getId()
+	{
+		return id;
+	}
+
+	public void setId(String id)
+	{
+		this.id = id;
 	}
 
 	@Override

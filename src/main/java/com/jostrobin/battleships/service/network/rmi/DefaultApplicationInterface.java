@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jostrobin.battleships.data.GameSettings;
+import com.jostrobin.battleships.data.ServerInformation;
 import com.jostrobin.battleships.enumerations.State;
 import com.jostrobin.battleships.service.network.rmi.chat.Chat;
 import com.jostrobin.battleships.session.ApplicationState;
@@ -49,7 +50,8 @@ public class DefaultApplicationInterface extends UnicastRemoteObject implements 
 
 				RmiManager manager = RmiManager.getInstance();
 				ApplicationInterface applicationInterface = manager.getApplicationInterface(id);
-				Chat chatClient = manager.getChat(id);
+				ServerInformation server = manager.getServerById(id);
+				Chat chatClient = manager.findChat(server.getAddress(), id);
 	        	
 	            GameController gameController = new GameController(chatClient, applicationInterface);
 	            gameController.showFrame();
