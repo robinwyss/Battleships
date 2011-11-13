@@ -29,27 +29,30 @@ public class RegistrationController
         }
         else
         {
-            dialog.dispose();
-            
+            if (dialog != null && dialog.isActive())
+            {
+                dialog.dispose();
+            }
+
             String id = username + UUID.randomUUID().getLeastSignificantBits();
             Configuration config = Configuration.getInstance();
             config.setId(id);
-            
+
             ApplicationState state = ApplicationState.getInstance();
             state.setUsername(username);
 
             // prepare rmi things
-	        RmiManager rmiManager = RmiManager.getInstance();
-	        rmiManager.startupRmiServices();
+            RmiManager rmiManager = RmiManager.getInstance();
+            rmiManager.startupRmiServices();
 
-	        // show the next frame
-	        GameSelectionController gameSelectionController = new GameSelectionController();
-	        GameSelectionFrame f = new GameSelectionFrame(gameSelectionController);
-	        gameSelectionController.setGameSelectionFrame(f);
-	        f.setVisible(true);
+            // show the next frame
+            GameSelectionController gameSelectionController = new GameSelectionController();
+            GameSelectionFrame f = new GameSelectionFrame(gameSelectionController);
+            gameSelectionController.setGameSelectionFrame(f);
+            f.setVisible(true);
 
-	        // try to find games
-	        gameSelectionController.refresh(true);
+            // try to find games
+            gameSelectionController.refresh(true);
         }
     }
 

@@ -72,6 +72,12 @@ public class PlacementPanel extends JPanel
 
     }
 
+    private void rotateShip()
+    {
+
+    }
+
+
     private void deselectOtherShips(Ship ship)
     {
         ship.setSelected(true);

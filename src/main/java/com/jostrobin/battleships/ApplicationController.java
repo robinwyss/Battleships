@@ -1,12 +1,12 @@
 package com.jostrobin.battleships;
 
-import javax.swing.UIManager;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.swing.*;
 
 import com.jostrobin.battleships.session.ApplicationState;
 import com.jostrobin.battleships.ui.controller.RegistrationController;
+import com.jostrobin.battleships.ui.frames.GameFrame;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This is the entry point of the application.
@@ -35,9 +35,19 @@ public class ApplicationController
         }
         else
         {
+            new GameFrame();
             logger.debug("Starting application in debug mode");
         }
-        new RegistrationController().showRegistrationDialog();
+        String username = System.getProperty("username");
+        System.out.println(System.getProperties());
+        if (username != null && !username.isEmpty())
+        {
+            new RegistrationController().registerUser(username);
+        }
+        else
+        {
+            new RegistrationController().showRegistrationDialog();
+        }
 
     }
 

@@ -16,8 +16,8 @@ public class Ship
 {
     private ShipType type;
     private int size;
-    private int positionX;
-    private int positionY;
+    private int positionX = -1;
+    private int positionY = -1;
     private Set<Cell> cells = new HashSet<Cell>();
     private boolean selected;
     private Orientation orientation = Orientation.HORIZONTAL;

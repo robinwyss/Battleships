@@ -16,6 +16,8 @@
 package com.jostrobin.battleships.ui.panels;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -34,7 +36,7 @@ import org.slf4j.LoggerFactory;
  * @author rowyss
  *         Date: 05.11.11 Time: 18:52
  */
-public class ShipsPanel extends JPanel
+public class ShipsPanel extends JPanel implements ActionListener
 {
     private JButton rotate;
     private JButton rotateRightButton;
@@ -97,6 +99,12 @@ public class ShipsPanel extends JPanel
             remove(shipPanel);
             repaint();
         }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent actionEvent)
+    {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     private class MouseListener extends MouseAdapter
