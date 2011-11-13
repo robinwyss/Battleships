@@ -48,8 +48,6 @@ public class GameSelectionController implements ServerDetectionListener
 
     private GameSelectionFrame gameSelectionFrame;
 
-    private List<ServerInformation> servers = new ArrayList<ServerInformation>();
-
     public GameSelectionController()
     {
         List<ServerDetectionListener> listeners = new ArrayList<ServerDetectionListener>();
@@ -82,8 +80,9 @@ public class GameSelectionController implements ServerDetectionListener
 
         try
         {
+        	RmiManager rmiManager = RmiManager.getInstance();
         	boolean serverExists = false;
-        	for (ServerInformation server : servers)
+        	for (ServerInformation server : rmiManager.getServers())
         	{
         		if (server.getAddress().equals(address))
         		{
@@ -97,17 +96,16 @@ public class GameSelectionController implements ServerDetectionListener
         	// create a new server object
         	if (!serverExists)
         	{
-        		RmiManager rmiManager = RmiManager.getInstance();
                 applicationInterface = rmiManager.findApplicationInterface(address, id);
                 rmiManager.findChat(address, id);
                 ApplicationState state = applicationInterface.getApplicationState();
 
-                ServerInformation newServer = new ServerInformation(address, state, applicationInterface);
-                servers.add(newServer);
+                ServerInformation newServer = new ServerInformation(address, state, applicationInterface, id);
+                rmiManager.getServers().add(newServer);
         		
         	}
 
-            gameSelectionFrame.setServers(servers);
+            gameSelectionFrame.setServers(rmiManager.getServers());
         }
         catch (RemoteException e)
         {
@@ -174,7 +172,8 @@ public class GameSelectionController implements ServerDetectionListener
 	@Override
 	public void updateServer(InetAddress address)
 	{
-		for (ServerInformation server : servers)
+		RmiManager rmiManager = RmiManager.getInstance();
+		for (ServerInformation server : rmiManager.getServers())
 		{
 			if (server.getAddress().equals(address))
 			{
@@ -190,7 +189,7 @@ public class GameSelectionController implements ServerDetectionListener
 				}
 			}
 		}
-		gameSelectionFrame.setServers(servers);
+		gameSelectionFrame.setServers(rmiManager.getServers());
 	}
 
     public GameSelectionFrame getGameSelectionFrame()

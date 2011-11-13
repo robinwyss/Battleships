@@ -50,12 +50,15 @@ import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jostrobin.battleships.data.ServerInformation;
 import com.jostrobin.battleships.service.network.rmi.chat.Chat;
 import com.jostrobin.battleships.service.network.rmi.chat.server.DefaultChatServer;
 
@@ -74,6 +77,8 @@ public class RmiManager
     private Map<String, ApplicationInterface> remoteInterfaces = new HashMap<String, ApplicationInterface>();
     
     private Map<String, Chat> remoteChats = new HashMap<String, Chat>();
+
+    private List<ServerInformation> servers = new ArrayList<ServerInformation>();
     
     private RmiManager()
     {
@@ -85,6 +90,23 @@ public class RmiManager
 		{
             logger.error("Failed to initialize RMI object", e);
 		}
+    }
+    
+    public List<ServerInformation> getServers()
+    {
+    	return servers;
+    }
+    
+    public ServerInformation getServerById(String id)
+    {
+    	for (ServerInformation server : servers)
+    	{
+    		if (server.getId().equals(id))
+    		{
+    			return server;
+    		}
+    	}
+    	return null;
     }
     
     /**

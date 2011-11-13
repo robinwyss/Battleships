@@ -106,7 +106,7 @@ public class BattleshipTableModel extends AbstractTableModel
         	// add a dummyserver if there is no other so far
         	try
 			{
-				servers.add(new ServerInformation(InetAddress.getLocalHost(), state, new DefaultApplicationInterface()));
+				servers.add(new ServerInformation(InetAddress.getLocalHost(), state, new DefaultApplicationInterface(), "fakeId"));
 			}
         	catch (UnknownHostException e)
 			{
