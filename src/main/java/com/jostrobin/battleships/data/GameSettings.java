@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.jostrobin.battleships.data.enums.GameMode;
 import com.jostrobin.battleships.data.enums.ShipType;
-import com.jostrobin.battleships.enumerations.GameMode;
 
 /**
  * @author rowyss
@@ -13,89 +13,89 @@ import com.jostrobin.battleships.enumerations.GameMode;
  */
 public class GameSettings implements Serializable
 {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private Map<ShipType, Integer> boats = new TreeMap<ShipType, Integer>();
-	
-	private int fieldWidth;
-	
-	private int fieldHeight;
-	
-	private boolean canMove;
-	
-	private int currentNumberOfPlayers;
-	
-	private int numberOfPlayers;
-	
-	private GameMode mode;
+    private Map<ShipType, Integer> boats = new TreeMap<ShipType, Integer>();
 
-	public int getNumberOfPlayers()
-	{
-		return numberOfPlayers;
-	}
+    private int fieldWidth;
 
-	public void setNumberOfPlayers(int numberOfPlayers)
-	{
-		this.numberOfPlayers = numberOfPlayers;
-	}
+    private int fieldHeight;
 
-	public int getCurrentNumberOfPlayers()
-	{
-		return currentNumberOfPlayers;
-	}
+    private boolean canMove;
 
-	public void setCurrentNumberOfPlayers(int currentNumberOfPlayers)
-	{
-		this.currentNumberOfPlayers = currentNumberOfPlayers;
-	}
+    private int currentNumberOfPlayers;
 
-	public Map<ShipType, Integer> getBoats()
-	{
-		return boats;
-	}
+    private int numberOfPlayers;
 
-	public void setBoats(Map<ShipType, Integer> boats)
-	{
-		this.boats = boats;
-	}
+    private GameMode mode;
 
-	public int getFieldWidth()
-	{
-		return fieldWidth;
-	}
+    public int getNumberOfPlayers()
+    {
+        return numberOfPlayers;
+    }
 
-	public void setFieldWidth(int fieldWidth)
-	{
-		this.fieldWidth = fieldWidth;
-	}
+    public void setNumberOfPlayers(int numberOfPlayers)
+    {
+        this.numberOfPlayers = numberOfPlayers;
+    }
 
-	public int getFieldHeight()
-	{
-		return fieldHeight;
-	}
+    public int getCurrentNumberOfPlayers()
+    {
+        return currentNumberOfPlayers;
+    }
 
-	public void setFieldHeight(int fieldHeight)
-	{
-		this.fieldHeight = fieldHeight;
-	}
+    public void setCurrentNumberOfPlayers(int currentNumberOfPlayers)
+    {
+        this.currentNumberOfPlayers = currentNumberOfPlayers;
+    }
 
-	public boolean isCanMove()
-	{
-		return canMove;
-	}
+    public Map<ShipType, Integer> getBoats()
+    {
+        return boats;
+    }
 
-	public void setCanMove(boolean canMove)
-	{
-		this.canMove = canMove;
-	}
+    public void setBoats(Map<ShipType, Integer> boats)
+    {
+        this.boats = boats;
+    }
 
-	public GameMode getMode()
-	{
-		return mode;
-	}
+    public int getFieldWidth()
+    {
+        return fieldWidth;
+    }
 
-	public void setMode(GameMode mode)
-	{
-		this.mode = mode;
-	}
+    public void setFieldWidth(int fieldWidth)
+    {
+        this.fieldWidth = fieldWidth;
+    }
+
+    public int getFieldHeight()
+    {
+        return fieldHeight;
+    }
+
+    public void setFieldHeight(int fieldHeight)
+    {
+        this.fieldHeight = fieldHeight;
+    }
+
+    public boolean isCanMove()
+    {
+        return canMove;
+    }
+
+    public void setCanMove(boolean canMove)
+    {
+        this.canMove = canMove;
+    }
+
+    public GameMode getMode()
+    {
+        return mode;
+    }
+
+    public void setMode(GameMode mode)
+    {
+        this.mode = mode;
+    }
 }

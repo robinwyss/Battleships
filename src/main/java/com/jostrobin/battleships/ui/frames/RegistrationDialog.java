@@ -30,34 +30,26 @@
 
 package com.jostrobin.battleships.ui.frames;
 
-import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.swing.*;
 
 import com.jostrobin.battleships.ui.controller.RegistrationController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author rowyss
  *         Date: 19.10.11 Time: 17:02
  */
-public class RegistrationDialog extends JDialog implements ActionListener, KeyListener
+public class RegistrationDialog extends JPanel implements ActionListener, KeyListener
 {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private static final Logger LOG = LoggerFactory.getLogger(RegistrationDialog.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RegistrationDialog.class);
 
     private JLabel messageLabel;
     private JPanel panel;
@@ -89,10 +81,11 @@ public class RegistrationDialog extends JDialog implements ActionListener, KeyLi
         textField.addKeyListener(this);
         okButton.addKeyListener(this);
 
-        setSize(300, 90);
-        setResizable(false);
+        setPreferredSize(new Dimension(300, 90));
+        setMinimumSize(new Dimension(250, 70));
+//        setResizable(false);
         setVisible(true);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+//        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     private void addMessageLabel()
@@ -164,7 +157,6 @@ public class RegistrationDialog extends JDialog implements ActionListener, KeyLi
     @Override
     public void keyReleased(KeyEvent keyEvent)
     {
-        LOG.debug("key pressed {}", keyEvent.getKeyCode());
         if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER)
         {
             registerUser();

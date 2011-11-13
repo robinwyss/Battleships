@@ -1,30 +1,20 @@
 package com.jostrobin.battleships.ui.frames;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.ListSelectionModel;
+import java.util.List;
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import com.jostrobin.battleships.common.observer.Observer;
 import com.jostrobin.battleships.data.ServerInformation;
-import com.jostrobin.battleships.enumerations.State;
+import com.jostrobin.battleships.data.enums.State;
 import com.jostrobin.battleships.ui.controller.GameSelectionController;
 
-public class GameSelectionFrame extends JFrame implements ActionListener
+public class GameSelectionFrame extends JPanel implements ActionListener, Observer<List<ServerInformation>>
 {
     private static final long serialVersionUID = 1L;
 
@@ -65,8 +55,9 @@ public class GameSelectionFrame extends JFrame implements ActionListener
         buildGui();
 
         refreshState();
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(800, 600);
+        //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setPreferredSize(new Dimension(800, 600));
+        setMinimumSize(new Dimension(700, 500));
     }
 
     private void buildGui()
@@ -74,7 +65,6 @@ public class GameSelectionFrame extends JFrame implements ActionListener
         this.setLayout(new GridBagLayout());
 
         availableGamesPanel = new JPanel(new GridBagLayout());
-        this.setMinimumSize(new Dimension(700, 500));
         GridBagConstraints c = createConstraint(0, 0);
         c.insets = new Insets(15, 15, 15, 15);
         c.fill = GridBagConstraints.BOTH;
@@ -100,13 +90,13 @@ public class GameSelectionFrame extends JFrame implements ActionListener
         availableGamesTable = new JTable(tableModel);
         availableGamesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         availableGamesTable.getSelectionModel().addListSelectionListener(new ListSelectionListener()
-		{
-			@Override
-			public void valueChanged(ListSelectionEvent e)
-			{
-				refreshState();
-			}
-		});
+        {
+            @Override
+            public void valueChanged(ListSelectionEvent e)
+            {
+                refreshState();
+            }
+        });
         availableGamesTable.setVisible(true);
         availableGamesTable.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
@@ -144,19 +134,19 @@ public class GameSelectionFrame extends JFrame implements ActionListener
         }
         else if (source == joinButton)
         {
-        	int row = availableGamesTable.getSelectedRow();
-        	if (row > -1)
-        	{
-        		ServerInformation server = tableModel.getServerAtRow(row);
-        		if (server != null)
-        		{
-        			controller.joinGame(server);
-        		}
-        	}
+            int row = availableGamesTable.getSelectedRow();
+            if (row > -1)
+            {
+                ServerInformation server = tableModel.getServerAtRow(row);
+                if (server != null)
+                {
+                    controller.joinGame(server);
+                }
+            }
         }
         else if (source == createGameButton)
         {
-        	controller.createGame();
+            controller.createGame();
         }
     }
 
@@ -164,14 +154,6 @@ public class GameSelectionFrame extends JFrame implements ActionListener
     {
         tableModel.setServers(servers);
         refreshState();
-    }
-    
-    /**
-     * Empties the list of currently displayed servers.
-     */
-    public void resetServerList()
-    {
-    	tableModel.setServers(new ArrayList<ServerInformation>());
     }
 
     private void addButtonsPanel()
@@ -263,22 +245,28 @@ public class GameSelectionFrame extends JFrame implements ActionListener
         c.gridy = gridy;
         return c;
     }
-    
+
     /**
      * Reevaluates which components should be enabled/disabled.
      */
     public void refreshState()
     {
-    	int row = availableGamesTable.getSelectedRow();
-    	boolean enableJoinButton = false;
-    	if (row > -1)
-    	{
-    		ServerInformation server = tableModel.getServerAtRow(row);
-    		if (server != null && server.getState().getState() == State.WAITING_FOR_PLAYERS)
-    		{
-    			enableJoinButton = true;
-    		}
-    	}
-		joinButton.setEnabled(enableJoinButton);
+        int row = availableGamesTable.getSelectedRow();
+        boolean enableJoinButton = false;
+        if (row > -1)
+        {
+            ServerInformation server = tableModel.getServerAtRow(row);
+            if (server != null && server.getState().getState() == State.WAITING_FOR_PLAYERS)
+            {
+                enableJoinButton = true;
+            }
+        }
+        joinButton.setEnabled(enableJoinButton);
+    }
+
+    @Override
+    public void update(List<ServerInformation> serverList)
+    {
+        setServers(serverList);
     }
 }

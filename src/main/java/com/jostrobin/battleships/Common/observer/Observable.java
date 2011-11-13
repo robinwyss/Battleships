@@ -13,29 +13,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.jostrobin.battleships.ui.controller;
+package com.jostrobin.battleships.common.observer;
 
-import com.jostrobin.battleships.listener.ChatListener;
-import com.jostrobin.battleships.service.network.rmi.ApplicationInterface;
-import com.jostrobin.battleships.service.network.rmi.chat.Chat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author rowyss
- *         Date: 02.11.11 Time: 19:53
+ *         Date: 13.11.11 Time: 22:07
  */
-public class GameController
+public class Observable<T>
 {
-    private ApplicationInterface appInterface;
-    private ChatController chatController;
+    List<Observer<T>> observers = new ArrayList<Observer<T>>();
 
-    public GameController(Chat chat, ApplicationInterface appInterface)
+    public void notifyObservers(T value)
     {
-        this.appInterface = appInterface;
-        chatController = new ChatController(chat);
+        for (Observer<T> observer : observers)
+        {
+            observer.update(value);
+        }
     }
 
-    public ChatListener getChatListener()
+    public void addObserver(Observer<T> observer)
     {
-        return chatController;
+        observers.add(observer);
+    }
+
+    public void removeObserver(Observer<T> observer)
+    {
+        observers.remove(observer);
     }
 }

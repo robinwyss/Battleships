@@ -5,7 +5,6 @@ import java.util.UUID;
 import com.jostrobin.battleships.data.Configuration;
 import com.jostrobin.battleships.service.network.rmi.RmiManager;
 import com.jostrobin.battleships.session.ApplicationState;
-import com.jostrobin.battleships.ui.frames.GameSelectionFrame;
 import com.jostrobin.battleships.ui.frames.RegistrationDialog;
 
 /**
@@ -29,10 +28,6 @@ public class RegistrationController
         }
         else
         {
-            if (dialog != null && dialog.isActive())
-            {
-                dialog.dispose();
-            }
 
             String id = username + UUID.randomUUID().getLeastSignificantBits();
             Configuration config = Configuration.getInstance();
@@ -46,13 +41,7 @@ public class RegistrationController
             rmiManager.startupRmiServices();
 
             // show the next frame
-            GameSelectionController gameSelectionController = new GameSelectionController();
-            GameSelectionFrame f = new GameSelectionFrame(gameSelectionController);
-            gameSelectionController.setGameSelectionFrame(f);
-            f.setVisible(true);
-
-            // try to find games
-            gameSelectionController.refresh(true);
+            UIController.getInstance().showGameSelection();
         }
     }
 

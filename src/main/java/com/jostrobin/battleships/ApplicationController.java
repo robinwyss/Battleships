@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import com.jostrobin.battleships.session.ApplicationState;
 import com.jostrobin.battleships.ui.controller.RegistrationController;
+import com.jostrobin.battleships.ui.controller.UIController;
 import com.jostrobin.battleships.ui.frames.GameFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,14 +40,15 @@ public class ApplicationController
             logger.debug("Starting application in debug mode");
         }
         String username = System.getProperty("username");
-        System.out.println(System.getProperties());
         if (username != null && !username.isEmpty())
         {
             new RegistrationController().registerUser(username);
         }
         else
         {
-            new RegistrationController().showRegistrationDialog();
+            UIController uiController = UIController.getInstance();
+            uiController.showRegistrationDialog();
+//            new RegistrationController().showRegistrationDialog();
         }
 
     }

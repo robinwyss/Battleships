@@ -13,29 +13,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.jostrobin.battleships.ui.controller;
+package com.jostrobin.battleships.ui;
 
-import com.jostrobin.battleships.listener.ChatListener;
-import com.jostrobin.battleships.service.network.rmi.ApplicationInterface;
-import com.jostrobin.battleships.service.network.rmi.chat.Chat;
+import javax.swing.*;
 
 /**
  * @author rowyss
- *         Date: 02.11.11 Time: 19:53
+ *         Date: 13.11.11 Time: 18:58
  */
-public class GameController
+public class MainFrame extends JFrame
 {
-    private ApplicationInterface appInterface;
-    private ChatController chatController;
-
-    public GameController(Chat chat, ApplicationInterface appInterface)
-    {
-        this.appInterface = appInterface;
-        chatController = new ChatController(chat);
-    }
-
-    public ChatListener getChatListener()
-    {
-        return chatController;
-    }
 }
