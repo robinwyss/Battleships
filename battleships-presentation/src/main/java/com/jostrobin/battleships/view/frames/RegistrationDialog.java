@@ -28,7 +28,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.jostrobin.battleships.ui.frames;
+package com.jostrobin.battleships.view.frames;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -37,7 +37,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.*;
 
-import com.jostrobin.battleships.ui.controller.RegistrationController;
+import com.jostrobin.battleships.controller.RegistrationController;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

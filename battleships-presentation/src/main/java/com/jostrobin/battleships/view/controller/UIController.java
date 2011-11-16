@@ -13,18 +13,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.jostrobin.battleships.ui.controller;
+package com.jostrobin.battleships.view.controller;
 
 import java.awt.*;
 import javax.swing.*;
 
+import com.jostrobin.battleships.controller.CreateGameController;
+import com.jostrobin.battleships.controller.GameSelectionController;
+import com.jostrobin.battleships.controller.RegistrationController;
 import com.jostrobin.battleships.service.network.rmi.ApplicationInterface;
 import com.jostrobin.battleships.service.network.rmi.chat.Chat;
-import com.jostrobin.battleships.ui.effects.SmoothResize;
-import com.jostrobin.battleships.ui.frames.CreateGameFrame;
-import com.jostrobin.battleships.ui.frames.GameFrame;
-import com.jostrobin.battleships.ui.frames.GameSelectionFrame;
-import com.jostrobin.battleships.ui.frames.RegistrationDialog;
+import com.jostrobin.battleships.view.effects.SmoothResize;
+import com.jostrobin.battleships.view.frames.CreateGameFrame;
+import com.jostrobin.battleships.view.frames.GameFrame;
+import com.jostrobin.battleships.view.frames.GameSelectionFrame;
+import com.jostrobin.battleships.view.frames.RegistrationDialog;
 
 /**
  * @author rowyss

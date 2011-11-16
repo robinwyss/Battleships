@@ -13,14 +13,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.jostrobin.battleships.ui;
-
-import javax.swing.*;
+package com.jostrobin.battleships.view.listeners;
 
 /**
  * @author rowyss
- *         Date: 13.11.11 Time: 18:58
+ *         Date: 06.11.11 Time: 20:28
  */
-public class MainFrame extends JFrame
+public interface SelectionListener<T>
 {
+    void selected(T t);
 }

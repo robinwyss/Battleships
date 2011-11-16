@@ -9,7 +9,8 @@ import com.jostrobin.battleships.data.ServerInformation;
 import com.jostrobin.battleships.data.enums.State;
 import com.jostrobin.battleships.service.network.rmi.chat.Chat;
 import com.jostrobin.battleships.session.ApplicationState;
-import com.jostrobin.battleships.ui.controller.UIController;
+import com.jostrobin.battleships.view.controller.UIController;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

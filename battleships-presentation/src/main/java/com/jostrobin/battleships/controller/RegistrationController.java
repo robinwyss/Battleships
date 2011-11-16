@@ -1,11 +1,12 @@
-package com.jostrobin.battleships.ui.controller;
+package com.jostrobin.battleships.controller;
 
 import java.util.UUID;
 
 import com.jostrobin.battleships.data.Configuration;
 import com.jostrobin.battleships.service.network.rmi.RmiManager;
 import com.jostrobin.battleships.session.ApplicationState;
-import com.jostrobin.battleships.ui.frames.RegistrationDialog;
+import com.jostrobin.battleships.view.controller.UIController;
+import com.jostrobin.battleships.view.frames.RegistrationDialog;
 
 /**
  * @author rowyss

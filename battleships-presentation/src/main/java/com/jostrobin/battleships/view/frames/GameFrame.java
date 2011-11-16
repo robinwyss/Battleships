@@ -13,15 +13,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.jostrobin.battleships.ui.frames;
+package com.jostrobin.battleships.view.frames;
 
 import java.awt.*;
 import javax.swing.*;
 
-import com.jostrobin.battleships.ui.controller.ChatController;
-import com.jostrobin.battleships.ui.panels.BattleFieldPanel;
-import com.jostrobin.battleships.ui.panels.ChatPanel;
-import com.jostrobin.battleships.ui.panels.PlacementPanel;
+import com.jostrobin.battleships.controller.ChatController;
+import com.jostrobin.battleships.view.panels.BattleFieldPanel;
+import com.jostrobin.battleships.view.panels.ChatPanel;
+import com.jostrobin.battleships.view.panels.PlacementPanel;
 
 /**
  * @author rowyss

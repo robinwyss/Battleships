@@ -1,14 +1,14 @@
-package com.jostrobin.battleships.ui.frames;
+package com.jostrobin.battleships.view.frames;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
+import com.jostrobin.battleships.controller.CreateGameController;
 import com.jostrobin.battleships.data.GameSettings;
 import com.jostrobin.battleships.data.enums.GameMode;
-import com.jostrobin.battleships.ui.components.ComboBoxItem;
-import com.jostrobin.battleships.ui.controller.CreateGameController;
+import com.jostrobin.battleships.view.components.ComboBoxItem;
 
 public class CreateGameFrame extends JPanel implements ActionListener
 {

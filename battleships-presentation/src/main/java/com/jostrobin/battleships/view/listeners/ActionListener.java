@@ -13,7 +13,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.jostrobin.battleships.ui.listeners;
+package com.jostrobin.battleships.view.listeners;
 
 /**
  * @author rowyss

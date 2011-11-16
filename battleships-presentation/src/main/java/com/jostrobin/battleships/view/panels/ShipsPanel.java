@@ -13,7 +13,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.jostrobin.battleships.ui.panels;
+package com.jostrobin.battleships.view.panels;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -27,8 +27,9 @@ import java.util.Map;
 import javax.swing.*;
 
 import com.jostrobin.battleships.data.Ship;
-import com.jostrobin.battleships.ui.components.CellComponent;
-import com.jostrobin.battleships.ui.listeners.SelectionListener;
+import com.jostrobin.battleships.view.components.CellComponent;
+import com.jostrobin.battleships.view.listeners.SelectionListener;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

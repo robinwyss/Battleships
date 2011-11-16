@@ -1,4 +1,4 @@
-package com.jostrobin.battleships.ui.frames;
+package com.jostrobin.battleships.view.frames;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,9 +10,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import com.jostrobin.battleships.common.observer.Observer;
+import com.jostrobin.battleships.controller.GameSelectionController;
 import com.jostrobin.battleships.data.ServerInformation;
 import com.jostrobin.battleships.data.enums.State;
-import com.jostrobin.battleships.ui.controller.GameSelectionController;
 
 public class GameSelectionFrame extends JPanel implements ActionListener, Observer<List<ServerInformation>>
 {

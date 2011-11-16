@@ -13,7 +13,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.jostrobin.battleships.ui.components;
+package com.jostrobin.battleships.view.components;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

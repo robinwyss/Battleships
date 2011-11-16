@@ -1,4 +1,4 @@
-package com.jostrobin.battleships.ui.frames;
+package com.jostrobin.battleships.view.frames;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

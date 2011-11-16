@@ -1,9 +1,10 @@
-package com.jostrobin.battleships.ui.controller;
+package com.jostrobin.battleships.controller;
 
 import com.jostrobin.battleships.data.GameSettings;
 import com.jostrobin.battleships.data.enums.State;
 import com.jostrobin.battleships.service.network.detection.ServerDetectionManager;
 import com.jostrobin.battleships.session.ApplicationState;
+import com.jostrobin.battleships.view.controller.UIController;
 
 
 public class CreateGameController

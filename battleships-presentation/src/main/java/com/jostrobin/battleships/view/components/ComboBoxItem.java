@@ -1,4 +1,4 @@
-package com.jostrobin.battleships.ui.components;
+package com.jostrobin.battleships.view.components;
 
 /**
  * A custom ComboBoxItem class which provides a key and a label because JComboBox only uses a label by default.

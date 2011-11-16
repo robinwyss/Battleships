@@ -2,10 +2,11 @@ package com.jostrobin.battleships;
 
 import javax.swing.*;
 
+import com.jostrobin.battleships.controller.RegistrationController;
 import com.jostrobin.battleships.session.ApplicationState;
-import com.jostrobin.battleships.ui.controller.RegistrationController;
-import com.jostrobin.battleships.ui.controller.UIController;
-import com.jostrobin.battleships.ui.frames.GameFrame;
+import com.jostrobin.battleships.view.controller.UIController;
+import com.jostrobin.battleships.view.frames.GameFrame;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

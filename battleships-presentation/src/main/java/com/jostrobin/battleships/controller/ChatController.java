@@ -13,13 +13,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.jostrobin.battleships.ui.controller;
+package com.jostrobin.battleships.controller;
 
 import java.rmi.RemoteException;
 
 import com.jostrobin.battleships.listener.ChatListener;
 import com.jostrobin.battleships.service.network.rmi.chat.Chat;
-import com.jostrobin.battleships.ui.panels.ChatPanel;
+import com.jostrobin.battleships.view.panels.ChatPanel;
 
 /**
  * @author rowyss

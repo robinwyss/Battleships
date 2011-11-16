@@ -13,14 +13,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.jostrobin.battleships.ui.panels;
+package com.jostrobin.battleships.view.panels;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-import com.jostrobin.battleships.ui.controller.ChatController;
+import com.jostrobin.battleships.controller.ChatController;
 
 /**
  * @author rowyss

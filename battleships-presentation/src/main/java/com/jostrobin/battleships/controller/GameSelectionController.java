@@ -13,7 +13,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.jostrobin.battleships.ui.controller;
+package com.jostrobin.battleships.controller;
 
 import java.net.InetAddress;
 import java.rmi.RemoteException;
@@ -33,6 +33,8 @@ import com.jostrobin.battleships.service.network.rmi.ApplicationInterface;
 import com.jostrobin.battleships.service.network.rmi.RmiManager;
 import com.jostrobin.battleships.service.network.rmi.chat.Chat;
 import com.jostrobin.battleships.session.ApplicationState;
+import com.jostrobin.battleships.view.controller.UIController;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
