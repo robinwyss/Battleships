@@ -1,24 +1,36 @@
 package com.jostrobin.battleships.view.frames;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.List;
-import javax.swing.*;
+import java.util.Observable;
+import java.util.Observer;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import com.jostrobin.battleships.common.observer.Observer;
+import com.jostrobin.battleships.common.data.GameState;
+import com.jostrobin.battleships.common.data.Player;
 import com.jostrobin.battleships.controller.GameSelectionController;
-import com.jostrobin.battleships.data.ServerInformation;
-import com.jostrobin.battleships.data.enums.State;
+import com.jostrobin.battleships.model.GameSelectionModel;
 
-public class GameSelectionFrame extends JPanel implements ActionListener, Observer<List<ServerInformation>>
+public class GameSelectionFrame extends JPanel implements ActionListener, Observer
 {
-    private static final long serialVersionUID = 1L;
-
-    private GameSelectionController controller;
+	private static final long serialVersionUID = 1L;
+	
+	private GameSelectionController controller;
 
     private JPanel availableGamesPanel;
 
@@ -29,8 +41,6 @@ public class GameSelectionFrame extends JPanel implements ActionListener, Observ
     private JButton createGameButton;
 
     private JButton settingsButton;
-
-    private JButton refreshButton;
 
     private JButton filterButton;
 
@@ -43,24 +53,23 @@ public class GameSelectionFrame extends JPanel implements ActionListener, Observ
     private JTable availableGamesTable;
 
     private BattleshipTableModel tableModel;
-
+    
     int x = 0;
-
+    
     int y = 0;
-
-    public GameSelectionFrame(GameSelectionController controller)
-    {
-        this.controller = controller;
-
-        buildGui();
+    
+	public GameSelectionFrame(GameSelectionController controller)
+	{
+		this.controller = controller;
+		
+		buildUi();
 
         refreshState();
-        //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(800, 600));
         setMinimumSize(new Dimension(700, 500));
     }
 
-    private void buildGui()
+    private void buildUi()
     {
         this.setLayout(new GridBagLayout());
 
@@ -84,19 +93,19 @@ public class GameSelectionFrame extends JPanel implements ActionListener, Observ
 
     private void addTable()
     {
-        String[] columnNames = {"Player", "Mode", "Number of players", "Host", "State"};
-        java.util.List<ServerInformation> servers = new ArrayList<ServerInformation>();
+        String[] columnNames = {"Player", "Mode", "Number of players", "State"};
+        java.util.List<Player> servers = new ArrayList<Player>();
         tableModel = new BattleshipTableModel(columnNames, servers);
         availableGamesTable = new JTable(tableModel);
         availableGamesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         availableGamesTable.getSelectionModel().addListSelectionListener(new ListSelectionListener()
-        {
-            @Override
-            public void valueChanged(ListSelectionEvent e)
-            {
-                refreshState();
-            }
-        });
+		{
+			@Override
+			public void valueChanged(ListSelectionEvent e)
+			{
+				refreshState();
+			}
+		});
         availableGamesTable.setVisible(true);
         availableGamesTable.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
@@ -119,43 +128,7 @@ public class GameSelectionFrame extends JPanel implements ActionListener, Observ
         c.fill = GridBagConstraints.BOTH;
         availableGamesPanel.add(tablePanel, c);
     }
-
-    @Override
-    public void actionPerformed(ActionEvent e)
-    {
-        Object source = e.getSource();
-        if (source == refreshButton)
-        {
-            controller.refresh(false);
-        }
-        else if (source == exitButton)
-        {
-            controller.exit();
-        }
-        else if (source == joinButton)
-        {
-            int row = availableGamesTable.getSelectedRow();
-            if (row > -1)
-            {
-                ServerInformation server = tableModel.getServerAtRow(row);
-                if (server != null)
-                {
-                    controller.joinGame(server);
-                }
-            }
-        }
-        else if (source == createGameButton)
-        {
-            controller.createGame();
-        }
-    }
-
-    public void setServers(java.util.List<ServerInformation> servers)
-    {
-        tableModel.setServers(servers);
-        refreshState();
-    }
-
+    
     private void addButtonsPanel()
     {
         int buttonsY = 0;
@@ -175,13 +148,6 @@ public class GameSelectionFrame extends JPanel implements ActionListener, Observ
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(buttonInsets, buttonInsets, buttonInsets, buttonInsets);
         buttonsPanel.add(settingsButton, c);
-
-        refreshButton = createButton("Refresh");
-        refreshButton.addActionListener(this);
-        c = createConstraint(0, buttonsY++);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(buttonInsets, buttonInsets, buttonInsets, buttonInsets);
-        buttonsPanel.add(refreshButton, c);
 
         filterButton = createButton("Filter");
         c = createConstraint(0, buttonsY++);
@@ -245,28 +211,60 @@ public class GameSelectionFrame extends JPanel implements ActionListener, Observ
         c.gridy = gridy;
         return c;
     }
-
+    
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        Object source = e.getSource();
+        if (source == exitButton)
+        {
+            controller.exit();
+        }
+        else if (source == joinButton)
+        {
+        	int row = availableGamesTable.getSelectedRow();
+        	if (row > -1)
+        	{
+        		Player player = tableModel.getPlayerAtRow(row);
+        		if (player != null)
+        		{
+        			controller.joinGame(player);
+        		}
+        	}
+        }
+        else if (source == createGameButton)
+        {
+        	controller.createGame();
+        }
+    }
+    
     /**
      * Reevaluates which components should be enabled/disabled.
      */
     public void refreshState()
     {
-        int row = availableGamesTable.getSelectedRow();
-        boolean enableJoinButton = false;
-        if (row > -1)
-        {
-            ServerInformation server = tableModel.getServerAtRow(row);
-            if (server != null && server.getState().getState() == State.WAITING_FOR_PLAYERS)
-            {
-                enableJoinButton = true;
-            }
-        }
-        joinButton.setEnabled(enableJoinButton);
+    	int row = availableGamesTable.getSelectedRow();
+    	boolean enableJoinButton = false;
+    	if (row > -1)
+    	{
+    		Player player = tableModel.getPlayerAtRow(row);
+    		if (player != null && player.getState() == GameState.WAITING_FOR_PLAYERS)
+    		{
+    			enableJoinButton = true;
+    		}
+    	}
+		joinButton.setEnabled(enableJoinButton);
     }
 
-    @Override
-    public void update(List<ServerInformation> serverList)
-    {
-        setServers(serverList);
-    }
+	@Override
+	public void update(Observable o, Object arg)
+	{
+		if (o instanceof GameSelectionModel)
+		{
+			GameSelectionModel model = (GameSelectionModel) o;
+			tableModel.setPlayers(model.getPlayers());
+			repaint();
+		}
+	}
+
 }

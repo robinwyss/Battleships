@@ -1,34 +1,30 @@
 package com.jostrobin.battleships.view.frames;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.table.AbstractTableModel;
 
-import com.jostrobin.battleships.data.GameSettings;
-import com.jostrobin.battleships.data.ServerInformation;
-import com.jostrobin.battleships.data.enums.State;
-import com.jostrobin.battleships.service.network.rmi.DefaultApplicationInterface;
-import com.jostrobin.battleships.session.ApplicationState;
+import com.jostrobin.battleships.common.data.GameData;
+import com.jostrobin.battleships.common.data.GameState;
+import com.jostrobin.battleships.common.data.Player;
 
 public class BattleshipTableModel extends AbstractTableModel
 {
     private String[] columnNames;
 
-    private List<ServerInformation> servers = new ArrayList<ServerInformation>();
+    private List<Player> players = new ArrayList<Player>();
 
-    public BattleshipTableModel(String[] columnNames, List<ServerInformation> servers)
+    public BattleshipTableModel(String[] columnNames, List<Player> players)
     {
         this.columnNames = columnNames;
-        this.servers = servers;
+        this.players = players;
     }
 
     @Override
     public int getRowCount()
     {
-        return servers.size();
+        return players.size();
     }
 
     @Override
@@ -40,40 +36,37 @@ public class BattleshipTableModel extends AbstractTableModel
     @Override
     public Object getValueAt(int rowIndex, int columnIndex)
     {
-        ServerInformation serverInfo = servers.get(rowIndex);
-        ApplicationState state = serverInfo.getState();
-        State gameState = serverInfo.getState().getState();
+        Player player = players.get(rowIndex);
         if (columnIndex == 0)
         {
-            return state.getUsername();
+            return player.getUsername();
         }
         else if (columnIndex == 1)
         {
-            GameSettings remoteSettings = state.getSettings();
-            if (remoteSettings != null)
-            {
-                return remoteSettings.getMode();
-            }
+        	GameData gameData = player.getGameData();
+        	if (gameData != null)
+        	{
+        		return gameData.getMode().name();
+        	}
         }
         else if (columnIndex == 2)
         {
-            if (gameState == State.WAITING_FOR_PLAYERS || gameState == State.RUNNING)
-            {
-                GameSettings settings = state.getSettings();
-                return settings.getCurrentNumberOfPlayers() + " / " + settings.getNumberOfPlayers();
-            }
-            else
-            {
-                return "N/A";
-            }
+        	if (player.getState() == GameState.WAITING_FOR_PLAYERS || player.getState() == GameState.RUNNING)
+        	{
+        		GameData gameData = player.getGameData();
+        		if (gameData != null)
+        		{
+        			return gameData.getCurrentPlayers() + " / " + gameData.getMaxPlayers();
+        		}
+        	}
+        	else
+        	{
+        		return "N/A";
+        	}
         }
         else if (columnIndex == 3)
         {
-            return serverInfo.getAddress().getCanonicalHostName();
-        }
-        else if (columnIndex == 4)
-        {
-            return serverInfo.getState().getState();
+            return player.getState();
         }
         return "";
     }
@@ -96,35 +89,18 @@ public class BattleshipTableModel extends AbstractTableModel
         // ignore this, we are not editable
     }
 
-    public void setServers(List<ServerInformation> servers)
+    public void setPlayers(List<Player> players)
     {
-        this.servers = servers;
-        ApplicationState state = ApplicationState.getInstance();
-        if (state.isDebug() && servers.size() < 2)
-        {
-            // add a dummyserver if there is no other so far
-            try
-            {
-                servers.add(new ServerInformation(InetAddress.getLocalHost(), state, new DefaultApplicationInterface(), "fakeId"));
-            }
-            catch (UnknownHostException e)
-            {
-                e.printStackTrace();
-            }
-            catch (RemoteException e)
-            {
-                e.printStackTrace();
-            }
-        }
+        this.players = players;
         fireTableDataChanged();
     }
-
-    public ServerInformation getServerAtRow(int row)
+    
+    public Player getPlayerAtRow(int row)
     {
-        if (servers != null && row >= 0 && row < servers.size())
-        {
-            return servers.get(row);
-        }
-        return null;
+    	if (players != null && row >= 0 && row < players.size())
+    	{
+    		return players.get(row);
+    	}
+    	return null;
     }
 }

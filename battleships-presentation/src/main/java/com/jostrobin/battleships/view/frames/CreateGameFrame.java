@@ -1,13 +1,20 @@
 package com.jostrobin.battleships.view.frames;
 
-import java.awt.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
 
-import com.jostrobin.battleships.controller.CreateGameController;
-import com.jostrobin.battleships.data.GameSettings;
-import com.jostrobin.battleships.data.enums.GameMode;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+import com.jostrobin.battleships.ApplicationController;
+import com.jostrobin.battleships.common.data.GameData;
+import com.jostrobin.battleships.common.data.GameMode;
 import com.jostrobin.battleships.view.components.ComboBoxItem;
 
 public class CreateGameFrame extends JPanel implements ActionListener
@@ -34,9 +41,9 @@ public class CreateGameFrame extends JPanel implements ActionListener
 
     private int y = 0;
 
-    private CreateGameController controller;
+    private ApplicationController controller;
 
-    public CreateGameFrame(CreateGameController controller)
+    public CreateGameFrame(ApplicationController controller)
     {
         this.controller = controller;
 
@@ -160,33 +167,27 @@ public class CreateGameFrame extends JPanel implements ActionListener
         return c;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e)
-    {
-        Object source = e.getSource();
-        if (source == createGameButton)
-        {
-            ComboBoxItem item = (ComboBoxItem) modeComboBox.getSelectedItem();
-            GameMode mode = (GameMode) item.getKey();
-            if (mode == GameMode.CLASSIC)
-            {
-                GameSettings settings = new GameSettings();
-                settings.setMode(mode);
-                settings.setCanMove(false);
-                settings.setFieldHeight(10);
-                settings.setFieldWidth(10);
-                settings.setNumberOfPlayers(2);
-
-                controller.createGame(settings);
-            }
-            else
-            {
-                JOptionPane.showMessageDialog(null, "Currently only classic mode is supported.");
-            }
-        }
-        else if (source == modeComboBox)
-        {
-            updateUiState();
-        }
-    }
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		Object source = e.getSource();
+		if (source == createGameButton)
+		{
+	    	ComboBoxItem item = (ComboBoxItem) modeComboBox.getSelectedItem();
+	    	GameMode mode = (GameMode) item.getKey();
+			if (mode == GameMode.CLASSIC)
+			{
+				GameData game = new GameData(null, mode, 0, 2, 10, 10);
+				controller.createGame(game);
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(null, "Currently only classic mode is supported.");
+			}
+		}
+		else if (source == modeComboBox)
+		{
+			updateUiState();
+		}
+	}
 }

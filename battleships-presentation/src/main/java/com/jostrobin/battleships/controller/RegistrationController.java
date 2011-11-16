@@ -1,10 +1,5 @@
 package com.jostrobin.battleships.controller;
 
-import java.util.UUID;
-
-import com.jostrobin.battleships.data.Configuration;
-import com.jostrobin.battleships.service.network.rmi.RmiManager;
-import com.jostrobin.battleships.session.ApplicationState;
 import com.jostrobin.battleships.view.controller.UIController;
 import com.jostrobin.battleships.view.frames.RegistrationDialog;
 
@@ -14,9 +9,16 @@ import com.jostrobin.battleships.view.frames.RegistrationDialog;
  */
 public class RegistrationController
 {
-    RegistrationDialog dialog;
+    private RegistrationDialog dialog;
+    
+    private UIController uiController;
 
-    public void showRegistrationDialog()
+    public RegistrationController(UIController uiController)
+	{
+		this.uiController = uiController;
+	}
+
+	public void showRegistrationDialog()
     {
         dialog = new RegistrationDialog(this);
     }
@@ -29,20 +31,11 @@ public class RegistrationController
         }
         else
         {
-
-            String id = username + UUID.randomUUID().getLeastSignificantBits();
-            Configuration config = Configuration.getInstance();
-            config.setId(id);
-
-            ApplicationState state = ApplicationState.getInstance();
-            state.setUsername(username);
-
-            // prepare rmi things
-            RmiManager rmiManager = RmiManager.getInstance();
-            rmiManager.startupRmiServices();
-
             // show the next frame
-            UIController.getInstance().showGameSelection();
+            uiController.showGameSelection();
+            
+        	// login to the server
+        	uiController.login(username);
         }
     }
 

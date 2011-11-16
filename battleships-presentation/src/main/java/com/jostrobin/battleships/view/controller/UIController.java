@@ -15,14 +15,20 @@
 
 package com.jostrobin.battleships.view.controller;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Dimension;
+import java.io.IOException;
 
-import com.jostrobin.battleships.controller.CreateGameController;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.jostrobin.battleships.ApplicationController;
 import com.jostrobin.battleships.controller.GameSelectionController;
 import com.jostrobin.battleships.controller.RegistrationController;
-import com.jostrobin.battleships.service.network.rmi.ApplicationInterface;
-import com.jostrobin.battleships.service.network.rmi.chat.Chat;
+import com.jostrobin.battleships.model.GameSelectionModel;
 import com.jostrobin.battleships.view.effects.SmoothResize;
 import com.jostrobin.battleships.view.frames.CreateGameFrame;
 import com.jostrobin.battleships.view.frames.GameFrame;
@@ -35,30 +41,46 @@ import com.jostrobin.battleships.view.frames.RegistrationDialog;
  */
 public class UIController
 {
+    private static final Logger logger = LoggerFactory.getLogger(UIController.class);
+    
     private JFrame frame;
     private JPanel currentFrame;
+    private ApplicationController controller;
     private RegistrationDialog registrationDialog;
     private GameSelectionFrame gameSelectionFrame;
     private CreateGameFrame createGameFrame;
     private GameFrame gameFrame;
     private SmoothResize smoothResize = new SmoothResize();
     private GameSelectionController gameSelectionController;
-    private static UIController uiController = new UIController();
 
-    public static UIController getInstance()
-    {
-        return uiController;
-    }
-
-    private UIController()
+    public UIController(ApplicationController controller)
     {
         frame = new JFrame();
-        gameSelectionController = new GameSelectionController();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        this.controller = controller;
+        GameSelectionModel gameSelectionModel = new GameSelectionModel();
+        gameSelectionController = new GameSelectionController(this, controller, gameSelectionModel);
+    }
+    
+    public void login(String username)
+    {
+    	try
+		{
+    		controller.addNetworkListener(gameSelectionController);
+			controller.login(username);
+		}
+    	catch (IOException e)
+		{
+    		JOptionPane.showMessageDialog(null, "Could not connect to the server.");
+    		logger.error("Could not connect to the server", e);
+    		// TODO: Retry finding a server
+		}
     }
 
     public void showRegistrationDialog()
     {
-        RegistrationController registrationController = new RegistrationController();
+        RegistrationController registrationController = new RegistrationController(this);
         registrationDialog = new RegistrationDialog(registrationController);
         show(registrationDialog);
     }
@@ -68,22 +90,20 @@ public class UIController
         if (gameSelectionFrame == null)
         {
             gameSelectionFrame = new GameSelectionFrame(gameSelectionController);
-            gameSelectionController.addObserver(gameSelectionFrame);
+            gameSelectionController.addView(gameSelectionFrame);
+//            gameSelectionController.addObserver(gameSelectionFrame);
         }
         show(gameSelectionFrame);
 //        f.setVisible(true);
-
-        // try to find games
-        gameSelectionController.refresh(true);
     }
 
-    public void showCreateGame(CreateGameController createGameController)
+    public void showCreateGame()
     {
-        createGameFrame = new CreateGameFrame(createGameController);
+        createGameFrame = new CreateGameFrame(controller);
         show(createGameFrame);
     }
 
-    public void showGameFrame(Chat chatClient, ApplicationInterface applicationInterface)
+    public void showGameFrame()
     {
         gameFrame = new GameFrame();
         show(gameFrame);

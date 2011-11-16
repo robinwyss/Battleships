@@ -15,10 +15,12 @@
 
 package com.jostrobin.battleships.view.frames;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.HeadlessException;
 
-import com.jostrobin.battleships.controller.ChatController;
+import javax.swing.JPanel;
+
 import com.jostrobin.battleships.view.panels.BattleFieldPanel;
 import com.jostrobin.battleships.view.panels.ChatPanel;
 import com.jostrobin.battleships.view.panels.PlacementPanel;
@@ -67,9 +69,9 @@ public class GameFrame extends JPanel
         //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public void addChatPanel(ChatController chatController)
+    public void addChatPanel()
     {
-        ChatPanel chatPanel = new ChatPanel(chatController);
+        ChatPanel chatPanel = new ChatPanel();
         GridBagConstraints chatPanelConstraints = new GridBagConstraints();
         chatPanelConstraints.gridy = 1;
         chatPanelConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
