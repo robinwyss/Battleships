@@ -52,6 +52,7 @@ public class CellComponent extends JComponent implements Cell
     {
         this.boardX = boardX;
         this.boardY = boardY;
+        setDoubleBuffered(true);
         BattleFieldMouseAdapter mouseAdapter = new BattleFieldMouseAdapter();
         addMouseListener(mouseAdapter);
         addMouseMotionListener(mouseAdapter);

@@ -6,7 +6,6 @@ import com.jostrobin.battleships.controller.RegistrationController;
 import com.jostrobin.battleships.session.ApplicationState;
 import com.jostrobin.battleships.view.controller.UIController;
 import com.jostrobin.battleships.view.frames.GameFrame;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +30,8 @@ public class ApplicationController
                 state.setDebug(true);
             }
         }
+
+
         if (!state.isDebug())
         {
             logger.debug("Starting application in production mode");
@@ -51,6 +52,7 @@ public class ApplicationController
             uiController.showRegistrationDialog();
 //            new RegistrationController().showRegistrationDialog();
         }
+        UIController.getInstance().showGameFrame(null, null);
 
     }
 

@@ -29,7 +29,6 @@ import javax.swing.*;
 import com.jostrobin.battleships.data.Ship;
 import com.jostrobin.battleships.view.components.CellComponent;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,18 +60,24 @@ public class ShipsPanel extends JPanel implements ActionListener
         add(rotate, leftButtonConstraints);
     }
 
-    public void addShips(List<Ship> ships)
+    public void updateShips(List<Ship> ships)
     {
+        removeAllShips();
+
         MouseListener mouseListener = new MouseListener();
         for (Ship ship : ships)
         {
+            if (ship.isPlaced())
+            {
+                continue;
+            }
             JPanel shipPanel = new JPanel();
             shipPanel.setLayout(new GridLayout(1, ship.getSize()));
             shipPanel.setPreferredSize(new Dimension(ship.getSize() * CellComponent.CELL_SIZE, CellComponent.CELL_SIZE));
             for (int i = 0; i < ship.getSize(); i++)
             {
                 CellComponent cell = new CellComponent(1, i);
-                cell.setHighlight(false);
+//                cell.setHighlight(false);
                 cell.setShip(ship);
                 cell.addMouseListener(mouseListener);
                 ship.addCell(cell);
@@ -85,21 +90,23 @@ public class ShipsPanel extends JPanel implements ActionListener
             shipPanels.put(ship, shipPanel);
             add(shipPanel, shipConstraints);
         }
+        repaint();
+    }
+
+    private void removeAllShips()
+    {
+
+        for (JPanel shipPanel : shipPanels.values())
+        {
+            remove(shipPanel);
+            y--;
+        }
+        shipPanels.clear();
     }
 
     public void addSelectionListener(SelectionListener<Ship> selectionListener)
     {
         selectionListeners.add(selectionListener);
-    }
-
-    public void removeShip(Ship ship)
-    {
-        JPanel shipPanel = shipPanels.get(ship);
-        if (shipPanel != null)
-        {
-            remove(shipPanel);
-            repaint();
-        }
     }
 
     @Override
@@ -118,7 +125,7 @@ public class ShipsPanel extends JPanel implements ActionListener
                 CellComponent cell = (CellComponent) mouseEvent.getSource();
                 cell.setSelected(true);
                 Ship ship = cell.getShip();
-                // TODO: deselect other ships
+
                 LOG.debug("Ship with size {} was selected", ship.getSize());
                 for (SelectionListener<Ship> selectionListener : selectionListeners)
                 {

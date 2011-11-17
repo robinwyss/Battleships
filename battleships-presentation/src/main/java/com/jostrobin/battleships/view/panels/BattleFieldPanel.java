@@ -23,12 +23,8 @@ import java.util.List;
 import javax.swing.*;
 
 import com.jostrobin.battleships.data.Cell;
-import com.jostrobin.battleships.data.Ship;
-import com.jostrobin.battleships.data.enums.CellType;
-import com.jostrobin.battleships.data.enums.Orientation;
 import com.jostrobin.battleships.view.components.CellComponent;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,49 +73,7 @@ public class BattleFieldPanel extends JPanel implements ActionListener
         }
     }
 
-    public void addSelectionListener(SelectionListener<Cell> selectionListener)
-    {
-        selectionListeners.add(selectionListener);
-    }
-
-    public boolean placeShip(Ship ship, int x, int y)
-    {
-        boolean placed = false;
-        if (canBePlaced(ship, x, y))
-        {
-            ship.setPosition(x, y);
-            ship.clearCells();
-            for (int i = 0; i < ship.getSize(); i++)
-            {
-                ship.addCell(findCellAt(x, y));
-                x++;
-            }
-            ship.setSelected(false);
-            placed = true;
-        }
-        return placed;
-    }
-
-    private boolean canBePlaced(Ship ship, int x, int y)
-    {
-        boolean ok = true;
-        for (int i = 0; i < ship.getSize(); i++)
-        {
-            Cell cell = findCellAt(x, y);
-            ok &= (cell != null && (cell.getType().equals(CellType.WATER) || ship.getCells().contains(cell)));
-            if (ship.getOrientation() == Orientation.HORIZONTAL)
-            {
-                x++;
-            }
-            else
-            {
-                y++;
-            }
-        }
-        return ok;
-    }
-
-    private Cell findCellAt(int x, int y)
+    public Cell findCellAt(int x, int y)
     {
         for (Cell cell : cells)
         {
@@ -130,4 +84,10 @@ public class BattleFieldPanel extends JPanel implements ActionListener
         }
         return null;
     }
+
+    public void addSelectionListener(SelectionListener<Cell> selectionListener)
+    {
+        selectionListeners.add(selectionListener);
+    }
+
 }

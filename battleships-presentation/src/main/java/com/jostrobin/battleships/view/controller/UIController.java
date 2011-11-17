@@ -86,6 +86,7 @@ public class UIController
     public void showGameFrame(Chat chatClient, ApplicationInterface applicationInterface)
     {
         gameFrame = new GameFrame();
+        gameFrame.showPlacementWindow();
         show(gameFrame);
     }
 

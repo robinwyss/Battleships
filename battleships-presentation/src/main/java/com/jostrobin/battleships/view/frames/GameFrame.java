@@ -19,6 +19,8 @@ import java.awt.*;
 import javax.swing.*;
 
 import com.jostrobin.battleships.controller.ChatController;
+import com.jostrobin.battleships.controller.PlacementController;
+import com.jostrobin.battleships.controller.PlacementModel;
 import com.jostrobin.battleships.view.panels.BattleFieldPanel;
 import com.jostrobin.battleships.view.panels.ChatPanel;
 import com.jostrobin.battleships.view.panels.PlacementPanel;
@@ -89,6 +91,9 @@ public class GameFrame extends JPanel
     {
         gamePanel.setVisible(false);
         placementPanel.setVisible(true);
+        PlacementModel placementModel = new PlacementModel();
+        placementPanel.setPlacementModel(placementModel);
+        new PlacementController(placementPanel).setModel(placementModel);
     }
 
 }

@@ -20,6 +20,7 @@ public class Ship
     private int positionY = -1;
     private Set<Cell> cells = new HashSet<Cell>();
     private boolean selected;
+    private boolean placed;
     private Orientation orientation = Orientation.HORIZONTAL;
 
     public Ship(int size)
@@ -114,5 +115,15 @@ public class Ship
     public void setOrientation(Orientation orientation)
     {
         this.orientation = orientation;
+    }
+
+    public boolean isPlaced()
+    {
+        return placed;
+    }
+
+    public void setPlaced(boolean placed)
+    {
+        this.placed = placed;
     }
 }

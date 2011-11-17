@@ -16,14 +16,12 @@
 package com.jostrobin.battleships.view.panels;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.*;
 
+import com.jostrobin.battleships.controller.PlacementModel;
 import com.jostrobin.battleships.data.Cell;
 import com.jostrobin.battleships.data.Ship;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,15 +35,14 @@ public class PlacementPanel extends JPanel
     private BattleFieldPanel battleField;
     private ShipsPanel shipsPanel;
     private int y;
-    private List<Ship> ships = new ArrayList<Ship>()
-    {{
-            add(new Ship(2));
-            add(new Ship(3));
-            add(new Ship(4));
-            add(new Ship(1));
-        }};
+    private PlacementModel placementModel;
 
     public PlacementPanel()
+    {
+        initUi();
+    }
+
+    private void initUi()
     {
         setLayout(new GridBagLayout());
 
@@ -56,11 +53,9 @@ public class PlacementPanel extends JPanel
         gamePanelConstraints.gridy = y;
         gamePanelConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
         gamePanelConstraints.fill = GridBagConstraints.BOTH;
-        battleField.addSelectionListener(new CellSelectionListener());
         add(battleField, gamePanelConstraints);
 
         shipsPanel = new ShipsPanel();
-        shipsPanel.addShips(ships);
         GridBagConstraints shipsPanelConstraints = new GridBagConstraints();
         shipsPanelConstraints.weightx = 0.1;
         shipsPanelConstraints.weighty = 1.0;
@@ -68,78 +63,37 @@ public class PlacementPanel extends JPanel
         shipsPanelConstraints.fill = GridBagConstraints.BOTH;
         shipsPanelConstraints.gridy = y;
         shipsPanelConstraints.gridx = 1;
-        shipsPanel.addSelectionListener(new ShipSelectionListener());
         add(shipsPanel, shipsPanelConstraints);
-
     }
 
-    private void rotateShip()
+    public void addShipSelectionListener(SelectionListener<Ship> shipSelectionListener)
     {
-
+        shipsPanel.addSelectionListener(shipSelectionListener);
     }
 
-
-    private void deselectOtherShips(Ship ship)
+    public void addCellSelectionListener(SelectionListener<Cell> cellSelectionListener)
     {
-        ship.setSelected(true);
-        for (Ship otherShip : ships)
-        {
-            if (otherShip != ship)
-            {
-                otherShip.setSelected(false);
-            }
-        }
+        battleField.addSelectionListener(cellSelectionListener);
     }
 
-    private class ShipSelectionListener implements SelectionListener<Ship>
+    public void updateShips()
     {
-
-        @Override
-        public void selected(Ship ship)
-        {
-            if (ship.isSelected())
-            {
-                ship.setSelected(false);
-            }
-            else
-            {
-                deselectOtherShips(ship);
-            }
-        }
+        shipsPanel.updateShips(placementModel.getShips());
     }
 
-    private class CellSelectionListener implements SelectionListener<Cell>
+    public Cell findCellAt(int x, int y)
     {
+        return battleField.findCellAt(x, y);
+    }
 
-        @Override
-        public void selected(Cell cell)
-        {
-            if (cell.getShip() != null)
-            {
-                Ship ship = cell.getShip();
-                if (ship.isSelected())
-                {
-                    ship.setSelected(false);
-                }
-                else
-                {
-                    cell.getShip().setSelected(true);
-                    deselectOtherShips(ship);
-                }
-            }
-            else
-            {
-                for (Ship ship : ships)
-                {
-                    if (ship.isSelected())
-                    {
-                        if (battleField.placeShip(ship, cell.getBoardX(), cell.getBoardY()))
-                        {
-                            shipsPanel.removeShip(ship);
-                        }
-                    }
-                }
-            }
-        }
+    public PlacementModel getPlacementModel()
+    {
+        return placementModel;
+    }
+
+    public void setPlacementModel(PlacementModel placementModel)
+    {
+        this.placementModel = placementModel;
+        updateShips();
     }
 }
