@@ -6,9 +6,9 @@
     <artifactId>Battleships</artifactId>
     <version>1.0</version>
     <modules>
-        <module>battleships-presentation</module>
-        <module>battleships-service</module>
         <module>battleships-common</module>
+        <module>battleships-service</module>
+        <module>battleships-presentation</module>
     </modules>
     <packaging>pom</packaging>
 

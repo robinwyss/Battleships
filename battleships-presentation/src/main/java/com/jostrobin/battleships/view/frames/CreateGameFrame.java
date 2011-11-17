@@ -5,9 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-import com.jostrobin.battleships.controller.CreateGameController;
-import com.jostrobin.battleships.data.GameSettings;
-import com.jostrobin.battleships.data.enums.GameMode;
+import com.jostrobin.battleships.ApplicationController;
+import com.jostrobin.battleships.common.data.GameData;
+import com.jostrobin.battleships.common.data.GameMode;
 import com.jostrobin.battleships.view.components.ComboBoxItem;
 
 public class CreateGameFrame extends JPanel implements ActionListener
@@ -34,9 +34,9 @@ public class CreateGameFrame extends JPanel implements ActionListener
 
     private int y = 0;
 
-    private CreateGameController controller;
+    private ApplicationController controller;
 
-    public CreateGameFrame(CreateGameController controller)
+    public CreateGameFrame(ApplicationController controller)
     {
         this.controller = controller;
 
@@ -170,14 +170,8 @@ public class CreateGameFrame extends JPanel implements ActionListener
             GameMode mode = (GameMode) item.getKey();
             if (mode == GameMode.CLASSIC)
             {
-                GameSettings settings = new GameSettings();
-                settings.setMode(mode);
-                settings.setCanMove(false);
-                settings.setFieldHeight(10);
-                settings.setFieldWidth(10);
-                settings.setNumberOfPlayers(2);
-
-                controller.createGame(settings);
+                GameData game = new GameData(null, mode, 0, 2, 10, 10);
+                controller.createGame(game);
             }
             else
             {

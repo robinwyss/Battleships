@@ -20,8 +20,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-import com.jostrobin.battleships.controller.ChatController;
-
 /**
  * @author rowyss
  *         Date: 28.10.11 Time: 18:01
@@ -29,16 +27,13 @@ import com.jostrobin.battleships.controller.ChatController;
 public class ChatPanel extends JPanel implements ActionListener
 {
 
-    public ChatController chatController;
     private JTextArea displayArea;
     private JTextField messageField;
     private JButton sendButton;
     private int y;
 
-    public ChatPanel(ChatController chatController)
+    public ChatPanel()
     {
-        this.chatController = chatController;
-        chatController.setChatPanel(this);
         initUI();
     }
 
@@ -98,7 +93,6 @@ public class ChatPanel extends JPanel implements ActionListener
     @Override
     public void actionPerformed(ActionEvent actionEvent)
     {
-        chatController.sendMessage(messageField.getText());
         messageField.setText("");
     }
 }

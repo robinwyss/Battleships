@@ -18,7 +18,6 @@ package com.jostrobin.battleships.view.frames;
 import java.awt.*;
 import javax.swing.*;
 
-import com.jostrobin.battleships.controller.ChatController;
 import com.jostrobin.battleships.controller.PlacementController;
 import com.jostrobin.battleships.controller.PlacementModel;
 import com.jostrobin.battleships.view.panels.BattleFieldPanel;
@@ -69,9 +68,9 @@ public class GameFrame extends JPanel
         //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public void addChatPanel(ChatController chatController)
+    public void addChatPanel()
     {
-        ChatPanel chatPanel = new ChatPanel(chatController);
+        ChatPanel chatPanel = new ChatPanel();
         GridBagConstraints chatPanelConstraints = new GridBagConstraints();
         chatPanelConstraints.gridy = 1;
         chatPanelConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
