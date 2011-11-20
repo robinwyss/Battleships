@@ -90,7 +90,7 @@ public class ShipsPanel extends JPanel implements ActionListener
             shipPanels.put(ship, shipPanel);
             add(shipPanel, shipConstraints);
         }
-        repaint();
+        revalidate();
     }
 
     private void removeAllShips()
