@@ -2,7 +2,11 @@ package com.jostrobin.battleships.server.client;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.jostrobin.battleships.common.data.GameState;
 import com.jostrobin.battleships.common.data.Player;
@@ -11,9 +15,7 @@ import com.jostrobin.battleships.common.network.NetworkHandler;
 import com.jostrobin.battleships.common.network.NetworkListener;
 import com.jostrobin.battleships.server.ServerManager;
 import com.jostrobin.battleships.server.game.Game;
-import com.jostrobin.battleships.server.network.ClientWriter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.jostrobin.battleships.server.network.Writer;
 
 /**
  * Represents a client.  Extends the player data with server side used objects.
@@ -28,18 +30,26 @@ public class Client extends Player implements NetworkListener
 
     private ServerManager serverManager;
 
-    private ClientWriter clientWriter;
+    private Writer clientWriter;
 
     /**
      * If this client has started a game.
      */
     private Game game;
 
-    public Client(ServerManager serverManager, Socket socket, Long id, String username)
+    public Client(ServerManager serverManager, Writer clientWriter)
     {
-        super(id, username);
         this.serverManager = serverManager;
-        this.socket = socket;
+        this.clientWriter = clientWriter;
+    }
+    
+    public void init(Socket socket, Long id, String username) throws IOException
+    {
+    	super.setId(id);
+    	super.setUsername(username);
+    	
+    	this.socket = socket;
+    	clientWriter.init(socket);
     }
 
     /**
@@ -49,8 +59,6 @@ public class Client extends Player implements NetworkListener
      */
     public void startup() throws IOException
     {
-        clientWriter = new ClientWriter(socket);
-
         NetworkHandler handler = new NetworkHandler(socket);
         handler.addNetworkListener(this);
 
@@ -98,7 +106,16 @@ public class Client extends Player implements NetworkListener
 
     public void sendAvailablePlayers(List<Client> clients) throws IOException
     {
-        clientWriter.sendAvailablePlayers(clients);
+    	// remove its own players, only send opponents
+    	List<Client> opponents = new ArrayList<Client>(clients.size());
+    	for (Client client : clients)
+    	{
+    		if (!client.getId().equals(getId()))
+    		{
+    			opponents.add(client);
+    		}
+    	}
+        clientWriter.sendAvailablePlayers(opponents);
     }
 
     /**

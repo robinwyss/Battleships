@@ -15,12 +15,6 @@ public class Player
 	
 	private GameData gameData;
 
-	public Player(Long id, String username)
-	{
-		this.id = id;
-		this.username = username;
-	}
-
 	public Long getId()
 	{
 		return id;

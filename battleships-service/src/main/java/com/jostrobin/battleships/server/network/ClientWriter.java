@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
 
+import org.springframework.scheduling.annotation.Async;
+
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.server.client.Client;
 import com.jostrobin.battleships.server.game.Game;
@@ -14,11 +16,11 @@ import com.jostrobin.battleships.server.game.Game;
  *
  * @author joscht
  */
-public class ClientWriter
+public class ClientWriter implements Writer
 {
     private DataOutputStream outputStream;
 
-    public ClientWriter(Socket socket) throws IOException
+    public void init(Socket socket) throws IOException
     {
         this.outputStream = new DataOutputStream(socket.getOutputStream());
     }
@@ -28,6 +30,8 @@ public class ClientWriter
      *
      * @throws IOException
      */
+    @Override
+    @Async
     public void sendAvailablePlayers(List<Client> clients) throws IOException
     {
         outputStream.writeInt(Command.PLAYERS_LIST);
@@ -56,6 +60,8 @@ public class ClientWriter
      *
      * @throws IOException
      */
+    @Override
+    @Async
     public void sendPrepareGame() throws IOException
     {
         outputStream.writeInt(Command.PREPARE_GAME);
@@ -67,6 +73,8 @@ public class ClientWriter
      * @param id
      * @throws IOException
      */
+    @Override
+    @Async
     public void acceptPlayer(Long id) throws IOException
     {
         outputStream.writeInt(Command.ACCEPTED);

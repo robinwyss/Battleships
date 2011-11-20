@@ -8,6 +8,10 @@
             <param name="ConversionPattern" value="%d{HH:mm:ss,SSS} %-5p %l - %m%n"/>
         </layout>
     </appender>
+    
+    <logger name="org.springframework">
+    	<level value="INFO" />
+    </logger>
 
     <root>
         <priority value="debug"/>

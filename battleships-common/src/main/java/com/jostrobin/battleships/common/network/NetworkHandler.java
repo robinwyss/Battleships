@@ -93,7 +93,9 @@ public class NetworkHandler implements Runnable
 							gameData = new GameData(remoteGameId, parsedMode, currentPlayers, remoteMaxPlayers,
 									remoteFieldWidth, remoteFieldLength);
 						}
-						Player player = new Player(clientId, name);
+						Player player = new Player();
+						player.setId(clientId);
+						player.setUsername(name);
 						GameState parsedState = GameState.fromString(state);
 						player.setState(parsedState);
 						player.setGameData(gameData);
