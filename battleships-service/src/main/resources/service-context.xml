@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-3.0.xsd
+           http://www.springframework.org/schema/task
+           http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+
+	<task:annotation-driven executor="executor" />
+	<task:executor id="executor" pool-size="10"/>
+	
+	<bean id="battleshipsServer" class="com.jostrobin.battleships.server.BattleshipsServer">
+	</bean>
+	
+	<bean id="client" class="com.jostrobin.battleships.server.client.Client" scope="prototype">
+		<constructor-arg ref="serverManager" />
+		<constructor-arg ref="clientWriter" />
+	</bean>
+	
+	<bean id="clientWriter" class="com.jostrobin.battleships.server.network.ClientWriter" scope="prototype">
+	</bean>
+	
+	<bean id="serverManager" class="com.jostrobin.battleships.server.ServerManager">
+	</bean>
+</beans>

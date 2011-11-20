@@ -1,7 +1,6 @@
 package com.jostrobin.battleships.model;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 
@@ -24,16 +23,6 @@ public class GameSelectionModel extends Observable
     public void setPlayers(List<Player> players)
     {
         this.players = players;
-        // we need to remove our own entry
-        Iterator<Player> it = players.iterator();
-        while (it.hasNext())
-        {
-            Player player = it.next();
-            if (player.getId().equals(clientId))
-            {
-                it.remove();
-            }
-        }
         setChanged();
     }
 

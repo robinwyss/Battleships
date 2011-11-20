@@ -1,13 +1,23 @@
 package com.jostrobin.battleships.server;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketException;
 import java.util.Scanner;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.jostrobin.battleships.server.client.Client;
 import com.jostrobin.battleships.server.util.IdGenerator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * The server opens a ServerSocket and waits for connections. For every connection a new thread is started which
@@ -15,7 +25,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author joscht
  */
-public class BattleshipsServer implements Runnable
+public class BattleshipsServer implements Runnable, ApplicationContextAware
 {
     private static final Logger logger = LoggerFactory.getLogger(BattleshipsServer.class);
 
@@ -28,13 +38,15 @@ public class BattleshipsServer implements Runnable
     private ServerManager serverManager = new ServerManager();
 
     private static boolean running = true;
+    
+    private ApplicationContext context;
 
     public BattleshipsServer()
     {
         Thread detectionThread = new Thread(new DetectionManager());
         detectionThread.start();
     }
-
+    
     public static void main(String[] args)
     {
         // parse the startup arguments
@@ -53,12 +65,17 @@ public class BattleshipsServer implements Runnable
                 }
             }
         }
-
-        final BattleshipsServer server = new BattleshipsServer();
+        
+        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:service-context.xml");
+        BattleshipsServer server = context.getBean(BattleshipsServer.class);
         Thread serverThread = new Thread(server);
         serverThread.start();
     }
 
+    /**
+     * Wait for client connections and start their handling in a new thread.
+     * This method runs asynchronously.
+     */
     @Override
     public void run()
     {
@@ -80,8 +97,10 @@ public class BattleshipsServer implements Runnable
                     Long id = clientIdGenerator.nextId();
                     logger.debug("New client accepted. id=" + id + ", ip=" + clientSocket.getInetAddress());
 
-                    Client client = new Client(serverManager, clientSocket, id, null);
+                    Client client = context.getBean(Client.class); 
+                    client.init(clientSocket, id, null);
                     client.startup();
+                    logger.debug("Done preparing");
                 }
                 catch (IOException e)
                 {
@@ -225,5 +244,12 @@ public class BattleshipsServer implements Runnable
             }
         }
     }
+
+	@Override
+	public void setApplicationContext(ApplicationContext context)
+			throws BeansException
+	{
+		this.context = context;
+	}
 
 }
