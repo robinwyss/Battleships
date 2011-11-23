@@ -16,13 +16,10 @@
 package com.jostrobin.battleships.view.controller;
 
 import java.awt.*;
-import java.io.IOException;
 import javax.swing.*;
 
 import com.jostrobin.battleships.ApplicationController;
 import com.jostrobin.battleships.controller.GameSelectionController;
-import com.jostrobin.battleships.controller.RegistrationController;
-import com.jostrobin.battleships.model.GameSelectionModel;
 import com.jostrobin.battleships.view.effects.SmoothResize;
 import com.jostrobin.battleships.view.frames.CreateGameFrame;
 import com.jostrobin.battleships.view.frames.GameFrame;
@@ -57,27 +54,8 @@ public class UIController
 
     }
 
-    public void login(String username)
-    {
-        GameSelectionModel gameSelectionModel = new GameSelectionModel();
-        gameSelectionController = new GameSelectionController(this, controller, gameSelectionModel);
-        try
-        {
-            controller.addNetworkListener(gameSelectionController);
-            controller.login(username);
-        }
-        catch (IOException e)
-        {
-            JOptionPane.showMessageDialog(null, "Could not connect to the server.");
-            logger.error("Could not connect to the server", e);
-            // TODO: Retry finding a server
-        }
-    }
-
     public void showRegistrationDialog()
     {
-        RegistrationController registrationController = new RegistrationController(this);
-        registrationDialog = new RegistrationDialog(registrationController);
         show(registrationDialog);
     }
 
@@ -86,7 +64,6 @@ public class UIController
         if (gameSelectionFrame == null)
         {
             gameSelectionFrame = new GameSelectionFrame(gameSelectionController);
-            gameSelectionController.addView(gameSelectionFrame);
 //            gameSelectionController.addObserver(gameSelectionFrame);
         }
         show(gameSelectionFrame);

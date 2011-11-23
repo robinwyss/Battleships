@@ -9,11 +9,8 @@ import com.jostrobin.battleships.common.data.Player;
 import com.jostrobin.battleships.common.network.NetworkHandler;
 import com.jostrobin.battleships.common.network.NetworkListener;
 import com.jostrobin.battleships.common.network.NetworkWriter;
-import com.jostrobin.battleships.controller.RegistrationController;
 import com.jostrobin.battleships.model.GameSelectionModel;
 import com.jostrobin.battleships.view.controller.UIController;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * This is the entry point of the application.
@@ -38,16 +35,12 @@ public class ApplicationController
 
     private Socket socket;
 
-    public ApplicationController(InetAddress address) throws IOException
+    public void init(InetAddress address) throws IOException
     {
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("application-context.xml");
-        uiController = applicationContext.getBean(UIController.class);
-        uiController.setController(this);
-
         String username = System.getProperty("username");
         if (username != null && !username.isEmpty())
         {
-            new RegistrationController(uiController).registerUser(username);
+            login(username);
         }
         else
         {
@@ -60,17 +53,24 @@ public class ApplicationController
         networkHandler = new NetworkHandler(socket);
     }
 
-    public void init(InetAddress address)
+    public void login(String username)
     {
-    }
+        // show the next frame
+        uiController.showGameSelection();
 
-    public void login(String username) throws IOException
-    {
         Thread thread = new Thread(networkHandler);
         thread.start();
 
-        writer = new NetworkWriter(socket);
-        writer.login(username);
+        try
+        {
+            writer = new NetworkWriter(socket);
+            writer.login(username);
+        }
+        catch (IOException e)
+        {
+            //TODO: show error message
+            e.printStackTrace();
+        }
     }
 
     public void addNetworkListener(NetworkListener listener)
@@ -107,4 +107,19 @@ public class ApplicationController
         }
     }
 
+
+    public void setUiController(UIController uiController)
+    {
+        this.uiController = uiController;
+    }
+
+    public void showCreateGame()
+    {
+        uiController.showCreateGame();
+    }
+
+    public void showGameFrame()
+    {
+        uiController.showGameFrame();
+    }
 }

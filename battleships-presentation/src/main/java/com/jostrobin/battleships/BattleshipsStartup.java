@@ -7,6 +7,8 @@ import com.jostrobin.battleships.controller.ServerDetectionController;
 import com.jostrobin.battleships.view.frames.ServerDetectionFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 public class BattleshipsStartup
@@ -26,6 +28,9 @@ public class BattleshipsStartup
             }
         }
 
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("application-context.xml");
+        ServerDetectionController serverDetectionController = applicationContext.getBean(ServerDetectionController.class);
+
         // connect to the specified server. as this is for debug purposes only, we can stop the application if theres an error
         if (ip != null)
         {
@@ -33,7 +38,7 @@ public class BattleshipsStartup
             try
             {
                 address = InetAddress.getByName(ip);
-                new ApplicationController(address);
+                serverDetectionController.startApplication(address);
             }
             catch (Exception e)
             {
@@ -46,12 +51,11 @@ public class BattleshipsStartup
         {
             // start the detection controller in its own thread to wait for server answers
             // the server detection controller will start the application controller once a server is ready
-            ServerDetectionController controller = new ServerDetectionController();
-            controller.addObserver(new ServerDetectionFrame(controller));
-            Thread detectionThread = new Thread(controller);
+            serverDetectionController.addObserver(new ServerDetectionFrame(serverDetectionController));
+            Thread detectionThread = new Thread(serverDetectionController);
             detectionThread.start();
 
-            controller.broadcastFindServer();
+            serverDetectionController.broadcastFindServer();
         }
     }
 

@@ -1,42 +1,53 @@
 package com.jostrobin.battleships.controller;
 
-import com.jostrobin.battleships.view.controller.UIController;
+import javax.annotation.PostConstruct;
+
+import com.jostrobin.battleships.ApplicationController;
 import com.jostrobin.battleships.view.frames.RegistrationDialog;
+import com.jostrobin.battleships.view.listeners.ActionListener;
 
 /**
  * @author rowyss
  *         Date: 19.10.11 Time: 17:02
  */
-public class RegistrationController
+public class RegistrationController implements ActionListener<String>
 {
-    private RegistrationDialog dialog;
-
-    private UIController uiController;
-
-    public RegistrationController(UIController uiController)
-    {
-        this.uiController = uiController;
-    }
+    private RegistrationDialog registrationDialog;
+    private ApplicationController applicationController;
 
     public void showRegistrationDialog()
     {
-        dialog = new RegistrationDialog(this);
+
     }
 
-    public void registerUser(String username)
+    @PostConstruct
+    public void init()
+    {
+        registrationDialog.addActionListener(this);
+    }
+
+
+    @Override
+    public void actionPerformed(String username)
     {
         if (username == null || username.trim().isEmpty())
         {
-            dialog.showMessage("You must provide a name!");
+            registrationDialog.showMessage("You must provide a name!");
         }
         else
         {
-            // show the next frame
-            uiController.showGameSelection();
-
-            // login to the server
-            uiController.login(username);
+            applicationController.login(username);
         }
+    }
+
+    public void setApplicationController(ApplicationController applicationController)
+    {
+        this.applicationController = applicationController;
+    }
+
+    public void setRegistrationDialog(RegistrationDialog registrationDialog)
+    {
+        this.registrationDialog = registrationDialog;
     }
 
 }

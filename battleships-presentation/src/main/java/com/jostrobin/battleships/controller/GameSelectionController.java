@@ -8,7 +8,6 @@ import com.jostrobin.battleships.common.data.Player;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.common.network.NetworkListener;
 import com.jostrobin.battleships.model.GameSelectionModel;
-import com.jostrobin.battleships.view.controller.UIController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,18 +15,9 @@ public class GameSelectionController implements NetworkListener
 {
     private static final Logger logger = LoggerFactory.getLogger(GameSelectionController.class);
 
-    private ApplicationController controller;
+    private ApplicationController applicationController;
 
     private GameSelectionModel model;
-
-    private UIController uiController;
-
-    public GameSelectionController(UIController uiController, ApplicationController controller, GameSelectionModel model)
-    {
-        this.uiController = uiController;
-        this.controller = controller;
-        this.model = model;
-    }
 
     public void addView(Observer view)
     {
@@ -44,13 +34,13 @@ public class GameSelectionController implements NetworkListener
         // only join waiting games
         if (player.getState() == GameState.WAITING_FOR_PLAYERS && player.getGameData() != null)
         {
-            controller.joinGame(player);
+            applicationController.joinGame(player);
         }
     }
 
     public void createGame()
     {
-        uiController.showCreateGame();
+        applicationController.showCreateGame();
     }
 
     @Override
@@ -65,7 +55,7 @@ public class GameSelectionController implements NetworkListener
             }
             else if (command.getCommand() == Command.PREPARE_GAME)
             {
-                uiController.showGameFrame();
+                applicationController.showGameFrame();
             }
             else if (command.getCommand() == Command.ACCEPTED)
             {
@@ -75,4 +65,13 @@ public class GameSelectionController implements NetworkListener
 
     }
 
+    public void setApplicationController(ApplicationController applicationController)
+    {
+        this.applicationController = applicationController;
+    }
+
+    public void setModel(GameSelectionModel model)
+    {
+        this.model = model;
+    }
 }

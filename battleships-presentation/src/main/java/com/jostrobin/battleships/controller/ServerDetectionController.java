@@ -31,6 +31,8 @@ public class ServerDetectionController extends Observable implements Runnable
 
     private boolean running = true;
 
+    private ApplicationController applicationController;
+
     public ServerDetectionController()
     {
         try
@@ -52,7 +54,7 @@ public class ServerDetectionController extends Observable implements Runnable
     {
         try
         {
-            new ApplicationController(address);
+            applicationController.init(address);
             this.deleteObservers(); // don't listen for UDP answers anymore
         }
         catch (Exception e)
@@ -153,5 +155,11 @@ public class ServerDetectionController extends Observable implements Runnable
                 socket.close();
             }
         }
+    }
+
+
+    public void setApplicationController(ApplicationController applicationController)
+    {
+        this.applicationController = applicationController;
     }
 }

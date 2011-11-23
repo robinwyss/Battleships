@@ -35,9 +35,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
-
-import com.jostrobin.battleships.controller.RegistrationController;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,18 +51,16 @@ public class RegistrationDialog extends JPanel implements ActionListener, KeyLis
     private static final long serialVersionUID = 1L;
 
     private static final Logger LOG = LoggerFactory.getLogger(RegistrationDialog.class);
-
+    private List<com.jostrobin.battleships.view.listeners.ActionListener<String>> actionListeners = new ArrayList<com.jostrobin.battleships.view.listeners.ActionListener<String>>();
     private JLabel messageLabel;
     private JPanel panel;
     private JButton okButton;
     private JTextField textField;
-    private RegistrationController registrationController;
 
     int y = 0;
 
-    public RegistrationDialog(RegistrationController registrationController)
+    public RegistrationDialog()
     {
-        this.registrationController = registrationController;
         createUI();
     }
 
@@ -142,7 +140,10 @@ public class RegistrationDialog extends JPanel implements ActionListener, KeyLis
     private void registerUser()
     {
         String text = textField.getText();
-        registrationController.registerUser(text);
+        for (com.jostrobin.battleships.view.listeners.ActionListener<String> actionListener : actionListeners)
+        {
+            actionListener.actionPerformed(text);
+        }
     }
 
     @Override
@@ -169,5 +170,15 @@ public class RegistrationDialog extends JPanel implements ActionListener, KeyLis
     {
         messageLabel.setText(message);
         messageLabel.setVisible(true);
+    }
+
+    public void addActionListener(com.jostrobin.battleships.view.listeners.ActionListener<String> actionListener)
+    {
+        actionListeners.add(actionListener);
+    }
+
+    public void removeActionListener(com.jostrobin.battleships.view.listeners.ActionListener<String> actionListener)
+    {
+        actionListeners.remove(actionListener);
     }
 }
