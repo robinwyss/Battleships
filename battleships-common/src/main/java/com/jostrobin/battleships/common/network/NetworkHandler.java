@@ -35,6 +35,7 @@ public class NetworkHandler implements Runnable
 	@Override
 	public void run()
 	{
+		String username = null;
 		try
 		{
 			boolean running = true;
@@ -47,7 +48,7 @@ public class NetworkHandler implements Runnable
 				switch (startingCharacter)
 				{
 				case Command.LOGIN:
-					String username = inputStream.readUTF();
+					username = inputStream.readUTF();
 					command.setUsername(username);
 					break;
 					
@@ -107,6 +108,13 @@ public class NetworkHandler implements Runnable
 				case Command.ACCEPTED:
 					Long myClientId = inputStream.readLong();
 					command.setClientId(myClientId);
+					break;
+					
+				case Command.CHAT_MESSAGE:
+					username = inputStream.readUTF();
+					String message = inputStream.readUTF();
+					command.setUsername(username);
+					command.setMessage(message);
 					break;
 				}
 				

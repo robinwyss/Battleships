@@ -56,6 +56,14 @@ public class Game extends GameData
             client.prepareGame();
         }
     }
+    
+    public void notifyAboutChatMessage(String username, String message) throws IOException
+    {
+    	for (Client player : players)
+    	{
+    		player.sendChatMessage(username, message);
+    	}
+    }
 
     public Client getOwner()
     {

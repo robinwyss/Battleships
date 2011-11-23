@@ -80,4 +80,16 @@ public class ClientWriter implements Writer
         outputStream.writeInt(Command.ACCEPTED);
         outputStream.writeLong(id);
     }
+
+	@Override
+	@Async
+	public void sendChatMessage(String username, String message)
+			throws IOException
+	{
+		outputStream.writeInt(Command.CHAT_MESSAGE);
+		outputStream.writeUTF(username);
+		outputStream.writeUTF(message);
+	}
+    
+    
 }
