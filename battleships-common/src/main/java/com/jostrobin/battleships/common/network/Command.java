@@ -22,6 +22,8 @@ public class Command
 
 	public static final int ACCEPTED = 5;
 
+	public static final int CHAT_MESSAGE = 6;
+	
 	public static final int DISCONNECT = 100;
 	
 	private int command;
@@ -41,6 +43,8 @@ public class Command
 	private List<Player> players;
 	
 	private Long clientId;
+	
+	private String message;
 
 	public Command(int command)
 	{
@@ -135,5 +139,15 @@ public class Command
 	public void setClientId(Long clientId)
 	{
 		this.clientId = clientId;
+	}
+
+	public String getMessage()
+	{
+		return message;
+	}
+
+	public void setMessage(String message)
+	{
+		this.message = message;
 	}
 }

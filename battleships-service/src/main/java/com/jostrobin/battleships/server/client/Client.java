@@ -94,6 +94,22 @@ public class Client extends Player implements NetworkListener
                 case Command.JOIN_GAME:
                     serverManager.joinGame(this, command.getGameId());
                     break;
+                    
+                case Command.CHAT_MESSAGE:
+                	if (game != null)
+                	{
+                		try
+						{
+							game.notifyAboutChatMessage(command.getUsername(), command.getMessage());
+						}
+                		catch (IOException e)
+						{
+                            // there was an error in communication
+                            serverManager.removeClient(this);
+                            serverManager.resendPlayerLists();
+						}
+                	}
+                	break;
             }
         }
         else
@@ -116,6 +132,11 @@ public class Client extends Player implements NetworkListener
     		}
     	}
         clientWriter.sendAvailablePlayers(opponents);
+    }
+    
+    public void sendChatMessage(String username, String message) throws IOException
+    {
+		clientWriter.sendChatMessage(username, message);
     }
 
     /**

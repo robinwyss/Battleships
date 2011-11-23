@@ -15,4 +15,6 @@ public interface Writer
     public void sendPrepareGame() throws IOException;
 
     public void acceptPlayer(Long id) throws IOException;
+    
+    public void sendChatMessage(String username, String message) throws IOException;
 }
