@@ -8,10 +8,13 @@ import com.jostrobin.battleships.common.data.Player;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.common.network.NetworkListener;
 import com.jostrobin.battleships.model.GameSelectionModel;
+import com.jostrobin.battleships.view.frames.GameSelectionFrame;
+import com.jostrobin.battleships.view.listeners.EventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 
-public class GameSelectionController implements NetworkListener
+public class GameSelectionController implements NetworkListener, InitializingBean
 {
     private static final Logger logger = LoggerFactory.getLogger(GameSelectionController.class);
 
@@ -19,15 +22,13 @@ public class GameSelectionController implements NetworkListener
 
     private GameSelectionModel model;
 
+    private GameSelectionFrame gameSelectionFrame;
+
     public void addView(Observer view)
     {
         model.addObserver(view);
     }
 
-    public void exit()
-    {
-        System.exit(0);
-    }
 
     public void joinGame(Player player)
     {
@@ -74,4 +75,49 @@ public class GameSelectionController implements NetworkListener
     {
         this.model = model;
     }
+
+    public void setGameSelectionFrame(GameSelectionFrame gameSelectionFrame)
+    {
+        this.gameSelectionFrame = gameSelectionFrame;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception
+    {
+        gameSelectionFrame.addCreateGameListener(new CreateGameListener());
+        gameSelectionFrame.addExitListener(new ExitListner());
+        gameSelectionFrame.addJoinGameListener(new JoinGameListener());
+    }
+
+    private class ExitListner implements EventListener<Object>
+    {
+
+        @Override
+        public void actionPerformed(Object value)
+        {
+            System.exit(0);
+        }
+    }
+
+    private class JoinGameListener implements EventListener<Player>
+    {
+
+        @Override
+        public void actionPerformed(Player player)
+        {
+            applicationController.joinGame(player);
+        }
+    }
+
+    private class CreateGameListener implements EventListener<Object>
+    {
+
+        @Override
+        public void actionPerformed(Object value)
+        {
+            applicationController.showCreateGame();
+        }
+    }
 }
+
+

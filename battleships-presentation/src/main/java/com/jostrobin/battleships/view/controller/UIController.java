@@ -50,8 +50,6 @@ public class UIController
     {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-
     }
 
     public void showRegistrationDialog()
@@ -61,13 +59,7 @@ public class UIController
 
     public void showGameSelection()
     {
-        if (gameSelectionFrame == null)
-        {
-            gameSelectionFrame = new GameSelectionFrame(gameSelectionController);
-//            gameSelectionController.addObserver(gameSelectionFrame);
-        }
         show(gameSelectionFrame);
-//        f.setVisible(true);
     }
 
     public void showCreateGame()
@@ -92,7 +84,6 @@ public class UIController
         frame.add(newFrame);
         frame.setVisible(true);
         resize(newFrame.getPreferredSize());
-//        frame.setSize(newFrame.getPreferredSize());
         frame.setMinimumSize(newFrame.getMinimumSize());
         frame.setMaximumSize(newFrame.getMaximumSize());
     }
@@ -102,29 +93,9 @@ public class UIController
         smoothResize.resize(frame, newSize);
     }
 
-    public GameFrame getGameFrame()
-    {
-        return gameFrame;
-    }
-
     public void setGameFrame(GameFrame gameFrame)
     {
         this.gameFrame = gameFrame;
-    }
-
-    public GameSelectionController getGameSelectionController()
-    {
-        return gameSelectionController;
-    }
-
-    public void setGameSelectionController(GameSelectionController gameSelectionController)
-    {
-        this.gameSelectionController = gameSelectionController;
-    }
-
-    public GameSelectionFrame getGameSelectionFrame()
-    {
-        return gameSelectionFrame;
     }
 
     public void setGameSelectionFrame(GameSelectionFrame gameSelectionFrame)
@@ -132,29 +103,14 @@ public class UIController
         this.gameSelectionFrame = gameSelectionFrame;
     }
 
-    public RegistrationDialog getRegistrationDialog()
-    {
-        return registrationDialog;
-    }
-
     public void setRegistrationDialog(RegistrationDialog registrationDialog)
     {
         this.registrationDialog = registrationDialog;
     }
 
-    public CreateGameFrame getCreateGameFrame()
-    {
-        return createGameFrame;
-    }
-
     public void setCreateGameFrame(CreateGameFrame createGameFrame)
     {
         this.createGameFrame = createGameFrame;
-    }
-
-    public ApplicationController getController()
-    {
-        return controller;
     }
 
     public void setController(ApplicationController controller)

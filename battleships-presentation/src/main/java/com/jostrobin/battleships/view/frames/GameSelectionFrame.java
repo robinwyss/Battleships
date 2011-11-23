@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.*;
@@ -12,14 +13,12 @@ import javax.swing.event.ListSelectionListener;
 
 import com.jostrobin.battleships.common.data.GameState;
 import com.jostrobin.battleships.common.data.Player;
-import com.jostrobin.battleships.controller.GameSelectionController;
 import com.jostrobin.battleships.model.GameSelectionModel;
+import com.jostrobin.battleships.view.listeners.EventListener;
 
 public class GameSelectionFrame extends JPanel implements ActionListener, Observer
 {
     private static final long serialVersionUID = 1L;
-
-    private GameSelectionController controller;
 
     private JPanel availableGamesPanel;
 
@@ -47,11 +46,12 @@ public class GameSelectionFrame extends JPanel implements ActionListener, Observ
 
     int y = 0;
 
-    public GameSelectionFrame(GameSelectionController controller)
-    {
-        this.controller = controller;
-        controller.addView(this);
+    private List<EventListener<Object>> exitListeners = new ArrayList<EventListener<Object>>();
+    private List<EventListener<Object>> createGameListeners = new ArrayList<EventListener<Object>>();
+    private List<EventListener<Player>> joinGameListeners = new ArrayList<EventListener<Player>>();
 
+    public GameSelectionFrame()
+    {
         buildUi();
 
         refreshState();
@@ -208,7 +208,10 @@ public class GameSelectionFrame extends JPanel implements ActionListener, Observ
         Object source = e.getSource();
         if (source == exitButton)
         {
-            controller.exit();
+            for (EventListener<Object> eventListener : exitListeners)
+            {
+                eventListener.actionPerformed(null);
+            }
         }
         else if (source == joinButton)
         {
@@ -218,13 +221,19 @@ public class GameSelectionFrame extends JPanel implements ActionListener, Observ
                 Player player = tableModel.getPlayerAtRow(row);
                 if (player != null)
                 {
-                    controller.joinGame(player);
+                    for (EventListener<Player> eventListener : joinGameListeners)
+                    {
+                        eventListener.actionPerformed(player);
+                    }
                 }
             }
         }
         else if (source == createGameButton)
         {
-            controller.createGame();
+            for (EventListener<Object> eventListener : createGameListeners)
+            {
+                eventListener.actionPerformed(null);
+            }
         }
     }
 
@@ -257,4 +266,33 @@ public class GameSelectionFrame extends JPanel implements ActionListener, Observ
         }
     }
 
+    public void addExitListener(EventListener<Object> exitListener)
+    {
+        exitListeners.add(exitListener);
+    }
+
+    public void removeExitListener(EventListener<Object> exitListener)
+    {
+        exitListeners.remove(exitListener);
+    }
+
+    public void addJoinGameListener(EventListener<Player> joinGameListener)
+    {
+        joinGameListeners.add(joinGameListener);
+    }
+
+    public void removeJoinGameListener(EventListener<Player> joinGameListener)
+    {
+        joinGameListeners.remove(joinGameListener);
+    }
+
+    public void addCreateGameListener(EventListener<Object> createGameListener)
+    {
+        createGameListeners.add(createGameListener);
+    }
+
+    public void removeCreateGameListener(EventListener<Object> createGameListener)
+    {
+        createGameListeners.remove(createGameListener);
+    }
 }

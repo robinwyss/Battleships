@@ -18,7 +18,7 @@
     <bean id="uiController" class="com.jostrobin.battleships.view.controller.UIController"
           p:gameFrame-ref="gameFrame"
           p:registrationDialog-ref="registrationDialog"
-          p:gameSelectionController-ref="gameSelectionController"/>
+          p:gameSelectionFrame-ref="gameSelectionFrame"/>
     <bean id="placementController" class="com.jostrobin.battleships.controller.PlacementController"
           p:model-ref="placementModel" p:placementPanel-ref="placementPanel"/>
     <bean id="chatController" class="com.jostrobin.battleships.controller.ChatController"
@@ -26,7 +26,8 @@
           p:controller-ref="applicationController"/>
     <bean id="gameSelectionController" class="com.jostrobin.battleships.controller.GameSelectionController"
           p:applicationController-ref="applicationController"
-          p:model-ref="gameSelectionModel"/>
+          p:model-ref="gameSelectionModel"
+          p:gameSelectionFrame-ref="gameSelectionFrame"/>
     <bean id="registrationController" class="com.jostrobin.battleships.controller.RegistrationController"
           p:applicationController-ref="applicationController"
           p:registrationDialog-ref="registrationDialog"/>
@@ -41,9 +42,9 @@
           p:gamePanel-ref="battleFieldPanel"
           p:placementPanel-ref="placementPanel"
           p:chatPanel-ref="chatPanel"/>
-
     <bean id="placementPanel" class="com.jostrobin.battleships.view.panels.PlacementPanel"
           p:placementModel-ref="placementModel"/>
     <bean id="battleFieldPanel" class="com.jostrobin.battleships.view.panels.BattleFieldPanel"/>
     <bean id="chatPanel" class="com.jostrobin.battleships.view.panels.ChatPanel"/>
+    <bean id="gameSelectionFrame" class="com.jostrobin.battleships.view.frames.GameSelectionFrame"/>
 </beans>
