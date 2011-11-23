@@ -2,16 +2,18 @@ package com.jostrobin.battleships.controller;
 
 import java.util.Observer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
+
 import com.jostrobin.battleships.ApplicationController;
 import com.jostrobin.battleships.common.data.GameState;
 import com.jostrobin.battleships.common.data.Player;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.common.network.NetworkListener;
 import com.jostrobin.battleships.model.GameSelectionModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class GameSelectionController implements NetworkListener
+public class GameSelectionController implements NetworkListener, InitializingBean
 {
     private static final Logger logger = LoggerFactory.getLogger(GameSelectionController.class);
 
@@ -19,6 +21,12 @@ public class GameSelectionController implements NetworkListener
 
     private GameSelectionModel model;
 
+	@Override
+	public void afterPropertiesSet() throws Exception
+	{
+		applicationController.addNetworkListener(this);
+	}
+	
     public void addView(Observer view)
     {
         model.addObserver(view);

@@ -15,8 +15,13 @@
 
 package com.jostrobin.battleships.view.controller;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Dimension;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.jostrobin.battleships.ApplicationController;
 import com.jostrobin.battleships.controller.GameSelectionController;
@@ -25,8 +30,6 @@ import com.jostrobin.battleships.view.frames.CreateGameFrame;
 import com.jostrobin.battleships.view.frames.GameFrame;
 import com.jostrobin.battleships.view.frames.GameSelectionFrame;
 import com.jostrobin.battleships.view.frames.RegistrationDialog;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author rowyss
@@ -38,7 +41,7 @@ public class UIController
 
     private JFrame frame;
     private JPanel currentFrame;
-    private ApplicationController controller;
+    private ApplicationController applicationController;
     private RegistrationDialog registrationDialog;
     private GameSelectionFrame gameSelectionFrame;
     private CreateGameFrame createGameFrame;
@@ -72,7 +75,7 @@ public class UIController
 
     public void showCreateGame()
     {
-        createGameFrame = new CreateGameFrame(controller);
+        createGameFrame = new CreateGameFrame(applicationController);
         show(createGameFrame);
     }
 
@@ -152,13 +155,13 @@ public class UIController
         this.createGameFrame = createGameFrame;
     }
 
-    public ApplicationController getController()
-    {
-        return controller;
-    }
+	public ApplicationController getApplicationController()
+	{
+		return applicationController;
+	}
 
-    public void setController(ApplicationController controller)
-    {
-        this.controller = controller;
-    }
+	public void setApplicationController(ApplicationController applicationController)
+	{
+		this.applicationController = applicationController;
+	}
 }

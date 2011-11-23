@@ -1,15 +1,21 @@
 package com.jostrobin.battleships.controller;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.InterfaceAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Observable;
 
-import com.jostrobin.battleships.ApplicationController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.jostrobin.battleships.ApplicationController;
 
 public class ServerDetectionController extends Observable implements Runnable
 {
@@ -33,7 +39,7 @@ public class ServerDetectionController extends Observable implements Runnable
 
     private ApplicationController applicationController;
 
-    public ServerDetectionController()
+    public void init()
     {
         try
         {
@@ -44,7 +50,7 @@ public class ServerDetectionController extends Observable implements Runnable
             logger.error("Could not open socket", e);
         }
     }
-
+    
     /**
      * Called when we have a server ip. Initializes controllers and everything needed to start the application.
      *

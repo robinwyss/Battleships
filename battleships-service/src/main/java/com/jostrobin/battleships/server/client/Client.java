@@ -59,7 +59,8 @@ public class Client extends Player implements NetworkListener
      */
     public void startup() throws IOException
     {
-        NetworkHandler handler = new NetworkHandler(socket);
+        NetworkHandler handler = new NetworkHandler();
+        handler.init(socket);
         handler.addNetworkListener(this);
 
         Thread thread = new Thread(handler);

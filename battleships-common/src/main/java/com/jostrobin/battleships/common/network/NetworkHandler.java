@@ -27,7 +27,7 @@ public class NetworkHandler implements Runnable
 	
 	private DataInputStream inputStream;
 
-	public NetworkHandler(Socket socket) throws IOException
+	public void init(Socket socket) throws IOException
 	{
 		inputStream = new DataInputStream(socket.getInputStream());
 	}
