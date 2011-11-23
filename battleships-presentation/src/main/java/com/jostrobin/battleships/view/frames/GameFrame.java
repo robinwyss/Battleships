@@ -34,6 +34,7 @@ public class GameFrame extends JPanel
     private int y;
     private BattleFieldPanel gamePanel;
     private PlacementPanel placementPanel;
+    private ChatPanel chatPanel;
 
     @PostConstruct
     private void initUI()
@@ -67,7 +68,6 @@ public class GameFrame extends JPanel
 
     public void addChatPanel()
     {
-        ChatPanel chatPanel = new ChatPanel();
         GridBagConstraints chatPanelConstraints = new GridBagConstraints();
         chatPanelConstraints.gridy = y++;
         chatPanelConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
@@ -75,7 +75,6 @@ public class GameFrame extends JPanel
         chatPanelConstraints.weightx = 1.0;
         chatPanelConstraints.weighty = 0.2;
         add(chatPanel, chatPanelConstraints);
-//        new ChatController(chatPanel);
     }
 
     public void showGameWindow()
@@ -109,4 +108,14 @@ public class GameFrame extends JPanel
     {
         this.placementPanel = placementPanel;
     }
+
+	public ChatPanel getChatPanel()
+	{
+		return chatPanel;
+	}
+
+	public void setChatPanel(ChatPanel chatPanel)
+	{
+		this.chatPanel = chatPanel;
+	}
 }

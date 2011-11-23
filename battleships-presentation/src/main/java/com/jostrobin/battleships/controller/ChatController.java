@@ -1,26 +1,61 @@
 package com.jostrobin.battleships.controller;
 
+import org.springframework.beans.factory.InitializingBean;
+
 import com.jostrobin.battleships.ApplicationController;
+import com.jostrobin.battleships.common.network.Command;
+import com.jostrobin.battleships.common.network.NetworkListener;
 import com.jostrobin.battleships.listener.ChatListener;
 import com.jostrobin.battleships.view.panels.ChatPanel;
 
-public class ChatController
+public class ChatController implements InitializingBean, NetworkListener
 {
-	private ChatPanel panel;
+	private ChatPanel chatPanel;
 	
 	private ApplicationController controller;
 	
-	public ChatController(ApplicationController controller, ChatPanel panel)
+	@Override
+	public void afterPropertiesSet() throws Exception
 	{
-		this.panel = panel;
-		panel.addChatListener(new DefaultChatListener());
+		chatPanel.addChatListener(new DefaultChatListener());
+		controller.addNetworkListener(this);
 	}
-	
+
+	public ChatPanel getChatPanel()
+	{
+		return chatPanel;
+	}
+
+	public void setChatPanel(ChatPanel chatPanel)
+	{
+		this.chatPanel = chatPanel;
+	}
+
+	public ApplicationController getController()
+	{
+		return controller;
+	}
+
+	public void setController(ApplicationController controller)
+	{
+		this.controller = controller;
+	}
+
 	private class DefaultChatListener implements ChatListener
 	{
 		@Override
-		public void sendMessage(String username, String message)
+		public void sendMessage(String message)
 		{
+			controller.sendChatMessage(message);
+		}
+	}
+
+	@Override
+	public void notify(Command command)
+	{
+		if (command.getCommand() == Command.CHAT_MESSAGE)
+		{
+			chatPanel.addChatMessage(command.getUsername(), command.getMessage());
 		}
 	}
 }

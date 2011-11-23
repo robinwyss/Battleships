@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import com.jostrobin.battleships.common.data.GameData;
 import com.jostrobin.battleships.common.data.Player;
 import com.jostrobin.battleships.common.network.NetworkHandler;
@@ -12,8 +15,6 @@ import com.jostrobin.battleships.common.network.NetworkWriter;
 import com.jostrobin.battleships.controller.RegistrationController;
 import com.jostrobin.battleships.model.GameSelectionModel;
 import com.jostrobin.battleships.view.controller.UIController;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * This is the entry point of the application.
@@ -37,6 +38,8 @@ public class ApplicationController
     private NetworkHandler networkHandler;
 
     private Socket socket;
+    
+    private String username;
 
     public ApplicationController(InetAddress address) throws IOException
     {
@@ -66,6 +69,8 @@ public class ApplicationController
 
     public void login(String username) throws IOException
     {
+    	this.username = username;
+    	
         Thread thread = new Thread(networkHandler);
         thread.start();
 
@@ -105,6 +110,19 @@ public class ApplicationController
             // TODO: Communication stopped
             e.printStackTrace();
         }
+    }
+    
+    public void sendChatMessage(String message)
+    {
+    	try
+		{
+			writer.sendChatMessage(username, message);
+		}
+    	catch (IOException e)
+		{
+            // TODO: Communication stopped
+            e.printStackTrace();
+		}
     }
 
 }

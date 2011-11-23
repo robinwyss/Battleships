@@ -36,4 +36,11 @@ public class NetworkWriter
         outputStream.writeInt(game.getFieldLength());
         outputStream.writeInt(game.getFieldWidth());
     }
+    
+    public void sendChatMessage(String username, String message) throws IOException
+    {
+    	outputStream.writeInt(Command.CHAT_MESSAGE);
+    	outputStream.writeUTF(username);
+    	outputStream.writeUTF(message);
+    }
 }

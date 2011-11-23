@@ -10,6 +10,7 @@
           p:gameFrame-ref="gameFrame"/>
     <bean id="placementController" class="com.jostrobin.battleships.controller.PlacementController"
           p:model-ref="placementModel" p:placementPanel-ref="placementPanel"/>
+    <bean id="chatController" class="com.jostrobin.battleships.controller.ChatController" p:chatPanel-ref="chatPanel" />
 
     <!-- Model -->
     <bean id="placementModel" class="com.jostrobin.battleships.model.PlacementModel"/>
@@ -18,9 +19,11 @@
     <!-- View -->
     <bean id="gameFrame" class="com.jostrobin.battleships.view.frames.GameFrame"
           p:gamePanel-ref="battleFieldPanel"
-          p:placementPanel-ref="placementPanel"/>
+          p:placementPanel-ref="placementPanel"
+          p:chatPanel-ref="chatPanel"/>
 
     <bean id="placementPanel" class="com.jostrobin.battleships.view.panels.PlacementPanel"
           p:placementModel-ref="placementModel"/>
     <bean id="battleFieldPanel" class="com.jostrobin.battleships.view.panels.BattleFieldPanel"/>
+    <bean id="chatPanel" class="com.jostrobin.battleships.view.panels.ChatPanel"/>
 </beans>

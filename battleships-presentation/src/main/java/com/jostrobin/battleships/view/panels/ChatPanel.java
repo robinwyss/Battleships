@@ -95,14 +95,14 @@ public class ChatPanel extends JPanel implements ActionListener
         add(displayArea, textConstraints);
     }
     
+    public void addChatMessage(String username, String message)
+    {
+        displayArea.append(String.format("%s: %s\n", username, message));
+    }
+    
     public void addChatListener(ChatListener listener)
     {
     	chatListeners.add(listener);
-    }
-
-    public void displayMessage(String username, String message)
-    {
-        displayArea.append(String.format("%s: %s", username, message));
     }
 
     @Override
@@ -110,8 +110,7 @@ public class ChatPanel extends JPanel implements ActionListener
     {
     	for (ChatListener listener : chatListeners)
     	{
-    		// TODO: Add username??
-    		listener.sendMessage("", messageField.getText());
+    		listener.sendMessage(messageField.getText());
     	}
         messageField.setText("");
     }
