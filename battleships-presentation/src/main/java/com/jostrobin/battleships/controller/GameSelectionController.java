@@ -1,7 +1,5 @@
 package com.jostrobin.battleships.controller;
 
-import java.util.Observer;
-
 import com.jostrobin.battleships.ApplicationController;
 import com.jostrobin.battleships.common.data.GameState;
 import com.jostrobin.battleships.common.data.Player;
@@ -24,9 +22,13 @@ public class GameSelectionController implements NetworkListener, InitializingBea
 
     private GameSelectionFrame gameSelectionFrame;
 
-    public void addView(Observer view)
+    @Override
+    public void afterPropertiesSet() throws Exception
     {
-        model.addObserver(view);
+        applicationController.addNetworkListener(this);
+        gameSelectionFrame.addCreateGameListener(new CreateGameListener());
+        gameSelectionFrame.addExitListener(new ExitListener());
+        gameSelectionFrame.addJoinGameListener(new JoinGameListener());
     }
 
 
@@ -52,7 +54,7 @@ public class GameSelectionController implements NetworkListener, InitializingBea
             if (command.getCommand() == Command.PLAYERS_LIST)
             {
                 model.setPlayers(command.getPlayers());
-                model.notifyObservers();
+                gameSelectionFrame.updatePlayerList();
             }
             else if (command.getCommand() == Command.PREPARE_GAME)
             {
@@ -81,15 +83,7 @@ public class GameSelectionController implements NetworkListener, InitializingBea
         this.gameSelectionFrame = gameSelectionFrame;
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception
-    {
-        gameSelectionFrame.addCreateGameListener(new CreateGameListener());
-        gameSelectionFrame.addExitListener(new ExitListner());
-        gameSelectionFrame.addJoinGameListener(new JoinGameListener());
-    }
-
-    private class ExitListner implements EventListener<Object>
+    private class ExitListener implements EventListener<Object>
     {
 
         @Override
@@ -119,5 +113,3 @@ public class GameSelectionController implements NetworkListener, InitializingBea
         }
     }
 }
-
-

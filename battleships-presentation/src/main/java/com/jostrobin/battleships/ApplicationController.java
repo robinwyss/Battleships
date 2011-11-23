@@ -37,6 +37,11 @@ public class ApplicationController
 
     private String username;
 
+    public ApplicationController(NetworkHandler handler)
+    {
+        this.networkHandler = handler;
+    }
+
     public void init(InetAddress address) throws IOException
     {
         String username = System.getProperty("username");
@@ -52,7 +57,7 @@ public class ApplicationController
         this.address = address;
 
         socket = new Socket(address, SERVER_PORT);
-        networkHandler = new NetworkHandler(socket);
+        networkHandler.init(socket);
     }
 
     public void login(String username)

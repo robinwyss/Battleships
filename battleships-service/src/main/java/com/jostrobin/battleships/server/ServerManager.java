@@ -89,6 +89,7 @@ public class ServerManager
                     removeClient(client);
                 }
             }
+            client.setGame(game);
         }
         resendPlayerLists();
     }

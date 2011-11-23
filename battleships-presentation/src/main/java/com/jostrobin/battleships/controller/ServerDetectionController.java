@@ -33,7 +33,7 @@ public class ServerDetectionController extends Observable implements Runnable
 
     private ApplicationController applicationController;
 
-    public ServerDetectionController()
+    public void init()
     {
         try
         {

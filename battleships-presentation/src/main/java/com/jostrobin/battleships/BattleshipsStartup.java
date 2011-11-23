@@ -49,6 +49,7 @@ public class BattleshipsStartup
         // send a udp broadcast to find a server
         else
         {
+            serverDetectionController.init();
             // start the detection controller in its own thread to wait for server answers
             // the server detection controller will start the application controller once a server is ready
             serverDetectionController.addObserver(new ServerDetectionFrame(serverDetectionController));

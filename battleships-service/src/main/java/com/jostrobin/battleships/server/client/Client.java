@@ -5,9 +5,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.jostrobin.battleships.common.data.GameState;
 import com.jostrobin.battleships.common.data.Player;
 import com.jostrobin.battleships.common.network.Command;
@@ -16,6 +13,8 @@ import com.jostrobin.battleships.common.network.NetworkListener;
 import com.jostrobin.battleships.server.ServerManager;
 import com.jostrobin.battleships.server.game.Game;
 import com.jostrobin.battleships.server.network.Writer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Represents a client.  Extends the player data with server side used objects.
@@ -42,14 +41,14 @@ public class Client extends Player implements NetworkListener
         this.serverManager = serverManager;
         this.clientWriter = clientWriter;
     }
-    
+
     public void init(Socket socket, Long id, String username) throws IOException
     {
-    	super.setId(id);
-    	super.setUsername(username);
-    	
-    	this.socket = socket;
-    	clientWriter.init(socket);
+        super.setId(id);
+        super.setUsername(username);
+
+        this.socket = socket;
+        clientWriter.init(socket);
     }
 
     /**
@@ -59,7 +58,8 @@ public class Client extends Player implements NetworkListener
      */
     public void startup() throws IOException
     {
-        NetworkHandler handler = new NetworkHandler(socket);
+        NetworkHandler handler = new NetworkHandler();
+        handler.init(socket);
         handler.addNetworkListener(this);
 
         Thread thread = new Thread(handler);
@@ -94,22 +94,22 @@ public class Client extends Player implements NetworkListener
                 case Command.JOIN_GAME:
                     serverManager.joinGame(this, command.getGameId());
                     break;
-                    
+
                 case Command.CHAT_MESSAGE:
-                	if (game != null)
-                	{
-                		try
-						{
-							game.notifyAboutChatMessage(command.getUsername(), command.getMessage());
-						}
-                		catch (IOException e)
-						{
+                    if (game != null)
+                    {
+                        try
+                        {
+                            game.notifyAboutChatMessage(command.getUsername(), command.getMessage());
+                        }
+                        catch (IOException e)
+                        {
                             // there was an error in communication
                             serverManager.removeClient(this);
                             serverManager.resendPlayerLists();
-						}
-                	}
-                	break;
+                        }
+                    }
+                    break;
             }
         }
         else
@@ -122,21 +122,21 @@ public class Client extends Player implements NetworkListener
 
     public void sendAvailablePlayers(List<Client> clients) throws IOException
     {
-    	// remove its own players, only send opponents
-    	List<Client> opponents = new ArrayList<Client>(clients.size());
-    	for (Client client : clients)
-    	{
-    		if (!client.getId().equals(getId()))
-    		{
-    			opponents.add(client);
-    		}
-    	}
+        // remove its own players, only send opponents
+        List<Client> opponents = new ArrayList<Client>(clients.size());
+        for (Client client : clients)
+        {
+            if (!client.getId().equals(getId()))
+            {
+                opponents.add(client);
+            }
+        }
         clientWriter.sendAvailablePlayers(opponents);
     }
-    
+
     public void sendChatMessage(String username, String message) throws IOException
     {
-		clientWriter.sendChatMessage(username, message);
+        clientWriter.sendChatMessage(username, message);
     }
 
     /**

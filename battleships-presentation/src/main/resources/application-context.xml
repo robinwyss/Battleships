@@ -14,9 +14,12 @@
 
     <!-- Controller -->
     <bean id="applicationController" class="com.jostrobin.battleships.ApplicationController"
-          p:uiController-ref="uiController"/>
+          p:uiController-ref="uiController">
+        <constructor-arg ref="networkHandler"/>
+    </bean>
     <bean id="uiController" class="com.jostrobin.battleships.view.controller.UIController"
           p:gameFrame-ref="gameFrame"
+          p:applicationController-ref="applicationController"
           p:registrationDialog-ref="registrationDialog"
           p:gameSelectionFrame-ref="gameSelectionFrame"/>
     <bean id="placementController" class="com.jostrobin.battleships.controller.PlacementController"
@@ -46,5 +49,9 @@
           p:placementModel-ref="placementModel"/>
     <bean id="battleFieldPanel" class="com.jostrobin.battleships.view.panels.BattleFieldPanel"/>
     <bean id="chatPanel" class="com.jostrobin.battleships.view.panels.ChatPanel"/>
-    <bean id="gameSelectionFrame" class="com.jostrobin.battleships.view.frames.GameSelectionFrame"/>
+    <bean id="gameSelectionFrame" class="com.jostrobin.battleships.view.frames.GameSelectionFrame"
+          p:gameSelectionModel-ref="gameSelectionModel"/>
+
+    <!-- Network -->
+    <bean id="networkHandler" class="com.jostrobin.battleships.common.network.NetworkHandler"/>
 </beans>

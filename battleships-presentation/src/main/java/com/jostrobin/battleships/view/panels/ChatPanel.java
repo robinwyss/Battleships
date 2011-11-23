@@ -18,6 +18,8 @@ package com.jostrobin.battleships.view.panels;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
@@ -28,7 +30,7 @@ import com.jostrobin.battleships.listener.ChatListener;
  * @author rowyss
  *         Date: 28.10.11 Time: 18:01
  */
-public class ChatPanel extends JPanel implements ActionListener
+public class ChatPanel extends JPanel implements ActionListener, KeyListener
 {
 
     private JTextArea displayArea;
@@ -67,6 +69,7 @@ public class ChatPanel extends JPanel implements ActionListener
     private void addInputField()
     {
         messageField = new JTextField();
+        messageField.addKeyListener(this);
         GridBagConstraints messageFieldConstraints = new GridBagConstraints();
         messageFieldConstraints.gridy = y;
         messageFieldConstraints.weightx = 1.0;
@@ -103,10 +106,38 @@ public class ChatPanel extends JPanel implements ActionListener
     @Override
     public void actionPerformed(ActionEvent actionEvent)
     {
-        for (ChatListener listener : chatListeners)
+        sendMessage();
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e)
+    {
+    }
+
+    private void sendMessage()
+    {
+        String message = messageField.getText();
+        if (message != null && !message.equals(""))
         {
-            listener.sendMessage(messageField.getText());
+            for (ChatListener listener : chatListeners)
+            {
+                listener.sendMessage(message);
+            }
         }
         messageField.setText("");
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e)
+    {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e)
+    {
+        if (e.getKeyCode() == KeyEvent.VK_ENTER)
+        {
+            sendMessage();
+        }
     }
 }

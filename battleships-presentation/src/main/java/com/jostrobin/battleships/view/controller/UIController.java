@@ -38,7 +38,7 @@ public class UIController
 
     private JFrame frame;
     private JPanel currentFrame;
-    private ApplicationController controller;
+    private ApplicationController applicationController;
     private RegistrationDialog registrationDialog;
     private GameSelectionFrame gameSelectionFrame;
     private CreateGameFrame createGameFrame;
@@ -64,7 +64,7 @@ public class UIController
 
     public void showCreateGame()
     {
-        createGameFrame = new CreateGameFrame(controller);
+        createGameFrame = new CreateGameFrame(applicationController);
         show(createGameFrame);
     }
 
@@ -113,8 +113,8 @@ public class UIController
         this.createGameFrame = createGameFrame;
     }
 
-    public void setController(ApplicationController controller)
+    public void setApplicationController(ApplicationController applicationController)
     {
-        this.controller = controller;
+        this.applicationController = applicationController;
     }
 }
