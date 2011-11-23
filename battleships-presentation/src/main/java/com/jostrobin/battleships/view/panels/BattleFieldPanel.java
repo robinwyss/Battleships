@@ -38,6 +38,7 @@ public class BattleFieldPanel extends JPanel implements ActionListener
     public static final Logger LOG = LoggerFactory.getLogger(BattleFieldPanel.class);
     private List<SelectionListener<Cell>> selectionListeners = new ArrayList<SelectionListener<Cell>>();
     private final JPanel contentPanel;
+    private Cell[][] cellArray;
     private List<Cell> cells = new ArrayList<Cell>();
 
     public BattleFieldPanel()
@@ -45,13 +46,15 @@ public class BattleFieldPanel extends JPanel implements ActionListener
         contentPanel = new JPanel();
         contentPanel.setLayout(new GridLayout(size, size));
 
+        cellArray = new Cell[size][size];
         for (int y = 0; y < size; y++)
         {
             for (int x = 0; x < size; x++)
             {
                 CellComponent cell = new CellComponent(x, y);
                 cell.addActionListener(this);
-                cells.add(cell);
+                cellArray[x][y] = cell;
+//                cells.add(cell);
                 contentPanel.add(cell);
             }
         }
@@ -75,14 +78,15 @@ public class BattleFieldPanel extends JPanel implements ActionListener
 
     public Cell findCellAt(int x, int y)
     {
-        for (Cell cell : cells)
-        {
-            if (cell.getBoardX() == x && cell.getBoardY() == y)
-            {
-                return cell;
-            }
-        }
-        return null;
+//        for (Cell cell : cells)
+//        {
+//            if (cell.getBoardX() == x && cell.getBoardY() == y)
+//            {
+//                return cell;
+//            }
+//        }
+        return cellArray[x][y];
+//        return null;
     }
 
     public void addSelectionListener(SelectionListener<Cell> selectionListener)

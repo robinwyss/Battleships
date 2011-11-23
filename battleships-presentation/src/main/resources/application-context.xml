@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <!-- Controller -->
+    <bean id="uiController" class="com.jostrobin.battleships.view.controller.UIController"
+          p:gameFrame-ref="gameFrame"/>
+    <bean id="placementController" class="com.jostrobin.battleships.controller.PlacementController"
+          p:model-ref="placementModel" p:placementPanel-ref="placementPanel"/>
+
+    <!-- Model -->
+    <bean id="placementModel" class="com.jostrobin.battleships.model.PlacementModel"/>
+
+
+    <!-- View -->
+    <bean id="gameFrame" class="com.jostrobin.battleships.view.frames.GameFrame"
+          p:gamePanel-ref="battleFieldPanel"
+          p:placementPanel-ref="placementPanel"/>
+
+    <bean id="placementPanel" class="com.jostrobin.battleships.view.panels.PlacementPanel"
+          p:placementModel-ref="placementModel"/>
+    <bean id="battleFieldPanel" class="com.jostrobin.battleships.view.panels.BattleFieldPanel"/>
+</beans>

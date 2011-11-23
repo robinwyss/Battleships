@@ -16,7 +16,6 @@ public class BattleshipsStartup
     public static void main(String... args)
     {
         setLookAndFeel();
-
         // if an ip is given, use this one
         String ip = null;
         for (String arg : args)

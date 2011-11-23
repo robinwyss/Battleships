@@ -15,10 +15,13 @@
 
 package com.jostrobin.battleships.controller;
 
+import javax.annotation.PostConstruct;
+
 import com.jostrobin.battleships.data.Cell;
 import com.jostrobin.battleships.data.Ship;
 import com.jostrobin.battleships.data.enums.CellType;
 import com.jostrobin.battleships.data.enums.Orientation;
+import com.jostrobin.battleships.model.PlacementModel;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
 import com.jostrobin.battleships.view.panels.PlacementPanel;
 
@@ -31,9 +34,9 @@ public class PlacementController
     private PlacementPanel placementPanel;
     private PlacementModel model;
 
-    public PlacementController(PlacementPanel placementPanel)
+    @PostConstruct
+    public void init()
     {
-        this.placementPanel = placementPanel;
         placementPanel.addCellSelectionListener(new CellSelectionListener());
         placementPanel.addShipSelectionListener(new ShipSelectionListener());
     }
@@ -165,5 +168,15 @@ public class PlacementController
         {
             PlacementController.this.selected(cell);
         }
+    }
+
+    public PlacementPanel getPlacementPanel()
+    {
+        return placementPanel;
+    }
+
+    public void setPlacementPanel(PlacementPanel placementPanel)
+    {
+        this.placementPanel = placementPanel;
     }
 }
