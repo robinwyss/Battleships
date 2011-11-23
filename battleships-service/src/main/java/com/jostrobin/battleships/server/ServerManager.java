@@ -4,12 +4,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.server.client.Client;
 import com.jostrobin.battleships.server.game.Game;
 import com.jostrobin.battleships.server.util.IdGenerator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ServerManager
 {
@@ -89,6 +90,7 @@ public class ServerManager
                     removeClient(client);
                 }
             }
+            client.setGame(game);
         }
         resendPlayerLists();
     }
