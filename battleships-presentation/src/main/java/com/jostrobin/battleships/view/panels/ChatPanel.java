@@ -15,10 +15,19 @@
 
 package com.jostrobin.battleships.view.panels;
 
-import java.awt.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+import com.jostrobin.battleships.listener.ChatListener;
 
 /**
  * @author rowyss
@@ -31,6 +40,7 @@ public class ChatPanel extends JPanel implements ActionListener
     private JTextField messageField;
     private JButton sendButton;
     private int y;
+    private List<ChatListener> chatListeners = new ArrayList<ChatListener>();
 
     public ChatPanel()
     {
@@ -84,6 +94,11 @@ public class ChatPanel extends JPanel implements ActionListener
         textConstraints.fill = GridBagConstraints.BOTH;
         add(displayArea, textConstraints);
     }
+    
+    public void addChatListener(ChatListener listener)
+    {
+    	chatListeners.add(listener);
+    }
 
     public void displayMessage(String username, String message)
     {
@@ -93,6 +108,11 @@ public class ChatPanel extends JPanel implements ActionListener
     @Override
     public void actionPerformed(ActionEvent actionEvent)
     {
+    	for (ChatListener listener : chatListeners)
+    	{
+    		// TODO: Add username??
+    		listener.sendMessage("", messageField.getText());
+    	}
         messageField.setText("");
     }
 }

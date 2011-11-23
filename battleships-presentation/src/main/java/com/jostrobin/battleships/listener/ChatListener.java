@@ -21,5 +21,5 @@ package com.jostrobin.battleships.listener;
  */
 public interface ChatListener
 {
-    void receiveMessage(String username, String message);
+    void sendMessage(String username, String message);
 }
