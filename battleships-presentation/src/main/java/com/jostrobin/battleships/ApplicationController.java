@@ -35,6 +35,8 @@ public class ApplicationController
 
     private Socket socket;
 
+    private String username;
+
     public void init(InetAddress address) throws IOException
     {
         String username = System.getProperty("username");
@@ -55,6 +57,8 @@ public class ApplicationController
 
     public void login(String username)
     {
+        this.username = username;
+
         // show the next frame
         uiController.showGameSelection();
 
@@ -99,6 +103,19 @@ public class ApplicationController
         try
         {
             writer.joinGame(player);
+        }
+        catch (IOException e)
+        {
+            // TODO: Communication stopped
+            e.printStackTrace();
+        }
+    }
+
+    public void sendChatMessage(String message)
+    {
+        try
+        {
+            writer.sendChatMessage(username, message);
         }
         catch (IOException e)
         {

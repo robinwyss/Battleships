@@ -50,6 +50,7 @@ public class GameSelectionFrame extends JPanel implements ActionListener, Observ
     public GameSelectionFrame(GameSelectionController controller)
     {
         this.controller = controller;
+        controller.addView(this);
 
         buildUi();
 

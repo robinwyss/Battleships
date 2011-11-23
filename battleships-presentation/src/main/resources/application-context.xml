@@ -21,12 +21,15 @@
           p:gameSelectionController-ref="gameSelectionController"/>
     <bean id="placementController" class="com.jostrobin.battleships.controller.PlacementController"
           p:model-ref="placementModel" p:placementPanel-ref="placementPanel"/>
+    <bean id="chatController" class="com.jostrobin.battleships.controller.ChatController"
+          p:chatPanel-ref="chatPanel"
+          p:controller-ref="applicationController"/>
+    <bean id="gameSelectionController" class="com.jostrobin.battleships.controller.GameSelectionController"
+          p:applicationController-ref="applicationController"
+          p:model-ref="gameSelectionModel"/>
     <bean id="registrationController" class="com.jostrobin.battleships.controller.RegistrationController"
           p:applicationController-ref="applicationController"
           p:registrationDialog-ref="registrationDialog"/>
-    <bean id="gameSelectionController" class="com.jostrobin.battleships.controller.GameSelectionController"
-          p:model-ref="gameSelectionModel"
-          p:applicationController-ref="applicationController"/>
 
     <!-- Model -->
     <bean id="placementModel" class="com.jostrobin.battleships.model.PlacementModel"/>
@@ -36,9 +39,11 @@
     <bean id="registrationDialog" class="com.jostrobin.battleships.view.frames.RegistrationDialog"/>
     <bean id="gameFrame" class="com.jostrobin.battleships.view.frames.GameFrame"
           p:gamePanel-ref="battleFieldPanel"
-          p:placementPanel-ref="placementPanel"/>
+          p:placementPanel-ref="placementPanel"
+          p:chatPanel-ref="chatPanel"/>
 
     <bean id="placementPanel" class="com.jostrobin.battleships.view.panels.PlacementPanel"
           p:placementModel-ref="placementModel"/>
     <bean id="battleFieldPanel" class="com.jostrobin.battleships.view.panels.BattleFieldPanel"/>
+    <bean id="chatPanel" class="com.jostrobin.battleships.view.panels.ChatPanel"/>
 </beans>

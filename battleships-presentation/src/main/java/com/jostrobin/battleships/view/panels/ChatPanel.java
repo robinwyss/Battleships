@@ -15,17 +15,12 @@
 
 package com.jostrobin.battleships.view.panels;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import com.jostrobin.battleships.listener.ChatListener;
 
@@ -94,25 +89,24 @@ public class ChatPanel extends JPanel implements ActionListener
         textConstraints.fill = GridBagConstraints.BOTH;
         add(displayArea, textConstraints);
     }
-    
-    public void addChatListener(ChatListener listener)
+
+    public void addChatMessage(String username, String message)
     {
-    	chatListeners.add(listener);
+        displayArea.append(String.format("%s: %s\n", username, message));
     }
 
-    public void displayMessage(String username, String message)
+    public void addChatListener(ChatListener listener)
     {
-        displayArea.append(String.format("%s: %s", username, message));
+        chatListeners.add(listener);
     }
 
     @Override
     public void actionPerformed(ActionEvent actionEvent)
     {
-    	for (ChatListener listener : chatListeners)
-    	{
-    		// TODO: Add username??
-    		listener.sendMessage("", messageField.getText());
-    	}
+        for (ChatListener listener : chatListeners)
+        {
+            listener.sendMessage(messageField.getText());
+        }
         messageField.setText("");
     }
 }
