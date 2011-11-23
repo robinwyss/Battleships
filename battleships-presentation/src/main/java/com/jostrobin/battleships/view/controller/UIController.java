@@ -49,18 +49,18 @@ public class UIController
     private SmoothResize smoothResize = new SmoothResize();
     private GameSelectionController gameSelectionController;
 
-    public UIController(ApplicationController controller)
+    public UIController()
     {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        this.controller = controller;
-        GameSelectionModel gameSelectionModel = new GameSelectionModel();
-        gameSelectionController = new GameSelectionController(this, controller, gameSelectionModel);
+
     }
 
     public void login(String username)
     {
+        GameSelectionModel gameSelectionModel = new GameSelectionModel();
+        gameSelectionController = new GameSelectionController(this, controller, gameSelectionModel);
         try
         {
             controller.addNetworkListener(gameSelectionController);
@@ -101,7 +101,6 @@ public class UIController
 
     public void showGameFrame()
     {
-        gameFrame = new GameFrame();
         gameFrame.showPlacementWindow();
         show(gameFrame);
     }
@@ -126,5 +125,63 @@ public class UIController
         smoothResize.resize(frame, newSize);
     }
 
+    public GameFrame getGameFrame()
+    {
+        return gameFrame;
+    }
 
+    public void setGameFrame(GameFrame gameFrame)
+    {
+        this.gameFrame = gameFrame;
+    }
+
+    public GameSelectionController getGameSelectionController()
+    {
+        return gameSelectionController;
+    }
+
+    public void setGameSelectionController(GameSelectionController gameSelectionController)
+    {
+        this.gameSelectionController = gameSelectionController;
+    }
+
+    public GameSelectionFrame getGameSelectionFrame()
+    {
+        return gameSelectionFrame;
+    }
+
+    public void setGameSelectionFrame(GameSelectionFrame gameSelectionFrame)
+    {
+        this.gameSelectionFrame = gameSelectionFrame;
+    }
+
+    public RegistrationDialog getRegistrationDialog()
+    {
+        return registrationDialog;
+    }
+
+    public void setRegistrationDialog(RegistrationDialog registrationDialog)
+    {
+        this.registrationDialog = registrationDialog;
+    }
+
+    public CreateGameFrame getCreateGameFrame()
+    {
+        return createGameFrame;
+    }
+
+    public void setCreateGameFrame(CreateGameFrame createGameFrame)
+    {
+        this.createGameFrame = createGameFrame;
+    }
+
+    public ApplicationController getController()
+    {
+        return controller;
+    }
+
+    public void setController(ApplicationController controller)
+    {
+        this.controller = controller;
+    }
 }

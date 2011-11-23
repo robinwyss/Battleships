@@ -16,10 +16,9 @@
 package com.jostrobin.battleships.view.frames;
 
 import java.awt.*;
+import javax.annotation.PostConstruct;
 import javax.swing.*;
 
-import com.jostrobin.battleships.controller.PlacementController;
-import com.jostrobin.battleships.controller.PlacementModel;
 import com.jostrobin.battleships.view.panels.BattleFieldPanel;
 import com.jostrobin.battleships.view.panels.ChatPanel;
 import com.jostrobin.battleships.view.panels.PlacementPanel;
@@ -34,16 +33,11 @@ public class GameFrame extends JPanel
     private BattleFieldPanel gamePanel;
     private PlacementPanel placementPanel;
 
-    public GameFrame() throws HeadlessException
-    {
-        initUI();
-    }
-
+    @PostConstruct
     private void initUI()
     {
         setLayout(new GridBagLayout());
 
-        gamePanel = new BattleFieldPanel();
         GridBagConstraints battlefieldConstraints = new GridBagConstraints();
         battlefieldConstraints.weightx = 1.0;
         battlefieldConstraints.weighty = 0.8;
@@ -53,7 +47,6 @@ public class GameFrame extends JPanel
         add(gamePanel, battlefieldConstraints);
         gamePanel.setVisible(false);
 
-        placementPanel = new PlacementPanel();
         GridBagConstraints placementPanelConstraints = new GridBagConstraints();
         placementPanelConstraints.weightx = 1.0;
         placementPanelConstraints.weighty = 0.8;
@@ -90,9 +83,25 @@ public class GameFrame extends JPanel
     {
         gamePanel.setVisible(false);
         placementPanel.setVisible(true);
-        PlacementModel placementModel = new PlacementModel();
-        placementPanel.setPlacementModel(placementModel);
-        new PlacementController(placementPanel).setModel(placementModel);
     }
 
+    public BattleFieldPanel getGamePanel()
+    {
+        return gamePanel;
+    }
+
+    public void setGamePanel(BattleFieldPanel gamePanel)
+    {
+        this.gamePanel = gamePanel;
+    }
+
+    public PlacementPanel getPlacementPanel()
+    {
+        return placementPanel;
+    }
+
+    public void setPlacementPanel(PlacementPanel placementPanel)
+    {
+        this.placementPanel = placementPanel;
+    }
 }

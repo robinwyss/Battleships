@@ -12,6 +12,8 @@ import com.jostrobin.battleships.common.network.NetworkWriter;
 import com.jostrobin.battleships.controller.RegistrationController;
 import com.jostrobin.battleships.model.GameSelectionModel;
 import com.jostrobin.battleships.view.controller.UIController;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * This is the entry point of the application.
@@ -38,7 +40,9 @@ public class ApplicationController
 
     public ApplicationController(InetAddress address) throws IOException
     {
-        uiController = new UIController(this);
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("application-context.xml");
+        uiController = applicationContext.getBean(UIController.class);
+        uiController.setController(this);
 
         String username = System.getProperty("username");
         if (username != null && !username.isEmpty())
@@ -54,6 +58,10 @@ public class ApplicationController
 
         socket = new Socket(address, SERVER_PORT);
         networkHandler = new NetworkHandler(socket);
+    }
+
+    public void init(InetAddress address)
+    {
     }
 
     public void login(String username) throws IOException
@@ -98,4 +106,5 @@ public class ApplicationController
             e.printStackTrace();
         }
     }
+
 }

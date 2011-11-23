@@ -18,9 +18,9 @@ package com.jostrobin.battleships.view.panels;
 import java.awt.*;
 import javax.swing.*;
 
-import com.jostrobin.battleships.controller.PlacementModel;
 import com.jostrobin.battleships.data.Cell;
 import com.jostrobin.battleships.data.Ship;
+import com.jostrobin.battleships.model.PlacementModel;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
