@@ -35,6 +35,7 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener
 
     private JTextArea displayArea;
     private JTextField messageField;
+    private JScrollPane scrollPane;
     private JButton sendButton;
     private int y;
     private List<ChatListener> chatListeners = new ArrayList<ChatListener>();
@@ -90,12 +91,15 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener
         textConstraints.weighty = 1.0;
         textConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
         textConstraints.fill = GridBagConstraints.BOTH;
-        add(displayArea, textConstraints);
+
+        scrollPane = new JScrollPane(displayArea);
+        add(scrollPane, textConstraints);
     }
 
     public void addChatMessage(String username, String message)
     {
         displayArea.append(String.format("%s: %s\n", username, message));
+        displayArea.setCaretPosition(displayArea.getDocument().getLength());
     }
 
     public void addChatListener(ChatListener listener)
