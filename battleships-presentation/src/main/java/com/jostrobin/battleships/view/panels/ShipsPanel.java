@@ -28,6 +28,7 @@ import javax.swing.*;
 
 import com.jostrobin.battleships.data.Ship;
 import com.jostrobin.battleships.view.components.CellComponent;
+import com.jostrobin.battleships.view.listeners.EventListener;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +43,8 @@ public class ShipsPanel extends JPanel implements ActionListener
     private JButton rotateRightButton;
     private int y;
     private List<SelectionListener<Ship>> selectionListeners = new ArrayList<SelectionListener<Ship>>();
-    private Map<Ship, JPanel> shipPanels = new HashMap<Ship, JPanel>();
+    private List<EventListener> rotationListeners = new ArrayList<EventListener>();
+    private Map<Ship, JPanel> shipPanelMap = new HashMap<Ship, JPanel>();
     private static final Logger LOG = LoggerFactory.getLogger(ShipsPanel.class);
 
     public ShipsPanel()
@@ -54,6 +56,7 @@ public class ShipsPanel extends JPanel implements ActionListener
     {
         setLayout(new GridBagLayout());
         rotate = new JButton("Rotate left");
+        rotate.addActionListener(this);
         GridBagConstraints leftButtonConstraints = new GridBagConstraints();
         leftButtonConstraints.gridy = y++;
         leftButtonConstraints.anchor = GridBagConstraints.ABOVE_BASELINE;
@@ -63,7 +66,6 @@ public class ShipsPanel extends JPanel implements ActionListener
     public void updateShips(List<Ship> ships)
     {
         removeAllShips();
-
         MouseListener mouseListener = new MouseListener();
         for (Ship ship : ships)
         {
@@ -77,7 +79,6 @@ public class ShipsPanel extends JPanel implements ActionListener
             for (int i = 0; i < ship.getSize(); i++)
             {
                 CellComponent cell = new CellComponent(1, i);
-//                cell.setHighlight(false);
                 cell.setShip(ship);
                 cell.addMouseListener(mouseListener);
                 ship.addCell(cell);
@@ -87,21 +88,22 @@ public class ShipsPanel extends JPanel implements ActionListener
             shipConstraints.gridy = y++;
             shipConstraints.anchor = GridBagConstraints.BASELINE;
             shipConstraints.insets = new Insets(2, 2, 2, 2);
-            shipPanels.put(ship, shipPanel);
+            shipPanelMap.put(ship, shipPanel);
             add(shipPanel, shipConstraints);
         }
+        repaint();
         revalidate();
     }
 
     private void removeAllShips()
     {
 
-        for (JPanel shipPanel : shipPanels.values())
+        for (JPanel shipPanel : shipPanelMap.values())
         {
             remove(shipPanel);
             y--;
         }
-        shipPanels.clear();
+        shipPanelMap.clear();
     }
 
     public void addSelectionListener(SelectionListener<Ship> selectionListener)
@@ -112,7 +114,15 @@ public class ShipsPanel extends JPanel implements ActionListener
     @Override
     public void actionPerformed(ActionEvent actionEvent)
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        for (EventListener listener : rotationListeners)
+        {
+            listener.actionPerformed(null);
+        }
+    }
+
+    public void addRotationListener(EventListener listener)
+    {
+        rotationListeners.add(listener);
     }
 
     private class MouseListener extends MouseAdapter

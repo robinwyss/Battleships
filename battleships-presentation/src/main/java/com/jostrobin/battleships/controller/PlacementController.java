@@ -15,35 +15,53 @@
 
 package com.jostrobin.battleships.controller;
 
-import javax.annotation.PostConstruct;
-
 import com.jostrobin.battleships.common.data.Orientation;
 import com.jostrobin.battleships.data.Cell;
 import com.jostrobin.battleships.data.Ship;
 import com.jostrobin.battleships.data.enums.CellType;
 import com.jostrobin.battleships.model.PlacementModel;
+import com.jostrobin.battleships.view.listeners.EventListener;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
 import com.jostrobin.battleships.view.panels.PlacementPanel;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author rowyss
  *         Date: 09.11.11 Time: 16:44
  */
-public class PlacementController
+public class PlacementController implements InitializingBean
 {
     private PlacementPanel placementPanel;
     private PlacementModel model;
 
-    @PostConstruct
-    public void init()
+    @Override
+    public void afterPropertiesSet() throws Exception
     {
         placementPanel.addCellSelectionListener(new CellSelectionListener());
         placementPanel.addShipSelectionListener(new ShipSelectionListener());
+        placementPanel.addRotationListener(new RotationListener());
     }
 
     private void rotateShip()
     {
-
+        Ship ship = findSelectedShip();
+        if (ship != null)
+        {
+            Orientation orientation = switchOrientation(ship.getOrientation());
+            if (ship.isPlaced())
+            {
+                if (canBePlaced(ship, ship.getPositionX(), ship.getPositionY(), orientation))
+                {
+                    ship.setOrientation(orientation);
+                    placeShip(ship, ship.getPositionX(), ship.getPositionY());
+                }
+            }
+            else
+            {
+                ship.setOrientation(orientation);
+                placementPanel.updateShips();
+            }
+        }
     }
 
 
@@ -76,15 +94,10 @@ public class PlacementController
         }
         else
         {
-            for (Ship ship : model.getShips())
+            Ship ship = findSelectedShip();
+            if (ship != null && placeShip(ship, cell.getBoardX(), cell.getBoardY()))
             {
-                if (ship.isSelected())
-                {
-                    if (placeShip(ship, cell.getBoardX(), cell.getBoardY()))
-                    {
-                        placementPanel.updateShips();
-                    }
-                }
+                placementPanel.updateShips();
             }
         }
     }
@@ -105,7 +118,7 @@ public class PlacementController
     public boolean placeShip(Ship ship, int x, int y)
     {
         boolean placed = false;
-        if (canBePlaced(ship, x, y))
+        if (canBePlaced(ship, x, y, ship.getOrientation()))
         {
             ship.setPosition(x, y);
             ship.clearCells();
@@ -121,14 +134,14 @@ public class PlacementController
         return placed;
     }
 
-    private boolean canBePlaced(Ship ship, int x, int y)
+    private boolean canBePlaced(Ship ship, int x, int y, Orientation orientation)
     {
         boolean ok = true;
         for (int i = 0; i < ship.getSize(); i++)
         {
             Cell cell = placementPanel.findCellAt(x, y);
             ok &= (cell != null && (cell.getType().equals(CellType.WATER) || ship.getCells().contains(cell)));
-            if (ship.getOrientation() == Orientation.HORIZONTAL)
+            if (orientation == Orientation.HORIZONTAL)
             {
                 x++;
             }
@@ -140,6 +153,30 @@ public class PlacementController
         return ok;
     }
 
+    private Ship findSelectedShip()
+    {
+        for (Ship ship : model.getShips())
+        {
+            if (ship.isSelected())
+            {
+                return ship;
+            }
+        }
+        return null;
+    }
+
+    private Orientation switchOrientation(Orientation orientation)
+    {
+        if (Orientation.HORIZONTAL.equals(orientation))
+        {
+            return Orientation.VERTICAL;
+        }
+        else
+        {
+            return Orientation.HORIZONTAL;
+        }
+    }
+
     public PlacementModel getModel()
     {
         return model;
@@ -148,6 +185,16 @@ public class PlacementController
     public void setModel(PlacementModel model)
     {
         this.model = model;
+    }
+
+    public PlacementPanel getPlacementPanel()
+    {
+        return placementPanel;
+    }
+
+    public void setPlacementPanel(PlacementPanel placementPanel)
+    {
+        this.placementPanel = placementPanel;
     }
 
     private class ShipSelectionListener implements SelectionListener<Ship>
@@ -170,13 +217,16 @@ public class PlacementController
         }
     }
 
-    public PlacementPanel getPlacementPanel()
+
+    private class RotationListener implements EventListener
     {
-        return placementPanel;
+
+        @Override
+        public void actionPerformed(Object value)
+        {
+            rotateShip();
+        }
     }
 
-    public void setPlacementPanel(PlacementPanel placementPanel)
-    {
-        this.placementPanel = placementPanel;
-    }
+
 }

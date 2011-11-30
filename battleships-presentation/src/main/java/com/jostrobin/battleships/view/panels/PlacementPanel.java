@@ -21,6 +21,7 @@ import javax.swing.*;
 import com.jostrobin.battleships.data.Cell;
 import com.jostrobin.battleships.data.Ship;
 import com.jostrobin.battleships.model.PlacementModel;
+import com.jostrobin.battleships.view.listeners.EventListener;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,6 +75,11 @@ public class PlacementPanel extends JPanel
     public void addCellSelectionListener(SelectionListener<Cell> cellSelectionListener)
     {
         battleField.addSelectionListener(cellSelectionListener);
+    }
+
+    public void addRotationListener(EventListener listener)
+    {
+        shipsPanel.addRotationListener(listener);
     }
 
     public void updateShips()
