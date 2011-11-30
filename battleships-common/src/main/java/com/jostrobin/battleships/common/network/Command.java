@@ -27,6 +27,8 @@ public class Command
 	public static final int SET_SHIPS = 7;
 
 	public static final int ATTACK = 8;
+
+	public static final int ATTACK_RESULT = 9;
 	
 	public static final int DISCONNECT = 100;
 	

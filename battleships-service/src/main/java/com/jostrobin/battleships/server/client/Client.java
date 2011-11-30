@@ -176,6 +176,20 @@ public class Client extends Player implements NetworkListener
     {
         clientWriter.sendChatMessage(username, message);
     }
+    
+    /**
+     * The result from an attack to transmit to this client.
+     * @param clientId the id of the attacked player
+     * @param x where the user attacked
+     * @param y where the user attacked
+     * @param result
+     * @param ship can be null if the result != SHIP_DESTROYED
+     * @throws Exception 
+     */
+    public void sendAttackResult(Long clientId, int x, int y, AttackResult result, Ship ship) throws Exception
+    {
+    	clientWriter.sendAttackResult(clientId, x, y, result, ship);
+    }
 
     /**
      * Called when the game is full and players can start placing their ships.

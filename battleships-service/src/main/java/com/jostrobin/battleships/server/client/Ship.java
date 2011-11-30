@@ -12,6 +12,7 @@ public class Ship implements Attackable
 	
 	private Orientation orientation = Orientation.HORIZONTAL;
 
+
 	@Override
 	public AttackResult attack(int x, int y)
 	{

@@ -8,7 +8,9 @@ import java.util.List;
 import org.springframework.scheduling.annotation.Async;
 
 import com.jostrobin.battleships.common.network.Command;
+import com.jostrobin.battleships.server.client.AttackResult;
 import com.jostrobin.battleships.server.client.Client;
+import com.jostrobin.battleships.server.client.Ship;
 import com.jostrobin.battleships.server.game.Game;
 
 /**
@@ -89,6 +91,25 @@ public class ClientWriter implements Writer
 		outputStream.writeInt(Command.CHAT_MESSAGE);
 		outputStream.writeUTF(username);
 		outputStream.writeUTF(message);
+	}
+
+	@Override
+	@Async
+	public void sendAttackResult(Long clientId, int x, int y, AttackResult result, Ship ship)
+			throws Exception
+	{
+		outputStream.writeInt(Command.ATTACK_RESULT);
+		outputStream.writeInt(x);
+		outputStream.writeInt(y);
+		outputStream.writeUTF(result.name());
+		if (result == AttackResult.SHIP_DESTROYED)
+		{
+//			outputStream.writeUTF(ship.getShipType().name()); // TODO: ADD SHIP TYPE
+			outputStream.writeInt(ship.getX());
+			outputStream.writeInt(ship.getY());
+			outputStream.writeInt(ship.getSize());
+			outputStream.writeUTF(ship.getOrientation().name());
+		}
 	}
     
     
