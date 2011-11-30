@@ -16,8 +16,6 @@
 package com.jostrobin.battleships.view.panels;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -26,9 +24,9 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.*;
 
+import com.jostrobin.battleships.common.data.Orientation;
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.view.components.CellComponent;
-import com.jostrobin.battleships.view.listeners.EventListener;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,13 +35,10 @@ import org.slf4j.LoggerFactory;
  * @author rowyss
  *         Date: 05.11.11 Time: 18:52
  */
-public class ShipsPanel extends JPanel implements ActionListener
+public class ShipsPanel extends JPanel
 {
-    private JButton rotate;
-    private JButton rotateRightButton;
     private int y;
     private List<SelectionListener<Ship>> selectionListeners = new ArrayList<SelectionListener<Ship>>();
-    private List<EventListener> rotationListeners = new ArrayList<EventListener>();
     private Map<Ship, JPanel> shipPanelMap = new HashMap<Ship, JPanel>();
     private static final Logger LOG = LoggerFactory.getLogger(ShipsPanel.class);
 
@@ -55,12 +50,6 @@ public class ShipsPanel extends JPanel implements ActionListener
     private void initUi()
     {
         setLayout(new GridBagLayout());
-        rotate = new JButton("Rotate left");
-        rotate.addActionListener(this);
-        GridBagConstraints leftButtonConstraints = new GridBagConstraints();
-        leftButtonConstraints.gridy = y++;
-        leftButtonConstraints.anchor = GridBagConstraints.ABOVE_BASELINE;
-        add(rotate, leftButtonConstraints);
     }
 
     public void updateShips(List<Ship> ships)
@@ -74,8 +63,16 @@ public class ShipsPanel extends JPanel implements ActionListener
                 continue;
             }
             JPanel shipPanel = new JPanel();
-            shipPanel.setLayout(new GridLayout(1, ship.getSize()));
-            shipPanel.setPreferredSize(new Dimension(ship.getSize() * CellComponent.CELL_SIZE, CellComponent.CELL_SIZE));
+            if (ship.getOrientation().equals(Orientation.HORIZONTAL))
+            {
+                shipPanel.setLayout(new GridLayout(1, ship.getSize()));
+                shipPanel.setPreferredSize(new Dimension(ship.getSize() * CellComponent.CELL_SIZE, CellComponent.CELL_SIZE));
+            }
+            else
+            {
+                shipPanel.setLayout(new GridLayout(ship.getSize(), 1));
+                shipPanel.setPreferredSize(new Dimension(CellComponent.CELL_SIZE, ship.getSize() * CellComponent.CELL_SIZE));
+            }
             for (int i = 0; i < ship.getSize(); i++)
             {
                 CellComponent cell = new CellComponent(1, i);
@@ -111,19 +108,6 @@ public class ShipsPanel extends JPanel implements ActionListener
         selectionListeners.add(selectionListener);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent actionEvent)
-    {
-        for (EventListener listener : rotationListeners)
-        {
-            listener.actionPerformed(null);
-        }
-    }
-
-    public void addRotationListener(EventListener listener)
-    {
-        rotationListeners.add(listener);
-    }
 
     private class MouseListener extends MouseAdapter
     {

@@ -129,6 +129,10 @@ public class ApplicationController
         }
     }
 
+    public void setReady()
+    {
+        // TODO: tell server i'm ready.
+    }
 
     public void setUiController(UIController uiController)
     {

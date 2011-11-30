@@ -15,6 +15,7 @@
 
 package com.jostrobin.battleships.controller;
 
+import com.jostrobin.battleships.ApplicationController;
 import com.jostrobin.battleships.common.data.Cell;
 import com.jostrobin.battleships.common.data.Orientation;
 import com.jostrobin.battleships.common.data.Ship;
@@ -33,6 +34,7 @@ public class PlacementController implements InitializingBean
 {
     private PlacementPanel placementPanel;
     private PlacementModel model;
+    private ApplicationController applicationController;
 
     @Override
     public void afterPropertiesSet() throws Exception
@@ -125,7 +127,14 @@ public class PlacementController implements InitializingBean
             for (int i = 0; i < ship.getSize(); i++)
             {
                 ship.addCell(placementPanel.findCellAt(x, y));
-                x++;
+                if (ship.getOrientation() == Orientation.HORIZONTAL)
+                {
+                    x++;
+                }
+                else
+                {
+                    y++;
+                }
             }
             ship.setSelected(false);
             ship.setPlaced(true);
@@ -197,6 +206,16 @@ public class PlacementController implements InitializingBean
         this.placementPanel = placementPanel;
     }
 
+    public ApplicationController getApplicationController()
+    {
+        return applicationController;
+    }
+
+    public void setApplicationController(ApplicationController applicationController)
+    {
+        this.applicationController = applicationController;
+    }
+
     private class ShipSelectionListener implements SelectionListener<Ship>
     {
 
@@ -218,7 +237,7 @@ public class PlacementController implements InitializingBean
     }
 
 
-    private class RotationListener implements EventListener
+    private class RotationListener implements EventListener<Object>
     {
 
         @Override
@@ -228,5 +247,13 @@ public class PlacementController implements InitializingBean
         }
     }
 
+    private class ReadyListener implements EventListener<Object>
+    {
 
+        @Override
+        public void actionPerformed(Object value)
+        {
+
+        }
+    }
 }

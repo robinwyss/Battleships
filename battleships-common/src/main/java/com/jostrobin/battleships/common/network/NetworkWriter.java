@@ -3,9 +3,11 @@ package com.jostrobin.battleships.common.network;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.List;
 
 import com.jostrobin.battleships.common.data.GameData;
 import com.jostrobin.battleships.common.data.Player;
+import com.jostrobin.battleships.common.data.Ship;
 
 public class NetworkWriter
 {
@@ -42,5 +44,17 @@ public class NetworkWriter
         outputStream.writeInt(Command.CHAT_MESSAGE);
         outputStream.writeUTF(username);
         outputStream.writeUTF(message);
+    }
+
+    public void sendShipPlaced(List<Ship> ships) throws IOException
+    {
+        outputStream.writeInt(Command.SET_SHIPS);
+        for (Ship ship : ships)
+        {
+            outputStream.writeInt(ship.getPositionX());
+            outputStream.writeInt(ship.getPositionY());
+            outputStream.writeInt(ship.getSize());
+            outputStream.writeUTF(ship.getOrientation().name());
+        }
     }
 }

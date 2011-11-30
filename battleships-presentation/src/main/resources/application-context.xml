@@ -23,7 +23,8 @@
           p:registrationDialog-ref="registrationDialog"
           p:gameSelectionFrame-ref="gameSelectionFrame"/>
     <bean id="placementController" class="com.jostrobin.battleships.controller.PlacementController"
-          p:model-ref="placementModel" p:placementPanel-ref="placementPanel"/>
+          p:model-ref="placementModel" p:placementPanel-ref="placementPanel"
+          p:applicationController-ref="applicationController"/>
     <bean id="chatController" class="com.jostrobin.battleships.controller.ChatController"
           p:chatPanel-ref="chatPanel"
           p:controller-ref="applicationController"/>

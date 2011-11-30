@@ -16,6 +16,10 @@
 package com.jostrobin.battleships.view.panels;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 
 import com.jostrobin.battleships.common.data.Cell;
@@ -30,13 +34,17 @@ import org.slf4j.LoggerFactory;
  * @author rowyss
  *         Date: 05.11.11 Time: 18:51
  */
-public class PlacementPanel extends JPanel
+public class PlacementPanel extends JPanel implements ActionListener
 {
     public static final Logger LOG = LoggerFactory.getLogger(PlacementPanel.class);
     private BattleFieldPanel battleField;
     private ShipsPanel shipsPanel;
+    private JButton rotate;
+    private JButton ready;
     private int y;
     private PlacementModel placementModel;
+    private List<EventListener<Object>> rotationListeners = new ArrayList<EventListener<Object>>();
+    private List<EventListener<Object>> readyListeners = new ArrayList<EventListener<Object>>();
 
     public PlacementPanel()
     {
@@ -52,19 +60,36 @@ public class PlacementPanel extends JPanel
         gamePanelConstraints.weightx = 0.6;
         gamePanelConstraints.weighty = 1.0;
         gamePanelConstraints.gridy = y;
+        gamePanelConstraints.gridheight = 2;
         gamePanelConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
         gamePanelConstraints.fill = GridBagConstraints.BOTH;
         add(battleField, gamePanelConstraints);
+
+        rotate = new JButton("Rotate ship");
+        rotate.addActionListener(this);
+        GridBagConstraints leftButtonConstraints = new GridBagConstraints();
+        leftButtonConstraints.gridy = y++;
+        leftButtonConstraints.gridx = 1;
+        leftButtonConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
+        add(rotate, leftButtonConstraints);
 
         shipsPanel = new ShipsPanel();
         GridBagConstraints shipsPanelConstraints = new GridBagConstraints();
         shipsPanelConstraints.weightx = 0.1;
         shipsPanelConstraints.weighty = 1.0;
-        shipsPanelConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_TRAILING;
+        shipsPanelConstraints.anchor = GridBagConstraints.BASELINE_LEADING;
         shipsPanelConstraints.fill = GridBagConstraints.BOTH;
-        shipsPanelConstraints.gridy = y;
+        shipsPanelConstraints.gridy = y++;
         shipsPanelConstraints.gridx = 1;
         add(shipsPanel, shipsPanelConstraints);
+
+        ready = new JButton("I'm ready");
+        ready.addActionListener(this);
+        GridBagConstraints readyButtonConstraints = new GridBagConstraints();
+        readyButtonConstraints.gridy = y++;
+        readyButtonConstraints.gridx = 1;
+        readyButtonConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
+        add(ready, readyButtonConstraints);
     }
 
     public void addShipSelectionListener(SelectionListener<Ship> shipSelectionListener)
@@ -75,11 +100,6 @@ public class PlacementPanel extends JPanel
     public void addCellSelectionListener(SelectionListener<Cell> cellSelectionListener)
     {
         battleField.addSelectionListener(cellSelectionListener);
-    }
-
-    public void addRotationListener(EventListener listener)
-    {
-        shipsPanel.addRotationListener(listener);
     }
 
     public void updateShips()
@@ -102,4 +122,46 @@ public class PlacementPanel extends JPanel
         this.placementModel = placementModel;
         updateShips();
     }
+
+    @Override
+    public void actionPerformed(ActionEvent actionEvent)
+    {
+        if (actionEvent.getSource().equals(rotate))
+        {
+            for (EventListener<Object> listener : rotationListeners)
+            {
+                listener.actionPerformed(null);
+            }
+        }
+        else if (actionEvent.getSource().equals(ready))
+        {
+            LOG.info("player is ready");
+            for (EventListener<Object> listener : readyListeners)
+            {
+                listener.actionPerformed(null);
+            }
+        }
+
+    }
+
+    public void addRotationListener(EventListener<Object> listener)
+    {
+        rotationListeners.add(listener);
+    }
+
+    public void removeRotationListener(EventListener<Object> listener)
+    {
+        rotationListeners.remove(listener);
+    }
+
+    public void addReadyListener(EventListener<Object> listener)
+    {
+        readyListeners.add(listener);
+    }
+
+    public void removeReadyListener(EventListener<Object> listener)
+    {
+        readyListeners.remove(listener);
+    }
+
 }
