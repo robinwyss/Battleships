@@ -65,7 +65,12 @@ public class Game extends GameData
     	}
     }
 
-    public Client getOwner()
+    public List<Client> getPlayers()
+	{
+		return players;
+	}
+
+	public Client getOwner()
     {
         return owner;
     }

@@ -6,12 +6,13 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.jostrobin.battleships.common.data.GameData;
 import com.jostrobin.battleships.common.data.GameMode;
 import com.jostrobin.battleships.common.data.GameState;
 import com.jostrobin.battleships.common.data.Player;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * The NetworkHandler is responsible for accepting and parsing commands via network and forwarding them to the
@@ -116,6 +117,12 @@ public class NetworkHandler implements Runnable
                         command.setUsername(username);
                         command.setMessage(message);
                         break;
+                        
+                    case Command.ATTACK:
+                    	command.setX(inputStream.readInt());
+                    	command.setY(inputStream.readInt());
+                    	command.setClientId(inputStream.readLong());
+                    	break;
                 }
 
                 notifyAll(command);
