@@ -175,6 +175,21 @@ public class Client extends Player implements NetworkListener
     	return AttackResult.NO_HIT;
     }
     
+    /**
+     * Returns the ship at the specified position or null if there is none.
+     * @param x
+     * @param y
+     * @return
+     */
+    public Ship getShipAtPosition(int x, int y)
+    {
+    	if (x>=0 && y<=0 && x<field.length && y<field[0].length)
+    	{
+    		return field[x][y].getShip();
+		}
+    	return null;
+    }
+    
     public void sendChatMessage(String username, String message) throws IOException
     {
         clientWriter.sendChatMessage(username, message);

@@ -67,17 +67,52 @@ public class Ship
 		{
 			if (x >= this.positionX && x < (this.positionX+size) && y == this.positionY)
 			{
-				return AttackResult.HIT;
+				return hitAtPosition(x, y);
 			}
 		}
 		else
 		{
 			if (y >= this.positionY && y < (this.positionY+size) && x == this.positionX)
 			{
-				return AttackResult.HIT;
+				return hitAtPosition(x, y);
 			}
 		}
 		return AttackResult.NO_HIT;
+	}
+	
+	private AttackResult hitAtPosition(int x, int y)
+	{
+		// find the cell at this place to see whether it's aready hit
+		for (Cell cell : cells)
+		{
+			if (cell.getBoardX() == x && cell.getBoardY() == y)
+			{
+				if (cell.isHit())
+				{
+					return AttackResult.NO_HIT;
+				}
+				else
+				{
+					cell.setHit(true);
+				}
+			}
+		}
+		
+		// if all the cells have been hit, the ship is destroyed
+		boolean shipDestroyed = true;
+		for (Cell cell : cells)
+		{
+			shipDestroyed &= cell.isHit();
+		}
+		
+		if (shipDestroyed)
+		{
+			return AttackResult.SHIP_DESTROYED;
+		}
+		else
+		{
+			return AttackResult.HIT;
+		}
 	}
 
     public int getSize()
