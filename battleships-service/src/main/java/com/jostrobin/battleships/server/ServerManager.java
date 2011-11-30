@@ -7,8 +7,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.network.Command;
-import com.jostrobin.battleships.server.client.AttackResult;
 import com.jostrobin.battleships.server.client.Client;
 import com.jostrobin.battleships.server.game.Game;
 import com.jostrobin.battleships.server.util.IdGenerator;

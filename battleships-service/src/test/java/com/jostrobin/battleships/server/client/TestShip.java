@@ -5,7 +5,9 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.data.Orientation;
+import com.jostrobin.battleships.common.data.Ship;
 
 public class TestShip
 {
@@ -16,17 +18,13 @@ public class TestShip
 	@Before
 	public void setup()
 	{
-		hor = new Ship();
-		hor.setX(3);
-		hor.setY(3);
+		hor = new Ship(3);
+		hor.setPosition(3, 3);
 		hor.setOrientation(Orientation.HORIZONTAL);
-		hor.setSize(3);
 
-		small = new Ship();
-		small.setX(4);
-		small.setY(8);
+		small = new Ship(1);
+		small.setPosition(4, 8);
 		small.setOrientation(Orientation.HORIZONTAL);
-		small.setSize(1);
 	}
 	
 	@Test

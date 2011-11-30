@@ -1,7 +1,6 @@
-package com.jostrobin.battleships.server.client;
+package com.jostrobin.battleships.common.data;
 
-
-public class Cell implements Attackable
+public class DefaultCell implements Attackable
 {
 	private Ship ship;
 

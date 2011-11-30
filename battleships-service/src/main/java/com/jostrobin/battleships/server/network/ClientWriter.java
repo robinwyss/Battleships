@@ -7,10 +7,10 @@ import java.util.List;
 
 import org.springframework.scheduling.annotation.Async;
 
+import com.jostrobin.battleships.common.data.AttackResult;
+import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.network.Command;
-import com.jostrobin.battleships.server.client.AttackResult;
 import com.jostrobin.battleships.server.client.Client;
-import com.jostrobin.battleships.server.client.Ship;
 import com.jostrobin.battleships.server.game.Game;
 
 /**
@@ -104,9 +104,9 @@ public class ClientWriter implements Writer
 		outputStream.writeUTF(result.name());
 		if (result == AttackResult.SHIP_DESTROYED)
 		{
-//			outputStream.writeUTF(ship.getShipType().name()); // TODO: ADD SHIP TYPE
-			outputStream.writeInt(ship.getX());
-			outputStream.writeInt(ship.getY());
+			outputStream.writeUTF(ship.getType().name());
+			outputStream.writeInt(ship.getPositionX());
+			outputStream.writeInt(ship.getPositionY());
 			outputStream.writeInt(ship.getSize());
 			outputStream.writeUTF(ship.getOrientation().name());
 		}

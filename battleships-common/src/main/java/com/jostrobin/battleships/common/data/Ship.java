@@ -11,7 +11,7 @@ import com.jostrobin.battleships.common.data.enums.ShipType;
  * @author rowyss
  *         Date: 25.10.11 Time: 18:33
  */
-public class Ship
+public class Ship 
 {
     private ShipType type;
     private int size;
@@ -60,6 +60,25 @@ public class Ship
         }
         this.selected = selected;
     }
+    
+	public AttackResult attack(int x, int y)
+	{
+		if (orientation == Orientation.HORIZONTAL)
+		{
+			if (x >= this.positionX && x < (this.positionX+size) && y == this.positionY)
+			{
+				return AttackResult.HIT;
+			}
+		}
+		else
+		{
+			if (y >= this.positionY && y < (this.positionY+size) && x == this.positionX)
+			{
+				return AttackResult.HIT;
+			}
+		}
+		return AttackResult.NO_HIT;
+	}
 
     public int getSize()
     {
@@ -125,4 +144,14 @@ public class Ship
     {
         this.placed = placed;
     }
+
+	public ShipType getType()
+	{
+		return type;
+	}
+
+	public void setType(ShipType type)
+	{
+		this.type = type;
+	}
 }
