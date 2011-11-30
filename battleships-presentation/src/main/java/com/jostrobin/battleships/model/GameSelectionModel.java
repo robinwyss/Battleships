@@ -2,11 +2,10 @@ package com.jostrobin.battleships.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 import com.jostrobin.battleships.common.data.Player;
 
-public class GameSelectionModel extends Observable
+public class GameSelectionModel
 {
     private List<Player> players = new ArrayList<Player>();
 
@@ -23,7 +22,6 @@ public class GameSelectionModel extends Observable
     public void setPlayers(List<Player> players)
     {
         this.players = players;
-        setChanged();
     }
 
     public Long getClientId()

@@ -1,16 +1,14 @@
 package com.jostrobin.battleships;
 
 import java.net.InetAddress;
+import javax.swing.*;
 
-import javax.swing.UIManager;
-
+import com.jostrobin.battleships.controller.ServerDetectionController;
+import com.jostrobin.battleships.view.frames.ServerDetectionFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import com.jostrobin.battleships.controller.ServerDetectionController;
-import com.jostrobin.battleships.view.frames.ServerDetectionFrame;
 
 
 public class BattleshipsStartup
@@ -51,7 +49,7 @@ public class BattleshipsStartup
         // send a udp broadcast to find a server
         else
         {
-        	serverDetectionController.init();
+            serverDetectionController.init();
             // start the detection controller in its own thread to wait for server answers
             // the server detection controller will start the application controller once a server is ready
             serverDetectionController.addObserver(new ServerDetectionFrame(serverDetectionController));

@@ -4,13 +4,13 @@ import javax.annotation.PostConstruct;
 
 import com.jostrobin.battleships.ApplicationController;
 import com.jostrobin.battleships.view.frames.RegistrationDialog;
-import com.jostrobin.battleships.view.listeners.ActionListener;
+import com.jostrobin.battleships.view.listeners.EventListener;
 
 /**
  * @author rowyss
  *         Date: 19.10.11 Time: 17:02
  */
-public class RegistrationController implements ActionListener<String>
+public class RegistrationController implements EventListener<String>
 {
     private RegistrationDialog registrationDialog;
     private ApplicationController applicationController;

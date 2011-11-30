@@ -15,13 +15,8 @@
 
 package com.jostrobin.battleships.view.controller;
 
-import java.awt.Dimension;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.awt.*;
+import javax.swing.*;
 
 import com.jostrobin.battleships.ApplicationController;
 import com.jostrobin.battleships.controller.GameSelectionController;
@@ -30,6 +25,8 @@ import com.jostrobin.battleships.view.frames.CreateGameFrame;
 import com.jostrobin.battleships.view.frames.GameFrame;
 import com.jostrobin.battleships.view.frames.GameSelectionFrame;
 import com.jostrobin.battleships.view.frames.RegistrationDialog;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author rowyss
@@ -53,8 +50,6 @@ public class UIController
     {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-
     }
 
     public void showRegistrationDialog()
@@ -64,13 +59,7 @@ public class UIController
 
     public void showGameSelection()
     {
-        if (gameSelectionFrame == null)
-        {
-            gameSelectionFrame = new GameSelectionFrame(gameSelectionController);
-//            gameSelectionController.addObserver(gameSelectionFrame);
-        }
         show(gameSelectionFrame);
-//        f.setVisible(true);
     }
 
     public void showCreateGame()
@@ -95,7 +84,6 @@ public class UIController
         frame.add(newFrame);
         frame.setVisible(true);
         resize(newFrame.getPreferredSize());
-//        frame.setSize(newFrame.getPreferredSize());
         frame.setMinimumSize(newFrame.getMinimumSize());
         frame.setMaximumSize(newFrame.getMaximumSize());
     }
@@ -105,29 +93,9 @@ public class UIController
         smoothResize.resize(frame, newSize);
     }
 
-    public GameFrame getGameFrame()
-    {
-        return gameFrame;
-    }
-
     public void setGameFrame(GameFrame gameFrame)
     {
         this.gameFrame = gameFrame;
-    }
-
-    public GameSelectionController getGameSelectionController()
-    {
-        return gameSelectionController;
-    }
-
-    public void setGameSelectionController(GameSelectionController gameSelectionController)
-    {
-        this.gameSelectionController = gameSelectionController;
-    }
-
-    public GameSelectionFrame getGameSelectionFrame()
-    {
-        return gameSelectionFrame;
     }
 
     public void setGameSelectionFrame(GameSelectionFrame gameSelectionFrame)
@@ -135,19 +103,9 @@ public class UIController
         this.gameSelectionFrame = gameSelectionFrame;
     }
 
-    public RegistrationDialog getRegistrationDialog()
-    {
-        return registrationDialog;
-    }
-
     public void setRegistrationDialog(RegistrationDialog registrationDialog)
     {
         this.registrationDialog = registrationDialog;
-    }
-
-    public CreateGameFrame getCreateGameFrame()
-    {
-        return createGameFrame;
     }
 
     public void setCreateGameFrame(CreateGameFrame createGameFrame)
@@ -155,13 +113,8 @@ public class UIController
         this.createGameFrame = createGameFrame;
     }
 
-	public ApplicationController getApplicationController()
-	{
-		return applicationController;
-	}
-
-	public void setApplicationController(ApplicationController applicationController)
-	{
-		this.applicationController = applicationController;
-	}
+    public void setApplicationController(ApplicationController applicationController)
+    {
+        this.applicationController = applicationController;
+    }
 }

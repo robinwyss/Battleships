@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 
+import com.jostrobin.battleships.view.listeners.EventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +52,7 @@ public class RegistrationDialog extends JPanel implements ActionListener, KeyLis
     private static final long serialVersionUID = 1L;
 
     private static final Logger LOG = LoggerFactory.getLogger(RegistrationDialog.class);
-    private List<com.jostrobin.battleships.view.listeners.ActionListener<String>> actionListeners = new ArrayList<com.jostrobin.battleships.view.listeners.ActionListener<String>>();
+    private List<EventListener<String>> eventListeners = new ArrayList<EventListener<String>>();
     private JLabel messageLabel;
     private JPanel panel;
     private JButton okButton;
@@ -140,9 +141,9 @@ public class RegistrationDialog extends JPanel implements ActionListener, KeyLis
     private void registerUser()
     {
         String text = textField.getText();
-        for (com.jostrobin.battleships.view.listeners.ActionListener<String> actionListener : actionListeners)
+        for (EventListener<String> eventListener : eventListeners)
         {
-            actionListener.actionPerformed(text);
+            eventListener.actionPerformed(text);
         }
     }
 
@@ -172,13 +173,13 @@ public class RegistrationDialog extends JPanel implements ActionListener, KeyLis
         messageLabel.setVisible(true);
     }
 
-    public void addActionListener(com.jostrobin.battleships.view.listeners.ActionListener<String> actionListener)
+    public void addActionListener(EventListener<String> eventListener)
     {
-        actionListeners.add(actionListener);
+        eventListeners.add(eventListener);
     }
 
-    public void removeActionListener(com.jostrobin.battleships.view.listeners.ActionListener<String> actionListener)
+    public void removeActionListener(EventListener<String> eventListener)
     {
-        actionListeners.remove(actionListener);
+        eventListeners.remove(eventListener);
     }
 }

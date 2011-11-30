@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
  */
 public class BattleFieldPanel extends JPanel implements ActionListener
 {
-    private int size = 10;
+    private int size = 20;
     public static final Logger LOG = LoggerFactory.getLogger(BattleFieldPanel.class);
     private List<SelectionListener<Cell>> selectionListeners = new ArrayList<SelectionListener<Cell>>();
     private final JPanel contentPanel;
@@ -54,7 +54,6 @@ public class BattleFieldPanel extends JPanel implements ActionListener
                 CellComponent cell = new CellComponent(x, y);
                 cell.addActionListener(this);
                 cellArray[x][y] = cell;
-//                cells.add(cell);
                 contentPanel.add(cell);
             }
         }
@@ -78,15 +77,7 @@ public class BattleFieldPanel extends JPanel implements ActionListener
 
     public Cell findCellAt(int x, int y)
     {
-//        for (Cell cell : cells)
-//        {
-//            if (cell.getBoardX() == x && cell.getBoardY() == y)
-//            {
-//                return cell;
-//            }
-//        }
         return cellArray[x][y];
-//        return null;
     }
 
     public void addSelectionListener(SelectionListener<Cell> selectionListener)

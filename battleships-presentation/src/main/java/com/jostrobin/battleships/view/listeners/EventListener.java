@@ -19,7 +19,7 @@ package com.jostrobin.battleships.view.listeners;
  * @author rowyss
  *         Date: 13.11.11 Time: 21:09
  */
-public interface ActionListener<T>
+public interface EventListener<T>
 {
     void actionPerformed(T value);
 }
