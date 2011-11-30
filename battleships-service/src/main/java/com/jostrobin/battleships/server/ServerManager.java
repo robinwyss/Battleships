@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.jostrobin.battleships.common.network.Command;
+import com.jostrobin.battleships.server.client.AttackResult;
 import com.jostrobin.battleships.server.client.Client;
 import com.jostrobin.battleships.server.game.Game;
 import com.jostrobin.battleships.server.util.IdGenerator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ServerManager
 {
@@ -120,6 +122,20 @@ public class ServerManager
             resendPlayerLists();
         }
     }
+    
+    public void attack(Long clientId, int x, int y)
+    {
+    	Client client = getClientById(clientId);
+    	if (client != null)
+    	{
+    		AttackResult result = client.attack(x, y);
+    		// notify the participants of this game about it
+    		for (Client toBeNotified : client.getGame().getPlayers())
+    		{
+//    			toBeNotified.sendAttackResult(result);
+    		}
+    	}
+    }
 
     public String getServerStatus()
     {
@@ -141,5 +157,22 @@ public class ServerManager
         status += gameIds.size() + " games running in total.";
 
         return status;
+    }
+    
+    /**
+     * Returns the client with the specified id or null if it doesn't exist.
+     * @param id
+     * @return
+     */
+    private Client getClientById(Long id)
+    {
+    	for (Client client : clients)
+    	{
+    		if (client.getId().equals(id))
+    		{
+    			return client;
+    		}
+    	}
+    	return null;
     }
 }

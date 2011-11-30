@@ -23,6 +23,10 @@ public class Command
 	public static final int ACCEPTED = 5;
 
 	public static final int CHAT_MESSAGE = 6;
+
+	public static final int SET_SHIPS = 7;
+
+	public static final int ATTACK = 8;
 	
 	public static final int DISCONNECT = 100;
 	
@@ -45,6 +49,10 @@ public class Command
 	private Long clientId;
 	
 	private String message;
+	
+	private Integer x;
+	
+	private Integer y;
 
 	public Command(int command)
 	{
@@ -149,5 +157,25 @@ public class Command
 	public void setMessage(String message)
 	{
 		this.message = message;
+	}
+
+	public Integer getX()
+	{
+		return x;
+	}
+
+	public void setX(Integer x)
+	{
+		this.x = x;
+	}
+
+	public Integer getY()
+	{
+		return y;
+	}
+
+	public void setY(Integer y)
+	{
+		this.y = y;
 	}
 }

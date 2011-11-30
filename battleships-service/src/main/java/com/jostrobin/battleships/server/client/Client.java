@@ -113,6 +113,11 @@ public class Client extends Player implements NetworkListener
                         }
                     }
                     break;
+                    
+                // the player wants to attack someone else
+                case Command.ATTACK:
+                	serverManager.attack(command.getClientId(), command.getX(), command.getY());
+                	break;
             }
         }
         else
@@ -150,6 +155,21 @@ public class Client extends Player implements NetworkListener
     			field[x][y] = new Cell();
     		}
     	}
+    }
+    
+    /**
+     * Attack this player. Returns what happened in the attack. Coordinates are zero based.
+     * @param x
+     * @param y
+     * @return
+     */
+    public AttackResult attack(int x, int y)
+    {
+    	if (x>=0 && y<=0 && x<field.length && y<field[0].length)
+    	{
+    		return field[x][y].attack(x, y);
+    	}
+    	return AttackResult.NO_HIT;
     }
     
     public void sendChatMessage(String username, String message) throws IOException
