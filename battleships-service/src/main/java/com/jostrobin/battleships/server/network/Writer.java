@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
 
-import com.jostrobin.battleships.server.client.AttackResult;
+import com.jostrobin.battleships.common.data.AttackResult;
+import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.server.client.Client;
-import com.jostrobin.battleships.server.client.Ship;
 
 public interface Writer
 {

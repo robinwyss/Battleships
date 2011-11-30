@@ -1,4 +1,4 @@
-package com.jostrobin.battleships.server.client;
+package com.jostrobin.battleships.common.data;
 
 public enum AttackResult
 {

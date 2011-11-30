@@ -11,7 +11,7 @@ import com.jostrobin.battleships.common.data.enums.ShipType;
  * @author rowyss
  *         Date: 25.10.11 Time: 18:33
  */
-public class Ship
+public class Ship 
 {
     private ShipType type;
     private int size;
@@ -60,6 +60,60 @@ public class Ship
         }
         this.selected = selected;
     }
+    
+	public AttackResult attack(int x, int y)
+	{
+		if (orientation == Orientation.HORIZONTAL)
+		{
+			if (x >= this.positionX && x < (this.positionX+size) && y == this.positionY)
+			{
+				return hitAtPosition(x, y);
+			}
+		}
+		else
+		{
+			if (y >= this.positionY && y < (this.positionY+size) && x == this.positionX)
+			{
+				return hitAtPosition(x, y);
+			}
+		}
+		return AttackResult.NO_HIT;
+	}
+	
+	private AttackResult hitAtPosition(int x, int y)
+	{
+		// find the cell at this place to see whether it's aready hit
+		for (Cell cell : cells)
+		{
+			if (cell.getBoardX() == x && cell.getBoardY() == y)
+			{
+				if (cell.isHit())
+				{
+					return AttackResult.NO_HIT;
+				}
+				else
+				{
+					cell.setHit(true);
+				}
+			}
+		}
+		
+		// if all the cells have been hit, the ship is destroyed
+		boolean shipDestroyed = true;
+		for (Cell cell : cells)
+		{
+			shipDestroyed &= cell.isHit();
+		}
+		
+		if (shipDestroyed)
+		{
+			return AttackResult.SHIP_DESTROYED;
+		}
+		else
+		{
+			return AttackResult.HIT;
+		}
+	}
 
     public int getSize()
     {
@@ -125,4 +179,14 @@ public class Ship
     {
         this.placed = placed;
     }
+
+	public ShipType getType()
+	{
+		return type;
+	}
+
+	public void setType(ShipType type)
+	{
+		this.type = type;
+	}
 }

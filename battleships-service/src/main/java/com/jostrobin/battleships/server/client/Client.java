@@ -8,8 +8,11 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jostrobin.battleships.common.data.AttackResult;
+import com.jostrobin.battleships.common.data.DefaultCell;
 import com.jostrobin.battleships.common.data.GameState;
 import com.jostrobin.battleships.common.data.Player;
+import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.common.network.NetworkHandler;
 import com.jostrobin.battleships.common.network.NetworkListener;
@@ -37,7 +40,7 @@ public class Client extends Player implements NetworkListener
      */
     private Game game;
     
-    private Cell[][] field;
+    private DefaultCell[][] field;
 
     public Client(ServerManager serverManager, Writer clientWriter)
     {
@@ -147,12 +150,12 @@ public class Client extends Player implements NetworkListener
      */
     public void initializeField(int width, int length)
     {
-    	field = new Cell[width][length];
+    	field = new DefaultCell[width][length];
     	for (int x=0; x<width; x++)
     	{
     		for (int y=0; y<length; y++)
     		{
-    			field[x][y] = new Cell();
+    			field[x][y] = new DefaultCell();
     		}
     	}
     }
@@ -170,6 +173,21 @@ public class Client extends Player implements NetworkListener
     		return field[x][y].attack(x, y);
     	}
     	return AttackResult.NO_HIT;
+    }
+    
+    /**
+     * Returns the ship at the specified position or null if there is none.
+     * @param x
+     * @param y
+     * @return
+     */
+    public Ship getShipAtPosition(int x, int y)
+    {
+    	if (x>=0 && y<=0 && x<field.length && y<field[0].length)
+    	{
+    		return field[x][y].getShip();
+		}
+    	return null;
     }
     
     public void sendChatMessage(String username, String message) throws IOException

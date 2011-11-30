@@ -7,8 +7,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jostrobin.battleships.common.data.AttackResult;
+import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.network.Command;
-import com.jostrobin.battleships.server.client.AttackResult;
 import com.jostrobin.battleships.server.client.Client;
 import com.jostrobin.battleships.server.game.Game;
 import com.jostrobin.battleships.server.util.IdGenerator;
@@ -132,7 +133,23 @@ public class ServerManager
     		// notify the participants of this game about it
     		for (Client toBeNotified : client.getGame().getPlayers())
     		{
-//    			toBeNotified.sendAttackResult(result);
+    			Ship ship = null;
+    			if (result == AttackResult.SHIP_DESTROYED)
+    			{
+    				// we also need to transmit the ship which has been destroyed
+    				ship = client.getShipAtPosition(x, y);
+    			}
+    			
+    			try
+				{
+					toBeNotified.sendAttackResult(clientId, x, y, result, ship);
+				}
+    			catch (Exception e)
+				{
+    				logger.info("Client communication aborted.");
+    				removeClient(toBeNotified);
+    				resendPlayerLists();
+				}
     		}
     	}
     }
