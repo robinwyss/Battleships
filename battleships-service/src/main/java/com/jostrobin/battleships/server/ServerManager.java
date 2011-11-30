@@ -54,6 +54,8 @@ public class ServerManager
         game.setOwner(client);
         game.addPlayer(client);
         client.setGame(game);
+        
+        client.initializeField(command.getFieldWidth(), command.getFieldLength());
 
         resendPlayerLists();
     }

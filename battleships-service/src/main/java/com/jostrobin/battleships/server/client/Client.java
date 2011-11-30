@@ -36,6 +36,8 @@ public class Client extends Player implements NetworkListener
      * If this client has started a game.
      */
     private Game game;
+    
+    private Cell[][] field;
 
     public Client(ServerManager serverManager, Writer clientWriter)
     {
@@ -133,6 +135,21 @@ public class Client extends Player implements NetworkListener
     		}
     	}
         clientWriter.sendAvailablePlayers(opponents);
+    }
+    
+    /**
+     * Prepare a new game field.
+     */
+    public void initializeField(int width, int length)
+    {
+    	field = new Cell[width][length];
+    	for (int x=0; x<width; x++)
+    	{
+    		for (int y=0; y<length; y++)
+    		{
+    			field[x][y] = new Cell();
+    		}
+    	}
     }
     
     public void sendChatMessage(String username, String message) throws IOException
