@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 
-import com.jostrobin.battleships.data.Cell;
+import com.jostrobin.battleships.common.data.Cell;
 import com.jostrobin.battleships.view.components.CellComponent;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
 import org.slf4j.Logger;

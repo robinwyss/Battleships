@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 
-import com.jostrobin.battleships.data.Cell;
-import com.jostrobin.battleships.data.Ship;
-import com.jostrobin.battleships.data.enums.CellType;
+import com.jostrobin.battleships.common.data.Cell;
+import com.jostrobin.battleships.common.data.Ship;
+import com.jostrobin.battleships.common.data.enums.CellType;
 
 /**
  * @author rowyss

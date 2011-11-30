@@ -18,8 +18,8 @@ package com.jostrobin.battleships.view.panels;
 import java.awt.*;
 import javax.swing.*;
 
-import com.jostrobin.battleships.data.Cell;
-import com.jostrobin.battleships.data.Ship;
+import com.jostrobin.battleships.common.data.Cell;
+import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.model.PlacementModel;
 import com.jostrobin.battleships.view.listeners.EventListener;
 import com.jostrobin.battleships.view.listeners.SelectionListener;

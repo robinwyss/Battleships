@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.*;
 
-import com.jostrobin.battleships.data.Ship;
+import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.view.components.CellComponent;
 import com.jostrobin.battleships.view.listeners.EventListener;
 import com.jostrobin.battleships.view.listeners.SelectionListener;

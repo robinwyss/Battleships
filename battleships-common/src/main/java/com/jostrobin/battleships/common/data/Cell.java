@@ -13,9 +13,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.jostrobin.battleships.data;
+package com.jostrobin.battleships.common.data;
 
-import com.jostrobin.battleships.data.enums.CellType;
+import com.jostrobin.battleships.common.data.enums.CellType;
 
 /**
  * @author rowyss

@@ -1,12 +1,11 @@
-package com.jostrobin.battleships.data;
+package com.jostrobin.battleships.common.data;
 
 
 import java.util.HashSet;
 import java.util.Set;
 
-import com.jostrobin.battleships.common.data.Orientation;
-import com.jostrobin.battleships.data.enums.CellType;
-import com.jostrobin.battleships.data.enums.ShipType;
+import com.jostrobin.battleships.common.data.enums.CellType;
+import com.jostrobin.battleships.common.data.enums.ShipType;
 
 /**
  * @author rowyss

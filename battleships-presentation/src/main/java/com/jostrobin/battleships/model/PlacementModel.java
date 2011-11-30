@@ -18,8 +18,8 @@ package com.jostrobin.battleships.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jostrobin.battleships.data.Cell;
-import com.jostrobin.battleships.data.Ship;
+import com.jostrobin.battleships.common.data.Cell;
+import com.jostrobin.battleships.common.data.Ship;
 
 /**
  * @author rowyss
