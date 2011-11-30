@@ -15,14 +15,20 @@
 
 package com.jostrobin.battleships.view.panels;
 
-import java.awt.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.*;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import com.jostrobin.battleships.listener.ChatListener;
 
@@ -98,7 +104,7 @@ public class ChatPanel extends JPanel implements ActionListener, KeyListener
 
     public void addChatMessage(String username, String message)
     {
-        displayArea.append(String.format("%s: %s\n", username, message));
+        displayArea.append(String.format("\n%s: %s", username, message));
         displayArea.setCaretPosition(displayArea.getDocument().getLength());
     }
 
