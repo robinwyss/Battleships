@@ -4,15 +4,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.jostrobin.battleships.common.data.AttackResult;
+import com.jostrobin.battleships.common.data.Player;
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.server.client.Client;
 import com.jostrobin.battleships.server.game.Game;
 import com.jostrobin.battleships.server.util.IdGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ServerManager
 {
@@ -56,7 +56,7 @@ public class ServerManager
         game.setOwner(client);
         game.addPlayer(client);
         client.setGame(game);
-        
+
         client.initializeField(command.getFieldWidth(), command.getFieldLength());
 
         resendPlayerLists();
@@ -70,14 +70,7 @@ public class ServerManager
      */
     public synchronized void joinGame(Client client, Long gameId)
     {
-        Game game = null;
-        for (Client c : clients)
-        {
-            if (c.getGame() != null && c.getGame().getId().equals(gameId))
-            {
-                game = c.getGame();
-            }
-        }
+        Game game = findGame(gameId);
         // clients can only join games of others
         if (game != null && !game.getOwner().equals(client))
         {
@@ -97,6 +90,19 @@ public class ServerManager
             client.setGame(game);
         }
         resendPlayerLists();
+    }
+
+    private Game findGame(Long gameId)
+    {
+        Game game = null;
+        for (Client c : clients)
+        {
+            if (c.getGame() != null && c.getGame().getId().equals(gameId))
+            {
+                game = c.getGame();
+            }
+        }
+        return game;
     }
 
     /**
@@ -123,35 +129,35 @@ public class ServerManager
             resendPlayerLists();
         }
     }
-    
+
     public void attack(Long clientId, int x, int y)
     {
-    	Client client = getClientById(clientId);
-    	if (client != null)
-    	{
-    		AttackResult result = client.attack(x, y);
-    		// notify the participants of this game about it
-    		for (Client toBeNotified : client.getGame().getPlayers())
-    		{
-    			Ship ship = null;
-    			if (result == AttackResult.SHIP_DESTROYED)
-    			{
-    				// we also need to transmit the ship which has been destroyed
-    				ship = client.getShipAtPosition(x, y);
-    			}
-    			
-    			try
-				{
-					toBeNotified.sendAttackResult(clientId, x, y, result, ship);
-				}
-    			catch (Exception e)
-				{
-    				logger.info("Client communication aborted.");
-    				removeClient(toBeNotified);
-    				resendPlayerLists();
-				}
-    		}
-    	}
+        Client client = getClientById(clientId);
+        if (client != null)
+        {
+            AttackResult result = client.attack(x, y);
+            // notify the participants of this game about it
+            for (Client toBeNotified : client.getGame().getPlayers())
+            {
+                Ship ship = null;
+                if (result == AttackResult.SHIP_DESTROYED)
+                {
+                    // we also need to transmit the ship which has been destroyed
+                    ship = client.getShipAtPosition(x, y);
+                }
+
+                try
+                {
+                    toBeNotified.sendAttackResult(clientId, x, y, result, ship);
+                }
+                catch (Exception e)
+                {
+                    logger.info("Client communication aborted.");
+                    removeClient(toBeNotified);
+                    resendPlayerLists();
+                }
+            }
+        }
     }
 
     public String getServerStatus()
@@ -175,21 +181,35 @@ public class ServerManager
 
         return status;
     }
-    
+
+    public void updateGameState(Game game)
+    {
+        boolean ready = true;
+        for (Player player : game.getPlayers())
+        {
+            ready &= player.isReady();
+        }
+        if (ready)
+        {
+            // TODO: notify clients
+        }
+    }
+
     /**
      * Returns the client with the specified id or null if it doesn't exist.
+     *
      * @param id
      * @return
      */
     private Client getClientById(Long id)
     {
-    	for (Client client : clients)
-    	{
-    		if (client.getId().equals(id))
-    		{
-    			return client;
-    		}
-    	}
-    	return null;
+        for (Client client : clients)
+        {
+            if (client.getId().equals(id))
+            {
+                return client;
+            }
+        }
+        return null;
     }
 }

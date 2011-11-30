@@ -4,180 +4,194 @@ import java.util.List;
 
 import com.jostrobin.battleships.common.data.GameMode;
 import com.jostrobin.battleships.common.data.Player;
+import com.jostrobin.battleships.common.data.Ship;
 
 public class Command
 {
-	public static final int LOGIN = 0;
+    public static final int LOGIN = 0;
 
-	/**
-	 * The list of available players follows.
-	 */
-	public static final int PLAYERS_LIST = 1;
+    /**
+     * The list of available players follows.
+     */
+    public static final int PLAYERS_LIST = 1;
 
-	public static final int CREATE_GAME = 2;
+    public static final int CREATE_GAME = 2;
 
-	public static final int JOIN_GAME = 3;
+    public static final int JOIN_GAME = 3;
 
-	public static final int PREPARE_GAME = 4;
+    public static final int PREPARE_GAME = 4;
 
-	public static final int ACCEPTED = 5;
+    public static final int ACCEPTED = 5;
 
-	public static final int CHAT_MESSAGE = 6;
+    public static final int CHAT_MESSAGE = 6;
 
-	public static final int SET_SHIPS = 7;
+    public static final int SET_SHIPS = 7;
 
-	public static final int ATTACK = 8;
+    public static final int ATTACK = 8;
 
-	public static final int ATTACK_RESULT = 9;
-	
-	public static final int DISCONNECT = 100;
-	
-	private int command;
-	
-	private String username;
-	
-	private Long gameId;
-	
-	private GameMode gameMode;
-	
-	private int maxPlayers;
-	
-	private int fieldWidth;
-	
-	private int fieldLength;
-	
-	private List<Player> players;
-	
-	private Long clientId;
-	
-	private String message;
-	
-	private Integer x;
-	
-	private Integer y;
+    public static final int ATTACK_RESULT = 9;
 
-	public Command(int command)
-	{
-		this.command = command;
-	}
+    public static final int DISCONNECT = 100;
 
-	public int getCommand()
-	{
-		return command;
-	}
+    private int command;
 
-	public void setCommand(int command)
-	{
-		this.command = command;
-	}
+    private String username;
 
-	public String getUsername()
-	{
-		return username;
-	}
+    private Long gameId;
 
-	public void setUsername(String username)
-	{
-		this.username = username;
-	}
+    private GameMode gameMode;
 
-	public Long getGameId()
-	{
-		return gameId;
-	}
+    private int maxPlayers;
 
-	public void setGameId(Long gameId)
-	{
-		this.gameId = gameId;
-	}
+    private int fieldWidth;
 
-	public GameMode getGameMode()
-	{
-		return gameMode;
-	}
+    private int fieldLength;
 
-	public void setGameMode(GameMode gameMode)
-	{
-		this.gameMode = gameMode;
-	}
+    private List<Player> players;
 
-	public int getMaxPlayers()
-	{
-		return maxPlayers;
-	}
+    private Long clientId;
 
-	public void setMaxPlayers(int maxPlayers)
-	{
-		this.maxPlayers = maxPlayers;
-	}
+    private String message;
 
-	public int getFieldWidth()
-	{
-		return fieldWidth;
-	}
+    private Integer x;
 
-	public void setFieldWidth(int fieldWidth)
-	{
-		this.fieldWidth = fieldWidth;
-	}
+    private Integer y;
 
-	public int getFieldLength()
-	{
-		return fieldLength;
-	}
+    private List<Ship> ships;
 
-	public void setFieldLength(int fieldLength)
-	{
-		this.fieldLength = fieldLength;
-	}
+    public Command(int command)
+    {
+        this.command = command;
+    }
 
-	public List<Player> getPlayers()
-	{
-		return players;
-	}
+    public int getCommand()
+    {
+        return command;
+    }
 
-	public void setPlayers(List<Player> players)
-	{
-		this.players = players;
-	}
+    public void setCommand(int command)
+    {
+        this.command = command;
+    }
 
-	public Long getClientId()
-	{
-		return clientId;
-	}
+    public String getUsername()
+    {
+        return username;
+    }
 
-	public void setClientId(Long clientId)
-	{
-		this.clientId = clientId;
-	}
+    public void setUsername(String username)
+    {
+        this.username = username;
+    }
 
-	public String getMessage()
-	{
-		return message;
-	}
+    public Long getGameId()
+    {
+        return gameId;
+    }
 
-	public void setMessage(String message)
-	{
-		this.message = message;
-	}
+    public void setGameId(Long gameId)
+    {
+        this.gameId = gameId;
+    }
 
-	public Integer getX()
-	{
-		return x;
-	}
+    public GameMode getGameMode()
+    {
+        return gameMode;
+    }
 
-	public void setX(Integer x)
-	{
-		this.x = x;
-	}
+    public void setGameMode(GameMode gameMode)
+    {
+        this.gameMode = gameMode;
+    }
 
-	public Integer getY()
-	{
-		return y;
-	}
+    public int getMaxPlayers()
+    {
+        return maxPlayers;
+    }
 
-	public void setY(Integer y)
-	{
-		this.y = y;
-	}
+    public void setMaxPlayers(int maxPlayers)
+    {
+        this.maxPlayers = maxPlayers;
+    }
+
+    public int getFieldWidth()
+    {
+        return fieldWidth;
+    }
+
+    public void setFieldWidth(int fieldWidth)
+    {
+        this.fieldWidth = fieldWidth;
+    }
+
+    public int getFieldLength()
+    {
+        return fieldLength;
+    }
+
+    public void setFieldLength(int fieldLength)
+    {
+        this.fieldLength = fieldLength;
+    }
+
+    public List<Player> getPlayers()
+    {
+        return players;
+    }
+
+    public void setPlayers(List<Player> players)
+    {
+        this.players = players;
+    }
+
+    public Long getClientId()
+    {
+        return clientId;
+    }
+
+    public void setClientId(Long clientId)
+    {
+        this.clientId = clientId;
+    }
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    public void setMessage(String message)
+    {
+        this.message = message;
+    }
+
+    public Integer getX()
+    {
+        return x;
+    }
+
+    public void setX(Integer x)
+    {
+        this.x = x;
+    }
+
+    public Integer getY()
+    {
+        return y;
+    }
+
+    public void setY(Integer y)
+    {
+        this.y = y;
+    }
+
+    public void setShips(List<Ship> ships)
+    {
+        this.ships = ships;
+    }
+
+    public List<Ship> getShips()
+    {
+        return ships;
+    }
+
 }

@@ -89,6 +89,7 @@ public class PlacementPanel extends JPanel implements ActionListener
         readyButtonConstraints.gridy = y++;
         readyButtonConstraints.gridx = 1;
         readyButtonConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
+        ready.setEnabled(false);
         add(ready, readyButtonConstraints);
     }
 
@@ -121,6 +122,11 @@ public class PlacementPanel extends JPanel implements ActionListener
     {
         this.placementModel = placementModel;
         updateShips();
+    }
+
+    public void enableReadyButton(boolean enable)
+    {
+        ready.setEnabled(enable);
     }
 
     @Override

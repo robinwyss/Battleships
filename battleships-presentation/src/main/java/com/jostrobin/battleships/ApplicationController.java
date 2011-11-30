@@ -3,9 +3,11 @@ package com.jostrobin.battleships;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.List;
 
 import com.jostrobin.battleships.common.data.GameData;
 import com.jostrobin.battleships.common.data.Player;
+import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.network.NetworkHandler;
 import com.jostrobin.battleships.common.network.NetworkListener;
 import com.jostrobin.battleships.common.network.NetworkWriter;
@@ -129,9 +131,17 @@ public class ApplicationController
         }
     }
 
-    public void setReady()
+    public void shipsPlaced(List<Ship> ships)
     {
-        // TODO: tell server i'm ready.
+        try
+        {
+            writer.sendShipPlaced(ships);
+        }
+        catch (IOException e)
+        {
+            // TODO: Communication stopped
+            e.printStackTrace();
+        }
     }
 
     public void setUiController(UIController uiController)
@@ -146,6 +156,6 @@ public class ApplicationController
 
     public void showGameFrame()
     {
-        uiController.showGameFrame();
+        uiController.showPlacementFrame();
     }
 }

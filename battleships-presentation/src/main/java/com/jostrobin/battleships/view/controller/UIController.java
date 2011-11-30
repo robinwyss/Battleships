@@ -68,10 +68,22 @@ public class UIController
         show(createGameFrame);
     }
 
-    public void showGameFrame()
+    public void showPlacementFrame()
     {
+        if (!gameFrame.equals(currentFrame))
+        {
+            show(gameFrame);
+        }
         gameFrame.showPlacementWindow();
-        show(gameFrame);
+    }
+
+    public void showReadyFrame()
+    {
+        if (!gameFrame.equals(currentFrame))
+        {
+            show(gameFrame);
+        }
+        // TODO: show ready frame
     }
 
     private void show(JPanel newFrame)

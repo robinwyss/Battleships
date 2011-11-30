@@ -5,20 +5,15 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.jostrobin.battleships.common.data.AttackResult;
-import com.jostrobin.battleships.common.data.DefaultCell;
-import com.jostrobin.battleships.common.data.GameState;
-import com.jostrobin.battleships.common.data.Player;
-import com.jostrobin.battleships.common.data.Ship;
+import com.jostrobin.battleships.common.data.*;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.common.network.NetworkHandler;
 import com.jostrobin.battleships.common.network.NetworkListener;
 import com.jostrobin.battleships.server.ServerManager;
 import com.jostrobin.battleships.server.game.Game;
 import com.jostrobin.battleships.server.network.Writer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Represents a client.  Extends the player data with server side used objects.
@@ -35,11 +30,13 @@ public class Client extends Player implements NetworkListener
 
     private Writer clientWriter;
 
+    private static final Logger LOG = LoggerFactory.getLogger(Client.class);
+
     /**
      * If this client has started a game.
      */
     private Game game;
-    
+
     private DefaultCell[][] field;
 
     public Client(ServerManager serverManager, Writer clientWriter)
@@ -116,16 +113,21 @@ public class Client extends Player implements NetworkListener
                         }
                     }
                     break;
-                    
+
                 // the player wants to attack someone else
                 case Command.ATTACK:
-                	serverManager.attack(command.getClientId(), command.getX(), command.getY());
-                	break;
+                    serverManager.attack(command.getClientId(), command.getX(), command.getY());
+                    break;
+                case Command.SET_SHIPS:
+                    LOG.info("Player '{}' has placed his ships", getUsername());
+                    setShips(command.getShips());
+                    serverManager.updateGameState(game);
+                    break;
             }
         }
         else
         {
-            // there was an error in communication
+            LOG.warn("there was an error in communication");
             serverManager.removeClient(this);
             serverManager.resendPlayerLists();
         }
@@ -144,69 +146,72 @@ public class Client extends Player implements NetworkListener
         }
         clientWriter.sendAvailablePlayers(opponents);
     }
-    
+
     /**
      * Prepare a new game field.
      */
     public void initializeField(int width, int length)
     {
-    	field = new DefaultCell[width][length];
-    	for (int x=0; x<width; x++)
-    	{
-    		for (int y=0; y<length; y++)
-    		{
-    			field[x][y] = new DefaultCell();
-    		}
-    	}
+        field = new DefaultCell[width][length];
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < length; y++)
+            {
+                field[x][y] = new DefaultCell();
+            }
+        }
     }
-    
+
     /**
      * Attack this player. Returns what happened in the attack. Coordinates are zero based.
+     *
      * @param x
      * @param y
      * @return
      */
     public AttackResult attack(int x, int y)
     {
-    	if (x>=0 && y<=0 && x<field.length && y<field[0].length)
-    	{
-    		return field[x][y].attack(x, y);
-    	}
-    	return AttackResult.NO_HIT;
+        if (x >= 0 && y <= 0 && x < field.length && y < field[0].length)
+        {
+            return field[x][y].attack(x, y);
+        }
+        return AttackResult.NO_HIT;
     }
-    
+
     /**
      * Returns the ship at the specified position or null if there is none.
+     *
      * @param x
      * @param y
      * @return
      */
     public Ship getShipAtPosition(int x, int y)
     {
-    	if (x>=0 && y<=0 && x<field.length && y<field[0].length)
-    	{
-    		return field[x][y].getShip();
-		}
-    	return null;
+        if (x >= 0 && y <= 0 && x < field.length && y < field[0].length)
+        {
+            return field[x][y].getShip();
+        }
+        return null;
     }
-    
+
     public void sendChatMessage(String username, String message) throws IOException
     {
         clientWriter.sendChatMessage(username, message);
     }
-    
+
     /**
      * The result from an attack to transmit to this client.
+     *
      * @param clientId the id of the attacked player
-     * @param x where the user attacked
-     * @param y where the user attacked
+     * @param x        where the user attacked
+     * @param y        where the user attacked
      * @param result
-     * @param ship can be null if the result != SHIP_DESTROYED
-     * @throws Exception 
+     * @param ship     can be null if the result != SHIP_DESTROYED
+     * @throws Exception
      */
     public void sendAttackResult(Long clientId, int x, int y, AttackResult result, Ship ship) throws Exception
     {
-    	clientWriter.sendAttackResult(clientId, x, y, result, ship);
+        clientWriter.sendAttackResult(clientId, x, y, result, ship);
     }
 
     /**

@@ -21,6 +21,18 @@ public enum ShipType
         this.length = length;
     }
 
+    public static ShipType getType(int length)
+    {
+        for (ShipType shipType : values())
+        {
+            if (shipType.getLength() == length)
+            {
+                return shipType;
+            }
+        }
+        return null;
+    }
+
     public String getName()
     {
         return name;

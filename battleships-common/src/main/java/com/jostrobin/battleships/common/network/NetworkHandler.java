@@ -6,13 +6,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jostrobin.battleships.common.data.*;
+import com.jostrobin.battleships.common.data.enums.ShipType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.jostrobin.battleships.common.data.GameData;
-import com.jostrobin.battleships.common.data.GameMode;
-import com.jostrobin.battleships.common.data.GameState;
-import com.jostrobin.battleships.common.data.Player;
 
 /**
  * The NetworkHandler is responsible for accepting and parsing commands via network and forwarding them to the
@@ -117,21 +114,37 @@ public class NetworkHandler implements Runnable
                         command.setUsername(username);
                         command.setMessage(message);
                         break;
-                        
-                    case Command.ATTACK:
-                    	command.setX(inputStream.readInt());
-                    	command.setY(inputStream.readInt());
-                    	command.setClientId(inputStream.readLong());
-                    	break;
-                }
 
-                notifyAll(command);
+                    case Command.ATTACK:
+                        command.setX(inputStream.readInt());
+                        command.setY(inputStream.readInt());
+                        command.setClientId(inputStream.readLong());
+                        break;
+                    case Command.SET_SHIPS:
+                        int nbrOfShips = inputStream.readInt();
+                        List<Ship> ships = new ArrayList<Ship>();
+                        for (int i = 0; i < nbrOfShips; i++)
+                        {
+                            Ship ship = new Ship(0);
+                            ship.setPositionX(inputStream.readInt());
+                            ship.setPositionY(inputStream.readInt());
+                            ship.setSize(inputStream.readInt());
+                            Orientation orientation = Orientation.valueOf(inputStream.readUTF());
+                            ship.setOrientation(orientation);
+                            ShipType shipType = ShipType.valueOf(inputStream.readUTF());
+                            ship.setType(shipType);
+                            ships.add(ship);
+                        }
+                        command.setShips(ships);
+                        break;
+                }
+                notifyListeners(command);
             }
         }
         catch (IOException e)
         {
             logger.warn("Communication to client aborted");
-            notifyAll(null);
+            notifyListeners(null);
         }
     }
 
@@ -140,7 +153,7 @@ public class NetworkHandler implements Runnable
      *
      * @param command
      */
-    private void notifyAll(Command command)
+    private void notifyListeners(Command command)
     {
         for (NetworkListener listener : listeners)
         {

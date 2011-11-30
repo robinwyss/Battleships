@@ -32,7 +32,7 @@ public class PlacementModel
             add(new Ship(2));
             add(new Ship(3));
             add(new Ship(4));
-            add(new Ship(1));
+            add(new Ship(3));
         }};
 
     private List<Cell> cells = new ArrayList<Cell>();

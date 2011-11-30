@@ -52,25 +52,25 @@ public class Game extends GameData
     {
         for (Client client : players)
         {
-            client.setState(GameState.RUNNING);
+            client.setState(GameState.PREPARING);
             client.prepareGame();
         }
     }
-    
+
     public void notifyAboutChatMessage(String username, String message) throws IOException
     {
-    	for (Client player : players)
-    	{
-    		player.sendChatMessage(username, message);
-    	}
+        for (Client player : players)
+        {
+            player.sendChatMessage(username, message);
+        }
     }
 
     public List<Client> getPlayers()
-	{
-		return players;
-	}
+    {
+        return players;
+    }
 
-	public Client getOwner()
+    public Client getOwner()
     {
         return owner;
     }

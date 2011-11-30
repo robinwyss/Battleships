@@ -49,12 +49,14 @@ public class NetworkWriter
     public void sendShipPlaced(List<Ship> ships) throws IOException
     {
         outputStream.writeInt(Command.SET_SHIPS);
+        outputStream.writeInt(ships.size());
         for (Ship ship : ships)
         {
             outputStream.writeInt(ship.getPositionX());
             outputStream.writeInt(ship.getPositionY());
             outputStream.writeInt(ship.getSize());
             outputStream.writeUTF(ship.getOrientation().name());
+            outputStream.writeUTF(ship.getType().name());
         }
     }
 }

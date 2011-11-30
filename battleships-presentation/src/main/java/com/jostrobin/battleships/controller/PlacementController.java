@@ -42,6 +42,7 @@ public class PlacementController implements InitializingBean
         placementPanel.addCellSelectionListener(new CellSelectionListener());
         placementPanel.addShipSelectionListener(new ShipSelectionListener());
         placementPanel.addRotationListener(new RotationListener());
+        placementPanel.addReadyListener(new ReadyListener());
     }
 
     private void rotateShip()
@@ -100,8 +101,19 @@ public class PlacementController implements InitializingBean
             if (ship != null && placeShip(ship, cell.getBoardX(), cell.getBoardY()))
             {
                 placementPanel.updateShips();
+                checkAllShipsPlaced();
             }
         }
+    }
+
+    private void checkAllShipsPlaced()
+    {
+        boolean ready = true;
+        for (Ship ship : model.getShips())
+        {
+            ready &= ship.isPlaced();
+        }
+        placementPanel.enableReadyButton(ready);
     }
 
     public void selected(Ship ship)
@@ -253,7 +265,7 @@ public class PlacementController implements InitializingBean
         @Override
         public void actionPerformed(Object value)
         {
-
+            applicationController.shipsPlaced(model.getShips());
         }
     }
 }
