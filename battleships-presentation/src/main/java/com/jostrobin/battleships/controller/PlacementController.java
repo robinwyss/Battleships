@@ -17,10 +17,10 @@ package com.jostrobin.battleships.controller;
 
 import javax.annotation.PostConstruct;
 
+import com.jostrobin.battleships.common.data.Orientation;
 import com.jostrobin.battleships.data.Cell;
 import com.jostrobin.battleships.data.Ship;
 import com.jostrobin.battleships.data.enums.CellType;
-import com.jostrobin.battleships.data.enums.Orientation;
 import com.jostrobin.battleships.model.PlacementModel;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
 import com.jostrobin.battleships.view.panels.PlacementPanel;

@@ -1,4 +1,4 @@
-package com.jostrobin.battleships.data.enums;
+package com.jostrobin.battleships.common.data;
 
 /**
  * @author rowyss

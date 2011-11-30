@@ -4,8 +4,8 @@ package com.jostrobin.battleships.data;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.jostrobin.battleships.common.data.Orientation;
 import com.jostrobin.battleships.data.enums.CellType;
-import com.jostrobin.battleships.data.enums.Orientation;
 import com.jostrobin.battleships.data.enums.ShipType;
 
 /**
