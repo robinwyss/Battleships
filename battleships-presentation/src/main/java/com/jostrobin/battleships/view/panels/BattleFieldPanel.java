@@ -85,4 +85,8 @@ public class BattleFieldPanel extends JPanel implements ActionListener
         selectionListeners.add(selectionListener);
     }
 
+    public void setFieldSize(int length, int width)
+    {
+
+    }
 }

@@ -58,7 +58,9 @@ public class GameSelectionController implements NetworkListener, InitializingBea
             }
             else if (command.getCommand() == Command.PREPARE_GAME)
             {
-                applicationController.showGameFrame();
+                int length = command.getFieldLength();
+                int width = command.getFieldWidth();
+                applicationController.showGameFrame(length, width);
             }
             else if (command.getCommand() == Command.ACCEPTED)
             {

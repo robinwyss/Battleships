@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.jostrobin.battleships.common.data.AttackResult;
-import com.jostrobin.battleships.common.data.Player;
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.server.client.Client;
@@ -185,7 +184,7 @@ public class ServerManager
     public void updateGameState(Game game)
     {
         boolean ready = true;
-        for (Player player : game.getPlayers())
+        for (Client player : game.getPlayers())
         {
             ready &= player.isReady();
         }

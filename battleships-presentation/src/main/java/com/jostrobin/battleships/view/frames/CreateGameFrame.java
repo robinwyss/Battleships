@@ -3,12 +3,13 @@ package com.jostrobin.battleships.view.frames;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 
-import com.jostrobin.battleships.ApplicationController;
-import com.jostrobin.battleships.common.data.GameData;
 import com.jostrobin.battleships.common.data.GameMode;
 import com.jostrobin.battleships.view.components.ComboBoxItem;
+import com.jostrobin.battleships.view.listeners.EventListener;
 
 public class CreateGameFrame extends JPanel implements ActionListener
 {
@@ -19,6 +20,10 @@ public class CreateGameFrame extends JPanel implements ActionListener
     private JPanel optionsPanel;
 
     private JButton createGameButton;
+
+    private JButton cancelButton;
+
+    private JPanel buttonPanel;
 
     private JLabel modeLabel;
 
@@ -34,12 +39,12 @@ public class CreateGameFrame extends JPanel implements ActionListener
 
     private int y = 0;
 
-    private ApplicationController controller;
+    private List<EventListener<GameMode>> createGameListeners = new ArrayList<EventListener<GameMode>>();
 
-    public CreateGameFrame(ApplicationController controller)
+    private List<EventListener<Object>> cancelListeners = new ArrayList<EventListener<Object>>();
+
+    public CreateGameFrame()
     {
-        this.controller = controller;
-
         buildGui();
         updateUiState();
         this.setVisible(true);
@@ -66,12 +71,17 @@ public class CreateGameFrame extends JPanel implements ActionListener
         c.weighty = 1;
         this.add(optionsPanel, c);
 
+        buttonPanel = new JPanel();
         createGameButton = new JButton("Create");
         createGameButton.addActionListener(this);
+        buttonPanel.add(createGameButton);
+        cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(this);
+        buttonPanel.add(cancelButton);
         c = createConstraint(0, 2);
         c.insets = new Insets(15, 15, 15, 15);
         c.anchor = GridBagConstraints.LAST_LINE_END;
-        this.add(createGameButton, c);
+        this.add(buttonPanel, c);
 
         addOptions();
     }
@@ -168,19 +178,46 @@ public class CreateGameFrame extends JPanel implements ActionListener
         {
             ComboBoxItem item = (ComboBoxItem) modeComboBox.getSelectedItem();
             GameMode mode = (GameMode) item.getKey();
-            if (mode == GameMode.CLASSIC)
+            for (EventListener<GameMode> listener : createGameListeners)
             {
-                GameData game = new GameData(null, mode, 0, 2, 10, 10);
-                controller.createGame(game);
-            }
-            else
-            {
-                JOptionPane.showMessageDialog(null, "Currently only classic mode is supported.");
+                listener.actionPerformed(mode);
             }
         }
         else if (source == modeComboBox)
         {
             updateUiState();
         }
+        else if (source == cancelButton)
+        {
+            for (EventListener<Object> cancelListener : cancelListeners)
+            {
+                cancelListener.actionPerformed(null);
+            }
+        }
+    }
+
+    public void showMessage(String message)
+    {
+        JOptionPane.showMessageDialog(null, message);
+    }
+
+    public void addCreateGameListener(EventListener<GameMode> listener)
+    {
+        createGameListeners.add(listener);
+    }
+
+    public void removeCreateGameListener(EventListener<GameMode> listener)
+    {
+        createGameListeners.remove(listener);
+    }
+
+    public void addCancelListener(EventListener<Object> listener)
+    {
+        cancelListeners.add(listener);
+    }
+
+    public void removeCancelListener(EventListener<Object> listener)
+    {
+        cancelListeners.remove(listener);
     }
 }

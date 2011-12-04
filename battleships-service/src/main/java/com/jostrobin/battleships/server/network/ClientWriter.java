@@ -5,13 +5,12 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
 
-import org.springframework.scheduling.annotation.Async;
-
 import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.server.client.Client;
 import com.jostrobin.battleships.server.game.Game;
+import org.springframework.scheduling.annotation.Async;
 
 /**
  * This class is used to send commands to a client.
@@ -60,13 +59,17 @@ public class ClientWriter implements Writer
     /**
      * Players can start placing their ships.
      *
+     * @param fieldLength
+     * @param fieldWidth
      * @throws IOException
      */
     @Override
     @Async
-    public void sendPrepareGame() throws IOException
+    public void sendPrepareGame(int fieldLength, int fieldWidth) throws IOException
     {
         outputStream.writeInt(Command.PREPARE_GAME);
+        outputStream.writeInt(fieldLength);
+        outputStream.writeInt(fieldWidth);
     }
 
     /**
@@ -83,34 +86,34 @@ public class ClientWriter implements Writer
         outputStream.writeLong(id);
     }
 
-	@Override
-	@Async
-	public void sendChatMessage(String username, String message)
-			throws IOException
-	{
-		outputStream.writeInt(Command.CHAT_MESSAGE);
-		outputStream.writeUTF(username);
-		outputStream.writeUTF(message);
-	}
+    @Override
+    @Async
+    public void sendChatMessage(String username, String message)
+            throws IOException
+    {
+        outputStream.writeInt(Command.CHAT_MESSAGE);
+        outputStream.writeUTF(username);
+        outputStream.writeUTF(message);
+    }
 
-	@Override
-	@Async
-	public void sendAttackResult(Long clientId, int x, int y, AttackResult result, Ship ship)
-			throws Exception
-	{
-		outputStream.writeInt(Command.ATTACK_RESULT);
-		outputStream.writeInt(x);
-		outputStream.writeInt(y);
-		outputStream.writeUTF(result.name());
-		if (result == AttackResult.SHIP_DESTROYED)
-		{
-			outputStream.writeUTF(ship.getType().name());
-			outputStream.writeInt(ship.getPositionX());
-			outputStream.writeInt(ship.getPositionY());
-			outputStream.writeInt(ship.getSize());
-			outputStream.writeUTF(ship.getOrientation().name());
-		}
-	}
-    
-    
+    @Override
+    @Async
+    public void sendAttackResult(Long clientId, int x, int y, AttackResult result, Ship ship)
+            throws Exception
+    {
+        outputStream.writeInt(Command.ATTACK_RESULT);
+        outputStream.writeInt(x);
+        outputStream.writeInt(y);
+        outputStream.writeUTF(result.name());
+        if (result == AttackResult.SHIP_DESTROYED)
+        {
+            outputStream.writeUTF(ship.getType().name());
+            outputStream.writeInt(ship.getPositionX());
+            outputStream.writeInt(ship.getPositionY());
+            outputStream.writeInt(ship.getSize());
+            outputStream.writeUTF(ship.getOrientation().name());
+        }
+    }
+
+
 }

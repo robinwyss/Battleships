@@ -16,26 +16,26 @@
 package com.jostrobin.battleships.view.frames;
 
 import java.awt.*;
-import javax.annotation.PostConstruct;
 import javax.swing.*;
 
 import com.jostrobin.battleships.view.panels.BattleFieldPanel;
 import com.jostrobin.battleships.view.panels.ChatPanel;
 import com.jostrobin.battleships.view.panels.PlacementPanel;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author rowyss
  *         Date: 28.10.11 Time: 18:00
  */
-public class GameFrame extends JPanel
+public class GameFrame extends JPanel implements InitializingBean
 {
     private int y;
-    private BattleFieldPanel gamePanel;
+    private BattleFieldPanel battleFieldPanel;
     private PlacementPanel placementPanel;
     private ChatPanel chatPanel;
 
-    @PostConstruct
-    private void initUI()
+    @Override
+    public void afterPropertiesSet() throws Exception
     {
         setLayout(new GridBagLayout());
 
@@ -45,8 +45,8 @@ public class GameFrame extends JPanel
         battlefieldConstraints.gridy = y;
         battlefieldConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
         battlefieldConstraints.fill = GridBagConstraints.BOTH;
-        add(gamePanel, battlefieldConstraints);
-        gamePanel.setVisible(false);
+        add(battleFieldPanel, battlefieldConstraints);
+        battleFieldPanel.setVisible(false);
 
         GridBagConstraints placementPanelConstraints = new GridBagConstraints();
         placementPanelConstraints.weightx = 1.0;
@@ -77,13 +77,13 @@ public class GameFrame extends JPanel
 
     public void showGameView()
     {
-        gamePanel.setVisible(true);
+        battleFieldPanel.setVisible(true);
         placementPanel.setVisible(false);
     }
 
     public void showPlacementView()
     {
-        gamePanel.setVisible(false);
+        battleFieldPanel.setVisible(false);
         placementPanel.setVisible(true);
     }
 
@@ -92,14 +92,19 @@ public class GameFrame extends JPanel
 
     }
 
-    public BattleFieldPanel getGamePanel()
+    public void setFieldSize(int length, int width)
     {
-        return gamePanel;
+        battleFieldPanel.setFieldSize(length, width);
     }
 
-    public void setGamePanel(BattleFieldPanel gamePanel)
+    public BattleFieldPanel getBattleFieldPanel()
     {
-        this.gamePanel = gamePanel;
+        return battleFieldPanel;
+    }
+
+    public void setBattleFieldPanel(BattleFieldPanel battleFieldPanel)
+    {
+        this.battleFieldPanel = battleFieldPanel;
     }
 
     public PlacementPanel getPlacementPanel()
@@ -121,4 +126,5 @@ public class GameFrame extends JPanel
     {
         this.chatPanel = chatPanel;
     }
+
 }

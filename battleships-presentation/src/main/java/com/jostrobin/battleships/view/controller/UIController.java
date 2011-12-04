@@ -18,7 +18,6 @@ package com.jostrobin.battleships.view.controller;
 import java.awt.*;
 import javax.swing.*;
 
-import com.jostrobin.battleships.ApplicationController;
 import com.jostrobin.battleships.controller.GameSelectionController;
 import com.jostrobin.battleships.view.effects.SmoothResize;
 import com.jostrobin.battleships.view.frames.CreateGameFrame;
@@ -38,7 +37,6 @@ public class UIController
 
     private JFrame frame;
     private JPanel currentFrame;
-    private ApplicationController applicationController;
     private RegistrationDialog registrationDialog;
     private GameSelectionFrame gameSelectionFrame;
     private CreateGameFrame createGameFrame;
@@ -64,11 +62,10 @@ public class UIController
 
     public void showCreateGame()
     {
-        createGameFrame = new CreateGameFrame(applicationController);
         show(createGameFrame);
     }
 
-    public void showPlacementFrame()
+    public void showPlacementFrame(int length, int width)
     {
         if (!gameFrame.equals(currentFrame))
         {
@@ -126,8 +123,4 @@ public class UIController
         this.createGameFrame = createGameFrame;
     }
 
-    public void setApplicationController(ApplicationController applicationController)
-    {
-        this.applicationController = applicationController;
-    }
 }

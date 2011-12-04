@@ -154,8 +154,8 @@ public class ApplicationController
         uiController.showCreateGame();
     }
 
-    public void showGameFrame()
+    public void showGameFrame(int length, int width)
     {
-        uiController.showPlacementFrame();
+        uiController.showPlacementFrame(length, width);
     }
 }

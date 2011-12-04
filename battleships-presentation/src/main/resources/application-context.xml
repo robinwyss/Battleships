@@ -19,9 +19,9 @@
     </bean>
     <bean id="uiController" class="com.jostrobin.battleships.view.controller.UIController"
           p:gameFrame-ref="gameFrame"
-          p:applicationController-ref="applicationController"
           p:registrationDialog-ref="registrationDialog"
-          p:gameSelectionFrame-ref="gameSelectionFrame"/>
+          p:gameSelectionFrame-ref="gameSelectionFrame"
+          p:createGameFrame-ref="createGameFrame"/>
     <bean id="placementController" class="com.jostrobin.battleships.controller.PlacementController"
           p:model-ref="placementModel" p:placementPanel-ref="placementPanel"
           p:applicationController-ref="applicationController"/>
@@ -35,6 +35,9 @@
     <bean id="registrationController" class="com.jostrobin.battleships.controller.RegistrationController"
           p:applicationController-ref="applicationController"
           p:registrationDialog-ref="registrationDialog"/>
+    <bean id="createGameController" class="com.jostrobin.battleships.controller.CreateGameController"
+          p:applicationController-ref="applicationController"
+          p:frame-ref="createGameFrame"/>
 
     <!-- Model -->
     <bean id="placementModel" class="com.jostrobin.battleships.model.PlacementModel"/>
@@ -43,7 +46,7 @@
     <!-- View -->
     <bean id="registrationDialog" class="com.jostrobin.battleships.view.frames.RegistrationDialog"/>
     <bean id="gameFrame" class="com.jostrobin.battleships.view.frames.GameFrame"
-          p:gamePanel-ref="battleFieldPanel"
+          p:battleFieldPanel-ref="battleFieldPanel"
           p:placementPanel-ref="placementPanel"
           p:chatPanel-ref="chatPanel"/>
     <bean id="placementPanel" class="com.jostrobin.battleships.view.panels.PlacementPanel"
@@ -52,6 +55,7 @@
     <bean id="chatPanel" class="com.jostrobin.battleships.view.panels.ChatPanel"/>
     <bean id="gameSelectionFrame" class="com.jostrobin.battleships.view.frames.GameSelectionFrame"
           p:gameSelectionModel-ref="gameSelectionModel"/>
+    <bean id="createGameFrame" class="com.jostrobin.battleships.view.frames.CreateGameFrame"/>
 
     <!-- Network -->
     <bean id="networkHandler" class="com.jostrobin.battleships.common.network.NetworkHandler"/>

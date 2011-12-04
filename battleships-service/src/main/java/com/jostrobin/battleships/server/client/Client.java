@@ -224,7 +224,7 @@ public class Client extends Player implements NetworkListener
      */
     public void prepareGame() throws IOException
     {
-        clientWriter.sendPrepareGame();
+        clientWriter.sendPrepareGame(game.getFieldLength(), game.getFieldWidth());
     }
 
     @Override

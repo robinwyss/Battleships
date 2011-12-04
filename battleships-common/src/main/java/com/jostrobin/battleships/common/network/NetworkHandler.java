@@ -107,7 +107,12 @@ public class NetworkHandler implements Runnable
                         Long myClientId = inputStream.readLong();
                         command.setClientId(myClientId);
                         break;
-
+                    case Command.PREPARE_GAME:
+                        int length = inputStream.readInt();
+                        int width = inputStream.readInt();
+                        command.setFieldLength(length);
+                        command.setFieldWidth(width);
+                        break;
                     case Command.CHAT_MESSAGE:
                         username = inputStream.readUTF();
                         String message = inputStream.readUTF();
