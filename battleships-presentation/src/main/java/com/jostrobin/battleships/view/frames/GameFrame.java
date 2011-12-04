@@ -75,16 +75,21 @@ public class GameFrame extends JPanel
         add(chatPanel, chatPanelConstraints);
     }
 
-    public void showGameWindow()
+    public void showGameView()
     {
         gamePanel.setVisible(true);
         placementPanel.setVisible(false);
     }
 
-    public void showPlacementWindow()
+    public void showPlacementView()
     {
         gamePanel.setVisible(false);
         placementPanel.setVisible(true);
+    }
+
+    public void showWaitingView()
+    {
+
     }
 
     public BattleFieldPanel getGamePanel()

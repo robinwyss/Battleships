@@ -39,6 +39,9 @@ public class Client extends Player implements NetworkListener
 
     private DefaultCell[][] field;
 
+    private boolean ready;
+
+
     public Client(ServerManager serverManager, Writer clientWriter)
     {
         this.serverManager = serverManager;
@@ -120,7 +123,7 @@ public class Client extends Player implements NetworkListener
                     break;
                 case Command.SET_SHIPS:
                     LOG.info("Player '{}' has placed his ships", getUsername());
-                    setShips(command.getShips());
+                    placeShips(command.getShips());
                     serverManager.updateGameState(game);
                     break;
             }
@@ -279,4 +282,29 @@ public class Client extends Player implements NetworkListener
         }
         return true;
     }
+
+    public void placeShips(List<Ship> ships)
+    {
+        for (Ship ship : ships)
+        {
+            for (int i = 0; i < ship.getSize(); i++)
+            {
+                if (ship.getOrientation().equals(Orientation.VERTICAL))
+                {
+                    field[ship.getPositionX()][ship.getPositionY() + i].setShip(ship);
+                }
+                else
+                {
+                    field[ship.getPositionX()][ship.getPositionY() + i].setShip(ship);
+                }
+            }
+        }
+        ready = true;
+    }
+
+    public boolean isReady()
+    {
+        return ready;
+    }
+
 }

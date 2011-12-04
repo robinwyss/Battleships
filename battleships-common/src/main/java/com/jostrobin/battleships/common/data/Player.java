@@ -1,7 +1,5 @@
 package com.jostrobin.battleships.common.data;
 
-import java.util.List;
-
 /**
  * Contains the data describing a player.
  *
@@ -13,16 +11,9 @@ public class Player
 
     private String username;
 
-    private List<Ship> ships;
-
     private GameState state = GameState.INIT;
 
     private GameData gameData;
-
-    public boolean isReady()
-    {
-        return ships != null && !ships.isEmpty();
-    }
 
     public Long getId()
     {
@@ -64,13 +55,4 @@ public class Player
         this.username = username;
     }
 
-    public List<Ship> getShips()
-    {
-        return ships;
-    }
-
-    public void setShips(List<Ship> ships)
-    {
-        this.ships = ships;
-    }
 }

@@ -74,7 +74,7 @@ public class UIController
         {
             show(gameFrame);
         }
-        gameFrame.showPlacementWindow();
+        gameFrame.showPlacementView();
     }
 
     public void showReadyFrame()
@@ -83,6 +83,7 @@ public class UIController
         {
             show(gameFrame);
         }
+
         // TODO: show ready frame
     }
 
