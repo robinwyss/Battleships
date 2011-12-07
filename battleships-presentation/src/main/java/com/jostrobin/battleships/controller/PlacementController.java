@@ -62,6 +62,7 @@ public class PlacementController implements InitializingBean
             else
             {
                 ship.setOrientation(orientation);
+                ship.setSelected(true);
                 placementPanel.updateShips();
             }
         }
@@ -129,7 +130,7 @@ public class PlacementController implements InitializingBean
     }
 
 
-    public boolean placeShip(Ship ship, int x, int y)
+    private boolean placeShip(Ship ship, int x, int y)
     {
         boolean placed = false;
         if (canBePlaced(ship, x, y, ship.getOrientation()))
@@ -148,7 +149,7 @@ public class PlacementController implements InitializingBean
                     y++;
                 }
             }
-            ship.setSelected(false);
+            ship.setSelected(true);
             ship.setPlaced(true);
             placed = true;
         }

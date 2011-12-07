@@ -34,22 +34,28 @@ import org.slf4j.LoggerFactory;
  */
 public class BattleFieldPanel extends JPanel implements ActionListener
 {
-    private int size = 20;
     public static final Logger LOG = LoggerFactory.getLogger(BattleFieldPanel.class);
     private List<SelectionListener<Cell>> selectionListeners = new ArrayList<SelectionListener<Cell>>();
-    private final JPanel contentPanel;
+    private JPanel contentPanel;
     private Cell[][] cellArray;
     private List<Cell> cells = new ArrayList<Cell>();
 
     public BattleFieldPanel()
     {
-        contentPanel = new JPanel();
-        contentPanel.setLayout(new GridLayout(size, size));
 
-        cellArray = new Cell[size][size];
-        for (int y = 0; y < size; y++)
+        drawField(5, 5);
+        setLayout(new FlowLayout());
+    }
+
+    private void drawField(int width, int height)
+    {
+        removeAll();
+        contentPanel = new JPanel();
+        contentPanel.setLayout(new GridLayout(width, height));
+        cellArray = new Cell[width][height];
+        for (int y = 0; y < height; y++)
         {
-            for (int x = 0; x < size; x++)
+            for (int x = 0; x < width; x++)
             {
                 CellComponent cell = new CellComponent(x, y);
                 cell.addActionListener(this);
@@ -57,10 +63,9 @@ public class BattleFieldPanel extends JPanel implements ActionListener
                 contentPanel.add(cell);
             }
         }
-        Dimension dimension = new Dimension(size * CellComponent.CELL_SIZE, size * CellComponent.CELL_SIZE);
+        Dimension dimension = new Dimension(width * CellComponent.CELL_SIZE, height * CellComponent.CELL_SIZE);
         contentPanel.setPreferredSize(dimension);
         setMinimumSize(dimension);
-        setLayout(new FlowLayout());
         add(contentPanel);
     }
 
@@ -87,6 +92,6 @@ public class BattleFieldPanel extends JPanel implements ActionListener
 
     public void setFieldSize(int length, int width)
     {
-
+        drawField(length, width);
     }
 }

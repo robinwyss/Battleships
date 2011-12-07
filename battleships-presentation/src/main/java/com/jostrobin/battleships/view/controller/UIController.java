@@ -71,6 +71,7 @@ public class UIController
         {
             show(gameFrame);
         }
+        gameFrame.setFieldSize(length, width);
         gameFrame.showPlacementView();
     }
 
