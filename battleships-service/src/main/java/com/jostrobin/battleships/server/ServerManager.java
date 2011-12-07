@@ -3,6 +3,7 @@ package com.jostrobin.battleships.server;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -184,14 +185,27 @@ public class ServerManager
 
     public void updateGameState(Game game)
     {
-        boolean ready = true;
+        boolean allPlayersReady = true;
         for (Client player : game.getPlayers())
         {
-            ready &= player.isReady();
+            allPlayersReady &= player.isReady();
         }
-        if (ready)
+        if (allPlayersReady)
         {
-            // TODO: notify clients
+        	// all the players are ready, notify them. decide on who starts first
+        	Random random = new Random();
+        	int startIndex = random.nextInt()%game.getPlayers().size();
+        	int index = 0;
+        	for (Client client : game.getPlayers())
+        	{
+        		boolean starts = false;
+        		if (index == startIndex)
+        		{
+        			starts = true;
+        		}
+        		client.sendStartGame(starts);
+        		index++;
+        	}
         }
     }
 

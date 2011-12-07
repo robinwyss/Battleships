@@ -55,6 +55,11 @@ public class Command
      */
     public static final int ATTACK_RESULT = 9;
 
+    /**
+     * All the players have set their ships, the game can start.
+     */
+    public static final int START_GAME = 10;
+
     public static final int DISCONNECT = 100;
 
     private int command;
