@@ -15,20 +15,44 @@ public class Command
      */
     public static final int PLAYERS_LIST = 1;
 
+    /**
+     * The player sends this when he creates a new game, followed by the settings.
+     */
     public static final int CREATE_GAME = 2;
 
+    /**
+     * The player sends this when he wants to join the game specified by the following game id.
+     */
     public static final int JOIN_GAME = 3;
 
+    /**
+     * Notifies the players that the game is full and they can start placing ships.
+     */
     public static final int PREPARE_GAME = 4;
 
+    /**
+     * Notifies a player that he is accepted and sends him his client id.
+     */
     public static final int ACCEPTED = 5;
 
+    /**
+     * A chat message follows (bidirectional, can come from the server or the client).
+     */
     public static final int CHAT_MESSAGE = 6;
 
+    /**
+     * Sent when a player has finished placing ships, followed by the placements.
+     */
     public static final int SET_SHIPS = 7;
 
+    /**
+     * A player wants to attack at the specified position.
+     */
     public static final int ATTACK = 8;
 
+    /**
+     * The result of an attack broadcasted to all the participants.
+     */
     public static final int ATTACK_RESULT = 9;
 
     public static final int DISCONNECT = 100;
