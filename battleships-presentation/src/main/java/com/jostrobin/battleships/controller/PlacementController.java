@@ -15,22 +15,25 @@
 
 package com.jostrobin.battleships.controller;
 
+import org.springframework.beans.factory.InitializingBean;
+
 import com.jostrobin.battleships.ApplicationController;
 import com.jostrobin.battleships.common.data.Cell;
 import com.jostrobin.battleships.common.data.Orientation;
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.data.enums.CellType;
+import com.jostrobin.battleships.common.network.Command;
+import com.jostrobin.battleships.common.network.NetworkListener;
 import com.jostrobin.battleships.model.PlacementModel;
 import com.jostrobin.battleships.view.listeners.EventListener;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
 import com.jostrobin.battleships.view.panels.PlacementPanel;
-import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author rowyss
  *         Date: 09.11.11 Time: 16:44
  */
-public class PlacementController implements InitializingBean
+public class PlacementController implements InitializingBean, NetworkListener
 {
     private PlacementPanel placementPanel;
     private PlacementModel model;
@@ -39,6 +42,8 @@ public class PlacementController implements InitializingBean
     @Override
     public void afterPropertiesSet() throws Exception
     {
+    	applicationController.addNetworkListener(this);
+    	
         placementPanel.addCellSelectionListener(new CellSelectionListener());
         placementPanel.addShipSelectionListener(new ShipSelectionListener());
         placementPanel.addRotationListener(new RotationListener());
@@ -269,4 +274,15 @@ public class PlacementController implements InitializingBean
             applicationController.shipsPlaced(model.getShips());
         }
     }
+
+	@Override
+	public void notify(Command command)
+	{
+		switch (command.getCommand())
+		{
+		case Command.START_GAME:
+			applicationController.showGameView(command.isStartingPlayer());
+			break;
+		}
+	}
 }

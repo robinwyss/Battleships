@@ -153,6 +153,11 @@ public class ApplicationController
     {
         uiController.showCreateGame();
     }
+    
+    public void showGameView(boolean startingPlayer)
+    {
+    	uiController.showGameView(startingPlayer);
+    }
 
     public void showGameFrame(int length, int width)
     {

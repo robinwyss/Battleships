@@ -15,18 +15,22 @@
 
 package com.jostrobin.battleships.view.frames;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+
+import javax.swing.JPanel;
+
+import org.springframework.beans.factory.InitializingBean;
 
 import com.jostrobin.battleships.view.panels.BattleFieldPanel;
 import com.jostrobin.battleships.view.panels.ChatPanel;
 import com.jostrobin.battleships.view.panels.PlacementPanel;
-import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author rowyss
  *         Date: 28.10.11 Time: 18:00
  */
+@SuppressWarnings("serial")
 public class GameFrame extends JPanel implements InitializingBean
 {
     private int y;
@@ -75,7 +79,7 @@ public class GameFrame extends JPanel implements InitializingBean
         add(chatPanel, chatPanelConstraints);
     }
 
-    public void showGameView()
+    public void showGameView(boolean startingPlayer)
     {
         battleFieldPanel.setVisible(true);
         placementPanel.setVisible(false);

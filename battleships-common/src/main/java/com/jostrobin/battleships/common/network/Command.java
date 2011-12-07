@@ -87,6 +87,8 @@ public class Command
     private Integer y;
 
     private List<Ship> ships;
+    
+    private boolean startingPlayer;
 
     public Command(int command)
     {
@@ -222,5 +224,15 @@ public class Command
     {
         return ships;
     }
+
+	public boolean isStartingPlayer()
+	{
+		return startingPlayer;
+	}
+
+	public void setStartingPlayer(boolean startingPlayer)
+	{
+		this.startingPlayer = startingPlayer;
+	}
 
 }
