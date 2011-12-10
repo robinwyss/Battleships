@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jostrobin.battleships.common.data.AttackResult;
+import com.jostrobin.battleships.common.data.Cell;
 import com.jostrobin.battleships.common.data.DefaultCell;
 import com.jostrobin.battleships.common.data.GameState;
 import com.jostrobin.battleships.common.data.Orientation;
@@ -127,7 +128,7 @@ public class Client extends Player implements NetworkListener
                 // the player wants to attack someone else
                 case Command.ATTACK:
                 	logger.debug("Attack at " + command.getX() + ":" + command.getY() + "," + command.getClientId());
-                    serverManager.attack(command.getClientId(), command.getX(), command.getY());
+                    serverManager.attack(this, command.getClientId(), command.getX(), command.getY());
                     break;
                 case Command.SET_SHIPS:
                     LOG.info("Player '{}' has placed his ships", getUsername());
@@ -186,7 +187,10 @@ public class Client extends Player implements NetworkListener
         {
             for (int y = 0; y < length; y++)
             {
-                field[x][y] = new DefaultCell();
+            	DefaultCell cell = new DefaultCell();
+                cell.setBoardX(x);
+                cell.setBoardY(y);
+                field[x][y] = cell;
             }
         }
     }
@@ -200,7 +204,7 @@ public class Client extends Player implements NetworkListener
      */
     public AttackResult attack(int x, int y)
     {
-        if (x >= 0 && y <= 0 && x < field.length && y < field[0].length)
+        if (x >= 0 && y >= 0 && x < field.length && y < field[0].length)
         {
             return field[x][y].attack(x, y);
         }
@@ -216,7 +220,7 @@ public class Client extends Player implements NetworkListener
      */
     public Ship getShipAtPosition(int x, int y)
     {
-        if (x >= 0 && y <= 0 && x < field.length && y < field[0].length)
+        if (x >= 0 && y >= 0 && x < field.length && y < field[0].length)
         {
             return field[x][y].getShip();
         }
@@ -289,11 +293,15 @@ public class Client extends Player implements NetworkListener
             {
                 if (ship.getOrientation().equals(Orientation.VERTICAL))
                 {
-                    field[ship.getPositionX()][ship.getPositionY() + i].setShip(ship);
+                	Cell cell = field[ship.getPositionX()][ship.getPositionY() + i];
+                    cell.setShip(ship);
+                    ship.addCell(cell);
                 }
                 else
                 {
-                    field[ship.getPositionX()][ship.getPositionX() + i].setShip(ship);
+                    Cell cell = field[ship.getPositionX() + i][ship.getPositionY()];
+                    cell.setShip(ship);
+                    ship.addCell(cell);
                 }
             }
         }

@@ -3,6 +3,7 @@ package com.jostrobin.battleships.controller;
 import org.springframework.beans.factory.InitializingBean;
 
 import com.jostrobin.battleships.ApplicationController;
+import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.common.network.NetworkListener;
 import com.jostrobin.battleships.view.frames.GameFrame;
@@ -24,8 +25,13 @@ public class GameController implements NetworkListener, InitializingBean, Attack
 	@Override
 	public void notify(Command command)
 	{
-		// TODO Auto-generated method stub
-		
+		switch (command.getCommand())
+		{
+		case Command.ATTACK_RESULT:
+			AttackResult result = command.getAttackResult();
+			gameFrame.hitCell(command);
+			break;
+		}
 	}
 
 	@Override

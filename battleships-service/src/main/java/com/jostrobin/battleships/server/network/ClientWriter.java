@@ -5,12 +5,13 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
 
+import org.springframework.scheduling.annotation.Async;
+
 import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.server.client.Client;
 import com.jostrobin.battleships.server.game.Game;
-import org.springframework.scheduling.annotation.Async;
 
 /**
  * This class is used to send commands to a client.
@@ -113,11 +114,11 @@ public class ClientWriter implements Writer
         outputStream.writeUTF(result.name());
         if (ship != null)
         {
-            outputStream.writeUTF(ship.getType().name());
             outputStream.writeInt(ship.getPositionX());
             outputStream.writeInt(ship.getPositionY());
             outputStream.writeInt(ship.getSize());
             outputStream.writeUTF(ship.getOrientation().name());
+            outputStream.writeUTF(ship.getType().name());
         }
         outputStream.writeLong(nextPlayer);
     }

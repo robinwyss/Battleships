@@ -45,7 +45,7 @@
     <!-- Model -->
     <bean id="placementModel" class="com.jostrobin.battleships.model.PlacementModel"/>
     <bean id="gameSelectionModel" class="com.jostrobin.battleships.model.GameSelectionModel"/>
-
+	
     <!-- View -->
     <bean id="registrationDialog" class="com.jostrobin.battleships.view.frames.RegistrationDialog"/>
     <bean id="gameFrame" class="com.jostrobin.battleships.view.frames.GameFrame"

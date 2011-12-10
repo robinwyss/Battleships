@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jostrobin.battleships.common.data.Cell;
+import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.view.listeners.AttackListener;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
 
@@ -84,7 +85,11 @@ public class GamePanel extends JPanel
     	}
     }
     
-    
+    public void hitCell(Command command)
+    {
+    	BattleFieldPanel panel = battlefieldPanels.get(command.getClientId());
+    	panel.hitCell(command.getX(), command.getY(), command.getAttackResult());
+    }
 	
 	
 }

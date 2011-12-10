@@ -1,5 +1,6 @@
 package com.jostrobin.battleships.controller;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import com.jostrobin.battleships.common.data.GameState;
 import com.jostrobin.battleships.common.data.Player;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.common.network.NetworkListener;
+import com.jostrobin.battleships.common.util.ParticipantComparator;
 import com.jostrobin.battleships.model.GameSelectionModel;
 import com.jostrobin.battleships.view.frames.GameSelectionFrame;
 import com.jostrobin.battleships.view.listeners.EventListener;
@@ -64,6 +66,8 @@ public class GameSelectionController implements NetworkListener, InitializingBea
                 int length = command.getFieldLength();
                 int width = command.getFieldWidth();
                 List<Long> participants = command.getParticipants();
+                
+                Collections.sort(participants, new ParticipantComparator(model.getClientId()));
                 applicationController.showGameFrame(length, width, participants);
             }
             else if (command.getCommand() == Command.ACCEPTED)

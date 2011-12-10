@@ -92,7 +92,9 @@ public class Command
     private List<Ship> ships;
 
     private Long startingPlayer;
+
     private AttackResult attackResult;
+    
     private Ship ship;
 
     public Command(int command)

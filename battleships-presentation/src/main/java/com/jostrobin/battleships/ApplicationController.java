@@ -38,7 +38,7 @@ public class ApplicationController
     private Socket socket;
 
     private String username;
-
+    
     public ApplicationController(NetworkHandler handler)
     {
         this.networkHandler = handler;
