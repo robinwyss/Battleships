@@ -11,6 +11,5 @@ public class GameController
 	
 	public GameController()
 	{
-		gameFrame.addS
 	}
 }
