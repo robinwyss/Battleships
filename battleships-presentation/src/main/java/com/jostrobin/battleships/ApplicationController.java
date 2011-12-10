@@ -66,8 +66,7 @@ public class ApplicationController
     {
         this.username = username;
 
-        // show the next frame
-        uiController.showGameSelection();
+        showGameSelection();
 
         Thread thread = new Thread(networkHandler);
         thread.start();
@@ -82,6 +81,11 @@ public class ApplicationController
             //TODO: show error message
             e.printStackTrace();
         }
+    }
+
+    public void showGameSelection()
+    {
+        uiController.showGameSelection();
     }
 
     public void addNetworkListener(NetworkListener listener)
@@ -130,17 +134,18 @@ public class ApplicationController
             e.printStackTrace();
         }
     }
-    
+
     public void sendAttack(int x, int y, Long clientId)
     {
-    	try
-		{
-			writer.sendAttack(x, y, clientId);
-		} catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        try
+        {
+            writer.sendAttack(x, y, clientId);
+        }
+        catch (IOException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     public void shipsPlaced(List<Ship> ships)

@@ -54,7 +54,6 @@ public class CreateGameFrame extends JPanel implements ActionListener
     {
         this.setLayout(new GridBagLayout());
         this.setSize(350, 200);
-        //this.setResizable(false);
 
         createGameLabel = new JLabel("New game");
         GridBagConstraints c = createConstraint(0, 0);
@@ -182,6 +181,7 @@ public class CreateGameFrame extends JPanel implements ActionListener
             {
                 listener.actionPerformed(mode);
             }
+            showWaitingForPlayers();
         }
         else if (source == modeComboBox)
         {
@@ -194,6 +194,14 @@ public class CreateGameFrame extends JPanel implements ActionListener
                 cancelListener.actionPerformed(null);
             }
         }
+    }
+
+    public void showWaitingForPlayers()
+    {
+        createGameLabel.setText("Waiting for players to join");
+        createGameButton.setEnabled(false);
+        modeComboBox.setEnabled(false);
+        cancelButton.setEnabled(false);
     }
 
     public void showMessage(String message)

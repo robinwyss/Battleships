@@ -28,13 +28,9 @@ public class GameSelectionFrame extends JPanel implements ActionListener
 
     private JButton settingsButton;
 
-    private JButton filterButton;
-
     private JButton joinButton;
 
     private JButton exitButton;
-
-    private JTextArea detailsTextArea;
 
     private JTable availableGamesTable;
 
@@ -55,8 +51,8 @@ public class GameSelectionFrame extends JPanel implements ActionListener
         buildUi();
 
         refreshState();
-        setPreferredSize(new Dimension(800, 600));
-        setMinimumSize(new Dimension(700, 500));
+        setPreferredSize(new Dimension(600, 300));
+        setMinimumSize(new Dimension(400, 250));
     }
 
     private void buildUi()
@@ -138,23 +134,6 @@ public class GameSelectionFrame extends JPanel implements ActionListener
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(buttonInsets, buttonInsets, buttonInsets, buttonInsets);
         buttonsPanel.add(settingsButton, c);
-
-        filterButton = createButton("Filter");
-        c = createConstraint(0, buttonsY++);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(buttonInsets, buttonInsets, buttonInsets, buttonInsets);
-        buttonsPanel.add(filterButton, c);
-
-        detailsTextArea = new JTextArea("");
-        detailsTextArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        detailsTextArea.setEditable(false);
-        detailsTextArea.setRows(10);
-        detailsTextArea.setMargin(new Insets(3, 3, 3, 3));
-        detailsTextArea.setText("Welcome to\nFabuluous\nLas Vegas!");
-        c = createConstraint(0, buttonsY++);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(buttonInsets, buttonInsets, buttonInsets, buttonInsets);
-        buttonsPanel.add(detailsTextArea, c);
 
         joinButton = createButton("Join");
         joinButton.addActionListener(this);

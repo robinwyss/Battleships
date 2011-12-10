@@ -33,7 +33,7 @@ public class CreateGameController implements InitializingBean
     private ApplicationController applicationController;
 
 
-    public void createGame(GameMode mode)
+    private void createGame(GameMode mode)
     {
         if (mode == GameMode.CLASSIC)
         {
@@ -51,6 +51,11 @@ public class CreateGameController implements InitializingBean
     {
         frame.addCancelListener(new CancelListener());
         frame.addCreateGameListener(new CreateGameListener());
+    }
+
+    private void cancel()
+    {
+        applicationController.showGameSelection();
     }
 
     public ApplicationController getApplicationController()
@@ -79,7 +84,7 @@ public class CreateGameController implements InitializingBean
         @Override
         public void actionPerformed(Object value)
         {
-
+            cancel();
         }
     }
 
