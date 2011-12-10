@@ -15,18 +15,22 @@
 
 package com.jostrobin.battleships.view.panels;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.*;
+
+import javax.swing.JPanel;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.jostrobin.battleships.common.data.Cell;
 import com.jostrobin.battleships.view.components.CellComponent;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author rowyss
@@ -42,7 +46,6 @@ public class BattleFieldPanel extends JPanel implements ActionListener
 
     public BattleFieldPanel()
     {
-        drawField(6, 6);
         setLayout(new FlowLayout());
     }
 
