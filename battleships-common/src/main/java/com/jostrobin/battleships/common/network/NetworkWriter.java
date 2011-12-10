@@ -59,4 +59,12 @@ public class NetworkWriter
             outputStream.writeUTF(ship.getType().name());
         }
     }
+    
+    public void sendAttack(int x, int y, Long clientId) throws IOException
+    {
+    	outputStream.writeInt(Command.ATTACK);
+    	outputStream.writeInt(x);
+    	outputStream.writeInt(y);
+    	outputStream.writeLong(clientId);
+    }
 }
