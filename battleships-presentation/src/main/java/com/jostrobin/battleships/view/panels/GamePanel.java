@@ -1,6 +1,7 @@
 package com.jostrobin.battleships.view.panels;
 
 import java.awt.FlowLayout;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jostrobin.battleships.common.data.Cell;
+import com.jostrobin.battleships.view.listeners.AttackListener;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
 
 @SuppressWarnings("serial")
@@ -22,6 +24,8 @@ public class GamePanel extends JPanel
 	 * Map holding a battlefieldpanel for each of the participants. clientId as key, panel as value.
 	 */
 	private Map<Long, BattleFieldPanel> battlefieldPanels;
+	
+	private List<AttackListener> attackListeners = new ArrayList<AttackListener>();
 	
 	/**
 	 * Initializes the UI for the specified game type.
@@ -61,6 +65,11 @@ public class GamePanel extends JPanel
     	}
     }
     
+    public void addAttackListener(AttackListener listener)
+    {
+    	attackListeners.add(listener);
+    }
+    
     /**
      * The specified cell on the field of the specified player has been clicked. Called by listeners.
      * @param cell
@@ -69,7 +78,13 @@ public class GamePanel extends JPanel
     private void cellClicked(Cell cell, Long clientId)
     {
     	logger.debug("Cell {} of client {} clicked", cell, clientId);
+    	for (AttackListener listener : attackListeners)
+    	{
+    		listener.attack(cell.getBoardX(), cell.getBoardY(), clientId);
+    	}
     }
+    
+    
 	
 	
 }
