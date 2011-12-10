@@ -97,7 +97,7 @@ public class GameFrame extends JPanel implements InitializingBean
     {
     	this.participants = participants;
     	gamePanel.initUi(length, width, participants);
-    	setFieldSize(length, width);
+    	initializeFieldSize(length, width);
     }
 
     public void showWaitingView()
@@ -105,9 +105,9 @@ public class GameFrame extends JPanel implements InitializingBean
 
     }
 
-    public void setFieldSize(int length, int width)
+    public void initializeFieldSize(int length, int width)
     {
-    	gamePanel.setFieldSize(length, width);
+    	gamePanel.initializeFieldSize(length, width);
         placementPanel.setFieldSize(length, width);
     }
 
