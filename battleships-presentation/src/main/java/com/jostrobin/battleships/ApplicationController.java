@@ -153,10 +153,10 @@ public class ApplicationController
     {
         uiController.showCreateGame();
     }
-    
-    public void showGameView(boolean startingPlayer)
+
+    public void showGameView(Long startingPlayer)
     {
-    	uiController.showGameView(startingPlayer);
+        uiController.showGameView(startingPlayer);
     }
 
     public void showGameFrame(int length, int width, List<Long> participants)

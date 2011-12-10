@@ -77,7 +77,7 @@ public class Command
     private int fieldLength;
 
     private List<Player> players;
-    
+
     private List<Long> participants;
 
     private Long clientId;
@@ -89,8 +89,8 @@ public class Command
     private Integer y;
 
     private List<Ship> ships;
-    
-    private boolean startingPlayer;
+
+    private Long startingPlayer;
 
     public Command(int command)
     {
@@ -227,24 +227,24 @@ public class Command
         return ships;
     }
 
-	public boolean isStartingPlayer()
-	{
-		return startingPlayer;
-	}
+    public void setStartingPlayer(Long startingPlayer)
+    {
+        this.startingPlayer = startingPlayer;
+    }
 
-	public void setStartingPlayer(boolean startingPlayer)
-	{
-		this.startingPlayer = startingPlayer;
-	}
+    public Long getStartingPlayer()
+    {
+        return startingPlayer;
+    }
 
-	public List<Long> getParticipants()
-	{
-		return participants;
-	}
+    public List<Long> getParticipants()
+    {
+        return participants;
+    }
 
-	public void setParticipants(List<Long> participants)
-	{
-		this.participants = participants;
-	}
+    public void setParticipants(List<Long> participants)
+    {
+        this.participants = participants;
+    }
 
 }

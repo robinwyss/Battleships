@@ -15,17 +15,14 @@
 
 package com.jostrobin.battleships.view.frames;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.*;
 import java.util.List;
-
-import javax.swing.JPanel;
-
-import org.springframework.beans.factory.InitializingBean;
+import javax.swing.*;
 
 import com.jostrobin.battleships.view.panels.ChatPanel;
 import com.jostrobin.battleships.view.panels.GamePanel;
 import com.jostrobin.battleships.view.panels.PlacementPanel;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author rowyss
@@ -81,23 +78,23 @@ public class GameFrame extends JPanel implements InitializingBean
         add(chatPanel, chatPanelConstraints);
     }
 
-    public void showGameView(boolean startingPlayer)
+    public void showGameView(Long startingPlayer)
     {
-    	gamePanel.setVisible(true);
+        gamePanel.setVisible(true);
         placementPanel.setVisible(false);
     }
 
     public void showPlacementView()
     {
-    	gamePanel.setVisible(false);
+        gamePanel.setVisible(false);
         placementPanel.setVisible(true);
     }
-    
+
     public void initializeFields(int length, int width, List<Long> participants)
     {
-    	this.participants = participants;
-    	gamePanel.initUi(length, width, participants);
-    	initializeFieldSize(length, width);
+        this.participants = participants;
+        gamePanel.initUi(length, width, participants);
+        initializeFieldSize(length, width);
     }
 
     public void showWaitingView()
@@ -107,21 +104,21 @@ public class GameFrame extends JPanel implements InitializingBean
 
     public void initializeFieldSize(int length, int width)
     {
-    	gamePanel.initializeFieldSize(length, width);
+        gamePanel.initializeFieldSize(length, width);
         placementPanel.setFieldSize(length, width);
     }
 
     public GamePanel getGamePanel()
-	{
-		return gamePanel;
-	}
+    {
+        return gamePanel;
+    }
 
-	public void setGamePanel(GamePanel gamePanel)
-	{
-		this.gamePanel = gamePanel;
-	}
+    public void setGamePanel(GamePanel gamePanel)
+    {
+        this.gamePanel = gamePanel;
+    }
 
-	public PlacementPanel getPlacementPanel()
+    public PlacementPanel getPlacementPanel()
     {
         return placementPanel;
     }
@@ -141,14 +138,14 @@ public class GameFrame extends JPanel implements InitializingBean
         this.chatPanel = chatPanel;
     }
 
-	public List<Long> getParticipants()
-	{
-		return participants;
-	}
+    public List<Long> getParticipants()
+    {
+        return participants;
+    }
 
-	public void setParticipants(List<Long> participants)
-	{
-		this.participants = participants;
-	}
+    public void setParticipants(List<Long> participants)
+    {
+        this.participants = participants;
+    }
 
 }
