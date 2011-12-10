@@ -22,6 +22,8 @@ public class Ship
     private boolean placed;
     private Orientation orientation = Orientation.HORIZONTAL;
 
+    private boolean shipDestroyed;
+
     public Ship(int size)
     {
         this.size = size;
@@ -108,12 +110,23 @@ public class Ship
 
         if (shipDestroyed)
         {
+            setShipDestroyed(true);
             return AttackResult.SHIP_DESTROYED;
         }
         else
         {
             return AttackResult.HIT;
         }
+    }
+
+    private void setShipDestroyed(boolean shipDestroyed)
+    {
+        this.shipDestroyed = shipDestroyed;
+    }
+
+    public boolean isShipDestroyed()
+    {
+        return shipDestroyed;
     }
 
     public int getSize()

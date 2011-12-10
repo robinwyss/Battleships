@@ -5,15 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.jostrobin.battleships.common.data.AttackResult;
+import com.jostrobin.battleships.common.data.Player;
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.server.client.Client;
 import com.jostrobin.battleships.server.game.Game;
 import com.jostrobin.battleships.server.util.IdGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ServerManager
 {
@@ -78,7 +78,7 @@ public class ServerManager
             boolean added = game.addPlayer(client);
             if (added && game.getCurrentPlayers() == game.getMaxPlayers())
             {
-            	client.setGame(game);
+                client.setGame(game);
                 // the game is full, we can start it
                 try
                 {
@@ -134,29 +134,47 @@ public class ServerManager
     public void attack(Long clientId, int x, int y)
     {
         Client client = getClientById(clientId);
+        Game game = client.getGame();
+        if (game.getCurrentPlayer().equals(client))
+        {
+            logger.warn("Player {} tried to attack, but it is not his turn", client);
+            return;
+        }
         if (client != null)
         {
             AttackResult result = client.attack(x, y);
-            // notify the participants of this game about it
-            for (Client toBeNotified : client.getGame().getPlayers())
+            if (AttackResult.SHIP_DESTROYED.equals(result))
             {
-                Ship ship = null;
-                if (result == AttackResult.SHIP_DESTROYED)
+                if (client.isDestroyed())
                 {
-                    // we also need to transmit the ship which has been destroyed
-                    ship = client.getShipAtPosition(x, y);
+                    result = AttackResult.PLAYER_DESTROYED;
                 }
+            }
+            Player nextPlayer = game.getNextPlayer();
+            notifyParticipants(client, x, y, nextPlayer, result);
+        }
+    }
 
-                try
-                {
-                    toBeNotified.sendAttackResult(clientId, x, y, result, ship);
-                }
-                catch (Exception e)
-                {
-                    logger.info("Client communication aborted.");
-                    removeClient(toBeNotified);
-                    resendPlayerLists();
-                }
+    private void notifyParticipants(Client client, int x, int y, Player nextPlayer, AttackResult result)
+    {
+        for (Client toBeNotified : client.getGame().getPlayers())
+        {
+            Ship ship = null;
+            if (result == AttackResult.SHIP_DESTROYED || result == AttackResult.PLAYER_DESTROYED)
+            {
+                // we also need to transmit the ship which has been destroyed
+                ship = client.getShipAtPosition(x, y);
+            }
+
+            try
+            {
+                toBeNotified.sendAttackResult(client.getId(), x, y, result, ship, nextPlayer.getId());
+            }
+            catch (Exception e)
+            {
+                logger.info("Client communication aborted.");
+                removeClient(toBeNotified);
+                resendPlayerLists();
             }
         }
     }
@@ -192,20 +210,15 @@ public class ServerManager
         }
         if (allPlayersReady)
         {
-        	// all the players are ready, notify them. decide on who starts first
-        	Random random = new Random();
-        	int startIndex = random.nextInt()%game.getPlayers().size();
-        	int index = 0;
-        	for (Client client : game.getPlayers())
-        	{
-        		boolean starts = false;
-        		if (index == startIndex)
-        		{
-        			starts = true;
-        		}
-        		client.sendStartGame(starts);
-        		index++;
-        	}
+            // all the players are ready, notify them. decide on who starts first
+            Random random = new Random();
+            int startIndex = random.nextInt(game.getPlayers().size());
+            Long playerId = game.getPlayers().get(startIndex).getId();
+            for (Client client : game.getPlayers())
+            {
+                client.sendStartGame(playerId);
+                playerId++;
+            }
         }
     }
 

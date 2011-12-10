@@ -7,6 +7,7 @@ import java.util.List;
 import com.jostrobin.battleships.common.data.GameData;
 import com.jostrobin.battleships.common.data.GameMode;
 import com.jostrobin.battleships.common.data.GameState;
+import com.jostrobin.battleships.common.data.Player;
 import com.jostrobin.battleships.server.client.Client;
 
 /**
@@ -23,6 +24,8 @@ public class Game extends GameData
     }
 
     private List<Client> players = new ArrayList<Client>();
+
+    private Player currentPlayer;
 
     /**
      * The player who started the game.
@@ -50,15 +53,16 @@ public class Game extends GameData
 
     /**
      * Notifies all the clients of this game that they can start preparing.
+     *
      * @throws IOException
      */
     public void prepareGame() throws IOException
     {
-    	List<Long> participants = new ArrayList<Long>();
-    	for (Client client : players)
-    	{
-    		participants.add(client.getId());
-    	}
+        List<Long> participants = new ArrayList<Long>();
+        for (Client client : players)
+        {
+            participants.add(client.getId());
+        }
         for (Client client : players)
         {
             client.setState(GameState.PREPARING);
@@ -87,5 +91,39 @@ public class Game extends GameData
     public void setOwner(Client owner)
     {
         this.owner = owner;
+    }
+
+    public Player getCurrentPlayer()
+    {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer)
+    {
+        this.currentPlayer = currentPlayer;
+    }
+
+    public Player getNextPlayer()
+    {
+        Player nextPlayer = null;
+        if (players == null)
+        {
+            throw new IllegalStateException("Game is not running");
+        }
+        boolean next = false;
+        for (Player player : players)
+        {
+            if (next)
+            {
+                nextPlayer = player;
+            }
+            if (player.equals(player))
+            {
+                next = true;
+            }
+        }
+        nextPlayer = players.get(0);
+        setCurrentPlayer(nextPlayer);
+        return nextPlayer;
     }
 }

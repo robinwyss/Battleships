@@ -5,21 +5,15 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.jostrobin.battleships.common.data.AttackResult;
-import com.jostrobin.battleships.common.data.DefaultCell;
-import com.jostrobin.battleships.common.data.GameState;
-import com.jostrobin.battleships.common.data.Orientation;
-import com.jostrobin.battleships.common.data.Player;
-import com.jostrobin.battleships.common.data.Ship;
+import com.jostrobin.battleships.common.data.*;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.common.network.NetworkHandler;
 import com.jostrobin.battleships.common.network.NetworkListener;
 import com.jostrobin.battleships.server.ServerManager;
 import com.jostrobin.battleships.server.game.Game;
 import com.jostrobin.battleships.server.network.Writer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Represents a client.  Extends the player data with server side used objects.
@@ -46,6 +40,7 @@ public class Client extends Player implements NetworkListener
     private DefaultCell[][] field;
 
     private boolean ready;
+    private List<Ship> ships;
 
 
     public Client(ServerManager serverManager, Writer clientWriter)
@@ -157,15 +152,15 @@ public class Client extends Player implements NetworkListener
     }
 
     /**
-     * Tells the client that the game starts. If this player is the first to hit, startingPlayer is true.
+     * Tells the client that the game starts, provides the clientId of the player, which can begin.
      *
-     * @param startingPlayer
+     * @param clientId
      */
-    public void sendStartGame(boolean startingPlayer)
+    public void sendStartGame(Long clientId)
     {
         try
         {
-            clientWriter.sendStartGame(startingPlayer);
+            clientWriter.sendStartGame(clientId);
         }
         catch (Exception e)
         {
@@ -236,9 +231,9 @@ public class Client extends Player implements NetworkListener
      * @param ship     can be null if the result != SHIP_DESTROYED
      * @throws Exception
      */
-    public void sendAttackResult(Long clientId, int x, int y, AttackResult result, Ship ship) throws Exception
+    public void sendAttackResult(Long clientId, int x, int y, AttackResult result, Ship ship, Long nextPlayer) throws Exception
     {
-        clientWriter.sendAttackResult(clientId, x, y, result, ship);
+        clientWriter.sendAttackResult(clientId, x, y, result, ship, nextPlayer);
     }
 
     /**
@@ -278,38 +273,9 @@ public class Client extends Player implements NetworkListener
         return result;
     }
 
-    @Override
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
-        {
-            return true;
-        }
-        if (obj == null)
-        {
-            return false;
-        }
-        if (getClass() != obj.getClass())
-        {
-            return false;
-        }
-        Client other = (Client) obj;
-        if (getId() == null)
-        {
-            if (other.getId() != null)
-            {
-                return false;
-            }
-        }
-        else if (!getId().equals(other.getId()))
-        {
-            return false;
-        }
-        return true;
-    }
-
     public void placeShips(List<Ship> ships)
     {
+        this.ships = ships;
         for (Ship ship : ships)
         {
             for (int i = 0; i < ship.getSize(); i++)
@@ -332,4 +298,13 @@ public class Client extends Player implements NetworkListener
         return ready;
     }
 
+    public boolean isDestroyed()
+    {
+        boolean destroyed = true;
+        for (Ship ship : ships)
+        {
+            destroyed &= ship.isShipDestroyed();
+        }
+        return destroyed;
+    }
 }

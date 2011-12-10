@@ -5,13 +5,12 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
 
-import org.springframework.scheduling.annotation.Async;
-
 import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.server.client.Client;
 import com.jostrobin.battleships.server.game.Game;
+import org.springframework.scheduling.annotation.Async;
 
 /**
  * This class is used to send commands to a client.
@@ -75,7 +74,7 @@ public class ClientWriter implements Writer
         outputStream.writeInt(participants.size());
         for (Long id : participants)
         {
-        	outputStream.writeLong(id);
+            outputStream.writeLong(id);
         }
     }
 
@@ -105,14 +104,14 @@ public class ClientWriter implements Writer
 
     @Override
     @Async
-    public void sendAttackResult(Long clientId, int x, int y, AttackResult result, Ship ship)
+    public void sendAttackResult(Long clientId, int x, int y, AttackResult result, Ship ship, Long nextPlayer)
             throws Exception
     {
         outputStream.writeInt(Command.ATTACK_RESULT);
         outputStream.writeInt(x);
         outputStream.writeInt(y);
         outputStream.writeUTF(result.name());
-        if (result == AttackResult.SHIP_DESTROYED)
+        if (ship != null)
         {
             outputStream.writeUTF(ship.getType().name());
             outputStream.writeInt(ship.getPositionX());
@@ -120,14 +119,15 @@ public class ClientWriter implements Writer
             outputStream.writeInt(ship.getSize());
             outputStream.writeUTF(ship.getOrientation().name());
         }
+        outputStream.writeLong(nextPlayer);
     }
 
-	@Override
-	public void sendStartGame(boolean startingPlayer) throws Exception
-	{
-		outputStream.writeInt(Command.START_GAME);
-		outputStream.writeBoolean(startingPlayer);
-	}
+    @Override
+    public void sendStartGame(Long clientId) throws Exception
+    {
+        outputStream.writeInt(Command.START_GAME);
+        outputStream.writeLong(clientId);
+    }
 
 
 }
