@@ -2,6 +2,7 @@ package com.jostrobin.battleships.common.network;
 
 import java.util.List;
 
+import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.data.GameMode;
 import com.jostrobin.battleships.common.data.Player;
 import com.jostrobin.battleships.common.data.Ship;
@@ -91,6 +92,8 @@ public class Command
     private List<Ship> ships;
 
     private Long startingPlayer;
+    private AttackResult attackResult;
+    private Ship ship;
 
     public Command(int command)
     {
@@ -247,4 +250,23 @@ public class Command
         this.participants = participants;
     }
 
+    public void setAttackResult(AttackResult attackResult)
+    {
+        this.attackResult = attackResult;
+    }
+
+    public AttackResult getAttackResult()
+    {
+        return attackResult;
+    }
+
+    public void setShip(Ship ship)
+    {
+        this.ship = ship;
+    }
+
+    public Ship getShip()
+    {
+        return ship;
+    }
 }

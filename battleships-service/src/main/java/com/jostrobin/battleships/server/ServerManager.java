@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.jostrobin.battleships.common.data.AttackResult;
+import com.jostrobin.battleships.common.data.GameState;
 import com.jostrobin.battleships.common.data.Player;
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.network.Command;
@@ -213,11 +214,12 @@ public class ServerManager
             // all the players are ready, notify them. decide on who starts first
             Random random = new Random();
             int startIndex = random.nextInt(game.getPlayers().size());
-            Long playerId = game.getPlayers().get(startIndex).getId();
+            Player startingPlayer = game.getPlayers().get(startIndex);
+            game.setCurrentPlayer(startingPlayer);
             for (Client client : game.getPlayers())
             {
-                client.sendStartGame(playerId);
-                playerId++;
+                client.setState(GameState.RUNNING);
+                client.sendStartGame(startingPlayer.getId());
             }
         }
     }
