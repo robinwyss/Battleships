@@ -29,12 +29,13 @@ import com.jostrobin.battleships.view.listeners.EventListener;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author rowyss
  *         Date: 05.11.11 Time: 18:51
  */
-public class PlacementPanel extends JPanel implements ActionListener
+public class PlacementPanel extends JPanel implements ActionListener, InitializingBean
 {
     public static final Logger LOG = LoggerFactory.getLogger(PlacementPanel.class);
     private BattleFieldPanel battleField;
@@ -46,12 +47,8 @@ public class PlacementPanel extends JPanel implements ActionListener
     private List<EventListener<Object>> rotationListeners = new ArrayList<EventListener<Object>>();
     private List<EventListener<Object>> readyListeners = new ArrayList<EventListener<Object>>();
 
-    public PlacementPanel()
-    {
-        initUi();
-    }
-
-    private void initUi()
+    @Override
+    public void afterPropertiesSet() throws Exception
     {
         setLayout(new GridBagLayout());
 
@@ -91,6 +88,8 @@ public class PlacementPanel extends JPanel implements ActionListener
         readyButtonConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
         ready.setEnabled(false);
         add(ready, readyButtonConstraints);
+
+        updateShips();
     }
 
     public void addShipSelectionListener(SelectionListener<Ship> shipSelectionListener)
@@ -121,7 +120,11 @@ public class PlacementPanel extends JPanel implements ActionListener
     public void setPlacementModel(PlacementModel placementModel)
     {
         this.placementModel = placementModel;
-        updateShips();
+    }
+
+    public void setBattleField(BattleFieldPanel battleField)
+    {
+        this.battleField = battleField;
     }
 
     public void enableReadyButton(boolean enable)
@@ -170,4 +173,7 @@ public class PlacementPanel extends JPanel implements ActionListener
         readyListeners.remove(listener);
     }
 
+    public void setFieldSize(int length, int width)
+    {
+    }
 }
