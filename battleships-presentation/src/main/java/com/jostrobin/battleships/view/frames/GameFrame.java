@@ -15,27 +15,33 @@
 
 package com.jostrobin.battleships.view.frames;
 
-import java.awt.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.util.ArrayList;
 import java.util.List;
-import javax.swing.*;
 
+import javax.swing.JPanel;
+
+import org.springframework.beans.factory.InitializingBean;
+
+import com.jostrobin.battleships.view.listeners.AttackListener;
 import com.jostrobin.battleships.view.panels.ChatPanel;
 import com.jostrobin.battleships.view.panels.GamePanel;
 import com.jostrobin.battleships.view.panels.PlacementPanel;
-import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author rowyss
  *         Date: 28.10.11 Time: 18:00
  */
 @SuppressWarnings("serial")
-public class GameFrame extends JPanel implements InitializingBean
+public class GameFrame extends JPanel implements InitializingBean, AttackListener
 {
     private int y;
     private GamePanel gamePanel;
     private PlacementPanel placementPanel;
     private ChatPanel chatPanel;
     private List<Long> participants;
+    private List<AttackListener> attackListeners = new ArrayList<AttackListener>();
 
     @Override
     public void afterPropertiesSet() throws Exception
@@ -64,6 +70,7 @@ public class GameFrame extends JPanel implements InitializingBean
 
         setVisible(true);
         setSize(600, 600);
+        gamePanel.addAttackListener(this);
         //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
@@ -107,6 +114,11 @@ public class GameFrame extends JPanel implements InitializingBean
         gamePanel.initializeFieldSize(length, width);
         placementPanel.setFieldSize(length, width);
     }
+    
+    public void addAttackListener(AttackListener listener)
+    {
+    	attackListeners.add(listener);
+    }
 
     public GamePanel getGamePanel()
     {
@@ -147,5 +159,14 @@ public class GameFrame extends JPanel implements InitializingBean
     {
         this.participants = participants;
     }
+
+	@Override
+	public void attack(int x, int y, Long clientId)
+	{
+		for (AttackListener listener : attackListeners)
+		{
+			listener.attack(x, y, clientId);
+		}
+	}
 
 }

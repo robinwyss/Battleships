@@ -6,8 +6,9 @@ import com.jostrobin.battleships.ApplicationController;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.common.network.NetworkListener;
 import com.jostrobin.battleships.view.frames.GameFrame;
+import com.jostrobin.battleships.view.listeners.AttackListener;
 
-public class GameController implements NetworkListener, InitializingBean
+public class GameController implements NetworkListener, InitializingBean, AttackListener
 {
 	private ApplicationController applicationController;
 	
@@ -17,6 +18,7 @@ public class GameController implements NetworkListener, InitializingBean
 	public void afterPropertiesSet() throws Exception
 	{
 		applicationController.addNetworkListener(this);
+		gameFrame.addAttackListener(this);
 	}
 
 	@Override
@@ -24,6 +26,32 @@ public class GameController implements NetworkListener, InitializingBean
 	{
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void attack(int x, int y, Long clientId)
+	{
+		applicationController.sendAttack(x, y, clientId);
+	}
+
+	public ApplicationController getApplicationController()
+	{
+		return applicationController;
+	}
+
+	public void setApplicationController(ApplicationController applicationController)
+	{
+		this.applicationController = applicationController;
+	}
+
+	public GameFrame getGameFrame()
+	{
+		return gameFrame;
+	}
+
+	public void setGameFrame(GameFrame gameFrame)
+	{
+		this.gameFrame = gameFrame;
 	}
 	
 }

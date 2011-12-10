@@ -130,6 +130,18 @@ public class ApplicationController
             e.printStackTrace();
         }
     }
+    
+    public void sendAttack(int x, int y, Long clientId)
+    {
+    	try
+		{
+			writer.sendAttack(x, y, clientId);
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
 
     public void shipsPlaced(List<Ship> ships)
     {
