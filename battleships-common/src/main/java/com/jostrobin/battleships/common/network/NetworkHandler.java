@@ -6,16 +6,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jostrobin.battleships.common.data.*;
+import com.jostrobin.battleships.common.data.enums.ShipType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.jostrobin.battleships.common.data.GameData;
-import com.jostrobin.battleships.common.data.GameMode;
-import com.jostrobin.battleships.common.data.GameState;
-import com.jostrobin.battleships.common.data.Orientation;
-import com.jostrobin.battleships.common.data.Player;
-import com.jostrobin.battleships.common.data.Ship;
-import com.jostrobin.battleships.common.data.enums.ShipType;
 
 /**
  * The NetworkHandler is responsible for accepting and parsing commands via network and forwarding them to the
@@ -120,10 +114,10 @@ public class NetworkHandler implements Runnable
                         command.setFieldWidth(width);
                         int numberOfClients = inputStream.readInt();
                         List<Long> participants = new ArrayList<Long>();
-                        for (int i=0; i<numberOfClients; i++)
+                        for (int i = 0; i < numberOfClients; i++)
                         {
-                        	Long id = inputStream.readLong();
-                        	participants.add(id);
+                            Long id = inputStream.readLong();
+                            participants.add(id);
                         }
                         command.setParticipants(participants);
                         break;
@@ -157,9 +151,9 @@ public class NetworkHandler implements Runnable
                         command.setShips(ships);
                         break;
                     case Command.START_GAME:
-                    	boolean startingPlayer = inputStream.readBoolean();
-                    	command.setStartingPlayer(startingPlayer);
-                    	break;
+                        Long startingPlayer = inputStream.readLong();
+                        command.setStartingPlayer(startingPlayer);
+                        break;
                 }
                 notifyListeners(command);
             }
