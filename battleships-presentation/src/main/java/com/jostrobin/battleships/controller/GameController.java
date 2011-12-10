@@ -24,8 +24,12 @@ public class GameController implements NetworkListener, InitializingBean, Attack
 	@Override
 	public void notify(Command command)
 	{
-		// TODO Auto-generated method stub
-		
+		switch (command.getCommand())
+		{
+		case Command.ATTACK_RESULT:
+//			AttackResult result = command.getat
+			break;
+		}
 	}
 
 	@Override

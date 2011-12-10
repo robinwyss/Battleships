@@ -84,7 +84,10 @@ public class GamePanel extends JPanel
     	}
     }
     
-    
+    public void hitCell(int x, int y, Long clientId)
+    {
+    	battlefieldPanels.get(clientId).hitCell(x, y);
+    }
 	
 	
 }

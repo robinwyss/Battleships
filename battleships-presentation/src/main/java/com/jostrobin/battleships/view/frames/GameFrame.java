@@ -103,6 +103,11 @@ public class GameFrame extends JPanel implements InitializingBean, AttackListene
         gamePanel.initUi(length, width, participants);
         initializeFieldSize(length, width);
     }
+    
+    public void hitCell(int x, int y, Long clientId)
+    {
+    	gamePanel.hitCell(x, y, clientId);
+    }
 
     public void showWaitingView()
     {

@@ -93,6 +93,12 @@ public class BattleFieldPanel extends JPanel implements ActionListener
             return null;
         }
     }
+    
+    public void hitCell(int x, int y)
+    {
+    	Cell cell = findCellAt(x, y);
+    	cell.setHit(true);
+    }
 
     public void addSelectionListener(SelectionListener<Cell> selectionListener)
     {

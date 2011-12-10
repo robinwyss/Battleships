@@ -91,7 +91,7 @@ public class Command
     private List<Ship> ships;
 
     private Long startingPlayer;
-
+    
     public Command(int command)
     {
         this.command = command;
