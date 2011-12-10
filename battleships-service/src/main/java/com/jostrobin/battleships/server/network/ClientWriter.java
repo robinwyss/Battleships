@@ -72,6 +72,7 @@ public class ClientWriter implements Writer
         outputStream.writeInt(Command.PREPARE_GAME);
         outputStream.writeInt(fieldLength);
         outputStream.writeInt(fieldWidth);
+        outputStream.writeInt(participants.size());
         for (Long id : participants)
         {
         	outputStream.writeLong(id);
