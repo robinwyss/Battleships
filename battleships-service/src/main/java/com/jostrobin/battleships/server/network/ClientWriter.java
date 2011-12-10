@@ -74,7 +74,7 @@ public class ClientWriter implements Writer
         outputStream.writeInt(participants.size());
         for (Long id : participants)
         {
-        	outputStream.writeLong(id);
+            outputStream.writeLong(id);
         }
     }
 
@@ -104,7 +104,7 @@ public class ClientWriter implements Writer
 
     @Override
     @Async
-    public void sendAttackResult(Long clientId, int x, int y, AttackResult result, Ship ship)
+    public void sendAttackResult(Long clientId, int x, int y, AttackResult result, Ship ship, Long nextPlayer)
             throws Exception
     {
         outputStream.writeInt(Command.ATTACK_RESULT);
@@ -119,13 +119,14 @@ public class ClientWriter implements Writer
             outputStream.writeInt(ship.getSize());
             outputStream.writeUTF(ship.getOrientation().name());
         }
+        outputStream.writeLong(nextPlayer);
     }
 
     @Override
-    public void sendStartGame(boolean startingPlayer) throws Exception
+    public void sendStartGame(Long clientId) throws Exception
     {
         outputStream.writeInt(Command.START_GAME);
-        outputStream.writeBoolean(startingPlayer);
+        outputStream.writeLong(clientId);
     }
 
 

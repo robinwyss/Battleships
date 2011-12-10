@@ -55,4 +55,31 @@ public class Player
         this.username = username;
     }
 
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (!(o instanceof Player))
+        {
+            return false;
+        }
+
+        Player player = (Player) o;
+
+        if (id != null ? !id.equals(player.id) : player.id != null)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return id != null ? id.hashCode() : 0;
+    }
 }

@@ -15,8 +15,6 @@
 
 package com.jostrobin.battleships.controller;
 
-import org.springframework.beans.factory.InitializingBean;
-
 import com.jostrobin.battleships.ApplicationController;
 import com.jostrobin.battleships.common.data.Cell;
 import com.jostrobin.battleships.common.data.Orientation;
@@ -28,6 +26,7 @@ import com.jostrobin.battleships.model.PlacementModel;
 import com.jostrobin.battleships.view.listeners.EventListener;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
 import com.jostrobin.battleships.view.panels.PlacementPanel;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author rowyss
@@ -42,8 +41,8 @@ public class PlacementController implements InitializingBean, NetworkListener
     @Override
     public void afterPropertiesSet() throws Exception
     {
-    	applicationController.addNetworkListener(this);
-    	
+        applicationController.addNetworkListener(this);
+
         placementPanel.addCellSelectionListener(new CellSelectionListener());
         placementPanel.addShipSelectionListener(new ShipSelectionListener());
         placementPanel.addRotationListener(new RotationListener());
@@ -275,14 +274,14 @@ public class PlacementController implements InitializingBean, NetworkListener
         }
     }
 
-	@Override
-	public void notify(Command command)
-	{
-		switch (command.getCommand())
-		{
-		case Command.START_GAME:
-			applicationController.showGameView(command.isStartingPlayer());
-			break;
-		}
-	}
+    @Override
+    public void notify(Command command)
+    {
+        switch (command.getCommand())
+        {
+            case Command.START_GAME:
+                applicationController.showGameView(command.getStartingPlayer());
+                break;
+        }
+    }
 }

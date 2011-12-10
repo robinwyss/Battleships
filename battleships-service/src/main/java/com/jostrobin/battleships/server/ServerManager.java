@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.jostrobin.battleships.common.data.AttackResult;
+import com.jostrobin.battleships.common.data.Player;
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.server.client.Client;
@@ -133,6 +134,12 @@ public class ServerManager
     public void attack(Long clientId, int x, int y)
     {
         Client client = getClientById(clientId);
+        Game game = client.getGame();
+        if (game.getCurrentPlayer().equals(client))
+        {
+            logger.warn("Player {} tried to attack, but it is not his turn", client);
+            return;
+        }
         if (client != null)
         {
             AttackResult result = client.attack(x, y);
@@ -143,12 +150,12 @@ public class ServerManager
                     result = AttackResult.PLAYER_DESTROYED;
                 }
             }
-            notifyParticipants(clientId, x, y, client, result);
-            Game game = client.getGame();
+            Player nextPlayer = game.getNextPlayer();
+            notifyParticipants(client, x, y, nextPlayer, result);
         }
     }
 
-    private void notifyParticipants(Long clientId, int x, int y, Client client, AttackResult result)
+    private void notifyParticipants(Client client, int x, int y, Player nextPlayer, AttackResult result)
     {
         for (Client toBeNotified : client.getGame().getPlayers())
         {
@@ -161,7 +168,7 @@ public class ServerManager
 
             try
             {
-                toBeNotified.sendAttackResult(clientId, x, y, result, ship);
+                toBeNotified.sendAttackResult(client.getId(), x, y, result, ship, nextPlayer.getId());
             }
             catch (Exception e)
             {
@@ -205,17 +212,12 @@ public class ServerManager
         {
             // all the players are ready, notify them. decide on who starts first
             Random random = new Random();
-            int startIndex = random.nextInt() % game.getPlayers().size();
-            int index = 0;
+            int startIndex = random.nextInt(game.getPlayers().size());
+            Long playerId = game.getPlayers().get(startIndex).getId();
             for (Client client : game.getPlayers())
             {
-                boolean starts = false;
-                if (index == startIndex)
-                {
-                    starts = true;
-                }
-                client.sendStartGame(starts);
-                index++;
+                client.sendStartGame(playerId);
+                playerId++;
             }
         }
     }
