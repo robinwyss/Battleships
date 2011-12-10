@@ -21,4 +21,6 @@ public interface Writer
     public void sendChatMessage(String username, String message) throws IOException;
 
     public void sendAttackResult(Long clientId, int x, int y, AttackResult result, Ship ship) throws Exception;
+    
+    public void sendStartGame(boolean startingPlayer) throws Exception;
 }

@@ -15,8 +15,13 @@
 
 package com.jostrobin.battleships.view.controller;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Dimension;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.jostrobin.battleships.controller.GameSelectionController;
 import com.jostrobin.battleships.view.effects.SmoothResize;
@@ -24,8 +29,6 @@ import com.jostrobin.battleships.view.frames.CreateGameFrame;
 import com.jostrobin.battleships.view.frames.GameFrame;
 import com.jostrobin.battleships.view.frames.GameSelectionFrame;
 import com.jostrobin.battleships.view.frames.RegistrationDialog;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author rowyss
@@ -63,6 +66,11 @@ public class UIController
     public void showCreateGame()
     {
         show(createGameFrame);
+    }
+    
+    public void showGameView(boolean startingPlayer)
+    {
+    	gameFrame.showGameView(startingPlayer);
     }
 
     public void showPlacementFrame(int length, int width)

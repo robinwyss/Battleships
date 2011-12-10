@@ -5,15 +5,21 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jostrobin.battleships.common.data.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.jostrobin.battleships.common.data.AttackResult;
+import com.jostrobin.battleships.common.data.DefaultCell;
+import com.jostrobin.battleships.common.data.GameState;
+import com.jostrobin.battleships.common.data.Orientation;
+import com.jostrobin.battleships.common.data.Player;
+import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.common.network.NetworkHandler;
 import com.jostrobin.battleships.common.network.NetworkListener;
 import com.jostrobin.battleships.server.ServerManager;
 import com.jostrobin.battleships.server.game.Game;
 import com.jostrobin.battleships.server.network.Writer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Represents a client.  Extends the player data with server side used objects.
@@ -149,6 +155,23 @@ public class Client extends Player implements NetworkListener
         }
         clientWriter.sendAvailablePlayers(opponents);
     }
+    
+    /**
+     * Tells the client that the game starts. If this player is the first to hit, startingPlayer is true.
+     * @param startingPlayer
+     */
+    public void sendStartGame(boolean startingPlayer)
+    {
+    	try
+		{
+			clientWriter.sendStartGame(startingPlayer);
+		}
+    	catch (Exception e)
+		{
+			serverManager.removeClient(this);
+			serverManager.resendPlayerLists();
+		}
+    }
 
     /**
      * Prepare a new game field.
@@ -242,6 +265,7 @@ public class Client extends Player implements NetworkListener
     public void setGame(Game game)
     {
         this.game = game;
+        initializeField(game.getFieldWidth(), game.getFieldLength());
     }
 
     @Override

@@ -48,6 +48,10 @@ public class Game extends GameData
         return added;
     }
 
+    /**
+     * Notifies all the clients of this game that they can start preparing.
+     * @throws IOException
+     */
     public void prepareGame() throws IOException
     {
         for (Client client : players)
