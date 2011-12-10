@@ -281,6 +281,7 @@ public class PlacementController implements InitializingBean, NetworkListener
         {
             case Command.START_GAME:
                 applicationController.showGameView(command.getStartingPlayer());
+
                 break;
         }
     }

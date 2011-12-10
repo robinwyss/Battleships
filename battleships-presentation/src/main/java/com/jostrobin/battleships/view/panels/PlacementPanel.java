@@ -52,7 +52,7 @@ public class PlacementPanel extends JPanel implements ActionListener, Initializi
     {
         setLayout(new GridBagLayout());
 
-        battleField = new BattleFieldPanel();
+        battleField = new BattleFieldPanel("");
         GridBagConstraints gamePanelConstraints = new GridBagConstraints();
         gamePanelConstraints.weightx = 0.6;
         gamePanelConstraints.weighty = 1.0;

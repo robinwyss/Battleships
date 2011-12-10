@@ -15,20 +15,17 @@
 
 package com.jostrobin.battleships.view.frames;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JPanel;
-
-import org.springframework.beans.factory.InitializingBean;
+import javax.swing.*;
 
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.view.listeners.AttackListener;
 import com.jostrobin.battleships.view.panels.ChatPanel;
 import com.jostrobin.battleships.view.panels.GamePanel;
 import com.jostrobin.battleships.view.panels.PlacementPanel;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author rowyss
@@ -70,7 +67,8 @@ public class GameFrame extends JPanel implements InitializingBean, AttackListene
         addChatPanel();
 
         setVisible(true);
-        setSize(600, 600);
+
+        setPreferredSize(new Dimension(600, 600));
         gamePanel.addAttackListener(this);
         //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -88,6 +86,7 @@ public class GameFrame extends JPanel implements InitializingBean, AttackListene
 
     public void showGameView(Long startingPlayer)
     {
+        gamePanel.changeCurrentPlayer(startingPlayer);
         gamePanel.setVisible(true);
         placementPanel.setVisible(false);
     }
@@ -104,10 +103,10 @@ public class GameFrame extends JPanel implements InitializingBean, AttackListene
         gamePanel.initUi(length, width, participants);
         initializeFieldSize(length, width);
     }
-    
+
     public void hitCell(Command command)
     {
-    	gamePanel.hitCell(command);
+        gamePanel.hitCell(command);
     }
 
     public void showWaitingView()
@@ -120,10 +119,10 @@ public class GameFrame extends JPanel implements InitializingBean, AttackListene
         gamePanel.initializeFieldSize(length, width);
         placementPanel.setFieldSize(length, width);
     }
-    
+
     public void addAttackListener(AttackListener listener)
     {
-    	attackListeners.add(listener);
+        attackListeners.add(listener);
     }
 
     public GamePanel getGamePanel()
@@ -166,13 +165,17 @@ public class GameFrame extends JPanel implements InitializingBean, AttackListene
         this.participants = participants;
     }
 
-	@Override
-	public void attack(int x, int y, Long clientId)
-	{
-		for (AttackListener listener : attackListeners)
-		{
-			listener.attack(x, y, clientId);
-		}
-	}
+    @Override
+    public void attack(int x, int y, Long clientId)
+    {
+        for (AttackListener listener : attackListeners)
+        {
+            listener.attack(x, y, clientId);
+        }
+    }
 
+    public void changeCurrentPlayer(Long playerId)
+    {
+        gamePanel.changeCurrentPlayer(playerId);
+    }
 }

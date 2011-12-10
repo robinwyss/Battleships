@@ -15,24 +15,20 @@
 
 package com.jostrobin.battleships.view.panels;
 
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JPanel;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.swing.*;
 
 import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.data.Cell;
 import com.jostrobin.battleships.common.data.enums.CellType;
 import com.jostrobin.battleships.view.components.CellComponent;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author rowyss
@@ -45,15 +41,23 @@ public class BattleFieldPanel extends JPanel implements ActionListener
     private JPanel contentPanel;
     private Cell[][] cellArray;
     private List<Cell> cells = new ArrayList<Cell>();
+    private final JLabel nameLabel;
+    private boolean current;
 
-    public BattleFieldPanel()
+    public BattleFieldPanel(String participantName)
     {
-        setLayout(new FlowLayout());
+        setLayout(new GridBagLayout());
+
+        nameLabel = new JLabel(participantName);
     }
 
     private void drawField(int width, int height)
     {
         removeAll();
+        GridBagConstraints nameLabelConstraints = new GridBagConstraints();
+        nameLabelConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
+        add(nameLabel, nameLabelConstraints);
+
         contentPanel = new JPanel();
         contentPanel.setLayout(new GridLayout(width, height));
         cellArray = new Cell[width][height];
@@ -70,7 +74,11 @@ public class BattleFieldPanel extends JPanel implements ActionListener
         Dimension dimension = new Dimension(width * CellComponent.CELL_SIZE, height * CellComponent.CELL_SIZE);
         contentPanel.setPreferredSize(dimension);
         setMinimumSize(dimension);
-        add(contentPanel);
+        GridBagConstraints fieldConstraints = new GridBagConstraints();
+        fieldConstraints.gridy = 1;
+        fieldConstraints.anchor = GridBagConstraints.BASELINE;
+        fieldConstraints.fill = GridBagConstraints.BOTH;
+        add(contentPanel, fieldConstraints);
     }
 
     @Override
@@ -95,15 +103,15 @@ public class BattleFieldPanel extends JPanel implements ActionListener
             return null;
         }
     }
-    
+
     public void hitCell(int x, int y, AttackResult result)
     {
-    	Cell cell = findCellAt(x, y);
-    	cell.setHit(true);
-    	if (result != AttackResult.NO_HIT)
-    	{
-    		cell.setType(CellType.SHIP);
-    	}
+        Cell cell = findCellAt(x, y);
+        cell.setHit(true);
+        if (result != AttackResult.NO_HIT)
+        {
+            cell.setType(CellType.SHIP);
+        }
     }
 
     public void addSelectionListener(SelectionListener<Cell> selectionListener)
@@ -114,5 +122,23 @@ public class BattleFieldPanel extends JPanel implements ActionListener
     public void initializeFieldSize(int length, int width)
     {
         drawField(length, width);
+    }
+
+    public void setCurrent(boolean current)
+    {
+        this.current = current;
+        if (current)
+        {
+            nameLabel.setForeground(Color.BLUE);
+        }
+        else
+        {
+            nameLabel.setForeground(Color.BLACK);
+        }
+    }
+
+    public boolean isCurrent()
+    {
+        return current;
     }
 }

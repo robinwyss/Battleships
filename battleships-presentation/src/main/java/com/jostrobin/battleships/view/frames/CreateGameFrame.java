@@ -53,7 +53,7 @@ public class CreateGameFrame extends JPanel implements ActionListener
     private void buildGui()
     {
         this.setLayout(new GridBagLayout());
-        this.setSize(350, 200);
+        this.setPreferredSize(new Dimension(350, 200));
 
         createGameLabel = new JLabel("New game");
         GridBagConstraints c = createConstraint(0, 0);

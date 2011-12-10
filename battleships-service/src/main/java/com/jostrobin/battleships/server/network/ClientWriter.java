@@ -5,13 +5,14 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
 
-import org.springframework.scheduling.annotation.Async;
-
 import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.server.client.Client;
 import com.jostrobin.battleships.server.game.Game;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 
 /**
  * This class is used to send commands to a client.
@@ -21,6 +22,8 @@ import com.jostrobin.battleships.server.game.Game;
 public class ClientWriter implements Writer
 {
     private DataOutputStream outputStream;
+
+    private static Logger logger = LoggerFactory.getLogger(ClientWriter.class);
 
     public void init(Socket socket) throws IOException
     {
@@ -55,6 +58,7 @@ public class ClientWriter implements Writer
                 outputStream.writeInt(game.getFieldLength());
             }
         }
+        logger.debug("sent {}", Command.PLAYERS_LIST);
     }
 
     /**
@@ -77,6 +81,7 @@ public class ClientWriter implements Writer
         {
             outputStream.writeLong(id);
         }
+        logger.debug("sent {}", Command.PREPARE_GAME);
     }
 
     /**
@@ -91,6 +96,7 @@ public class ClientWriter implements Writer
     {
         outputStream.writeInt(Command.ACCEPTED);
         outputStream.writeLong(id);
+        logger.debug("sent ACCEPTED");
     }
 
     @Override
@@ -101,6 +107,7 @@ public class ClientWriter implements Writer
         outputStream.writeInt(Command.CHAT_MESSAGE);
         outputStream.writeUTF(username);
         outputStream.writeUTF(message);
+        logger.debug("sent CHAT_MESSAGE");
     }
 
     @Override
@@ -121,6 +128,7 @@ public class ClientWriter implements Writer
             outputStream.writeUTF(ship.getType().name());
         }
         outputStream.writeLong(nextPlayer);
+        logger.debug("sent ATTACK_RESULT");
     }
 
     @Override
@@ -128,6 +136,7 @@ public class ClientWriter implements Writer
     {
         outputStream.writeInt(Command.START_GAME);
         outputStream.writeLong(clientId);
+        logger.debug("sent START_GAME");
     }
 
 
