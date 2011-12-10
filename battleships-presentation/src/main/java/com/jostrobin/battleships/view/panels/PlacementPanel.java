@@ -122,11 +122,6 @@ public class PlacementPanel extends JPanel implements ActionListener, Initializi
         this.placementModel = placementModel;
     }
 
-    public void setBattleField(BattleFieldPanel battleField)
-    {
-        this.battleField = battleField;
-    }
-
     public void enableReadyButton(boolean enable)
     {
         ready.setEnabled(enable);
@@ -175,5 +170,7 @@ public class PlacementPanel extends JPanel implements ActionListener, Initializi
 
     public void setFieldSize(int length, int width)
     {
+        battleField.setFieldSize(length, width);
+        revalidate();
     }
 }

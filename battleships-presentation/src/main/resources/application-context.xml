@@ -50,8 +50,7 @@
           p:placementPanel-ref="placementPanel"
           p:chatPanel-ref="chatPanel"/>
     <bean id="placementPanel" class="com.jostrobin.battleships.view.panels.PlacementPanel"
-          p:placementModel-ref="placementModel"
-          p:battleField-ref="battleFieldPanel"/>
+          p:placementModel-ref="placementModel"/>
     <bean id="battleFieldPanel" class="com.jostrobin.battleships.view.panels.BattleFieldPanel"/>
     <bean id="chatPanel" class="com.jostrobin.battleships.view.panels.ChatPanel"/>
     <bean id="gameSelectionFrame" class="com.jostrobin.battleships.view.frames.GameSelectionFrame"

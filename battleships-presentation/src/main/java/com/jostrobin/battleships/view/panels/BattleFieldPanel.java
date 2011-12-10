@@ -48,6 +48,7 @@ public class BattleFieldPanel extends JPanel implements ActionListener
 
     private void drawField(int width, int height)
     {
+        removeAll();
         contentPanel = new JPanel();
         contentPanel.setLayout(new GridLayout(width, height));
         cellArray = new Cell[width][height];
