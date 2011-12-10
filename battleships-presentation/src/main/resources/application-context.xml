@@ -38,6 +38,9 @@
     <bean id="createGameController" class="com.jostrobin.battleships.controller.CreateGameController"
           p:applicationController-ref="applicationController"
           p:frame-ref="createGameFrame"/>
+    <bean id="gameController" class="com.jostrobin.battleships.controller.GameController"
+    	  p:applicationController-ref="applicationController"
+    	  p:gameFrame-ref="gameFrame" />
 
     <!-- Model -->
     <bean id="placementModel" class="com.jostrobin.battleships.model.PlacementModel"/>
