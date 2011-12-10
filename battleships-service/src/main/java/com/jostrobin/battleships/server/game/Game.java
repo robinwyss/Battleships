@@ -105,24 +105,9 @@ public class Game extends GameData
 
     public Player getNextPlayer()
     {
-        Player nextPlayer = null;
-        if (players == null)
-        {
-            throw new IllegalStateException("Game is not running");
-        }
-        boolean next = false;
-        for (Player player : players)
-        {
-            if (next)
-            {
-                nextPlayer = player;
-            }
-            if (player.equals(player))
-            {
-                next = true;
-            }
-        }
-        nextPlayer = players.get(0);
+    	int index = players.indexOf(currentPlayer);
+        int nextPlayerIndex = ++index % players.size();
+        Player nextPlayer = players.get(nextPlayerIndex);
         setCurrentPlayer(nextPlayer);
         return nextPlayer;
     }

@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.data.GameState;
 import com.jostrobin.battleships.common.data.Player;
@@ -13,8 +16,6 @@ import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.server.client.Client;
 import com.jostrobin.battleships.server.game.Game;
 import com.jostrobin.battleships.server.util.IdGenerator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ServerManager
 {
@@ -132,27 +133,27 @@ public class ServerManager
         }
     }
 
-    public void attack(Long clientId, int x, int y)
+    public void attack(Client attackingClient, Long clientId, int x, int y)
     {
-        Client client = getClientById(clientId);
-        Game game = client.getGame();
-        if (game.getCurrentPlayer().equals(client))
+        Client attackedClient = getClientById(clientId);
+        Game game = attackedClient.getGame();
+        if (!game.getCurrentPlayer().equals(attackingClient))
         {
-            logger.warn("Player {} tried to attack, but it is not his turn", client);
+            logger.warn("Player {} tried to attack, but it is not his turn", attackedClient);
             return;
         }
-        if (client != null)
+        if (attackedClient != null)
         {
-            AttackResult result = client.attack(x, y);
+            AttackResult result = attackedClient.attack(x, y);
             if (AttackResult.SHIP_DESTROYED.equals(result))
             {
-                if (client.isDestroyed())
+                if (attackedClient.isDestroyed())
                 {
                     result = AttackResult.PLAYER_DESTROYED;
                 }
             }
             Player nextPlayer = game.getNextPlayer();
-            notifyParticipants(client, x, y, nextPlayer, result);
+            notifyParticipants(attackedClient, x, y, nextPlayer, result);
         }
     }
 

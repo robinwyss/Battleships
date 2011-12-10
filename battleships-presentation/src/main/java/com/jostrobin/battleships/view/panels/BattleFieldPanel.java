@@ -28,7 +28,9 @@ import javax.swing.JPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.data.Cell;
+import com.jostrobin.battleships.common.data.enums.CellType;
 import com.jostrobin.battleships.view.components.CellComponent;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
 
@@ -94,10 +96,14 @@ public class BattleFieldPanel extends JPanel implements ActionListener
         }
     }
     
-    public void hitCell(int x, int y)
+    public void hitCell(int x, int y, AttackResult result)
     {
     	Cell cell = findCellAt(x, y);
     	cell.setHit(true);
+    	if (result != AttackResult.NO_HIT)
+    	{
+    		cell.setType(CellType.SHIP);
+    	}
     }
 
     public void addSelectionListener(SelectionListener<Cell> selectionListener)

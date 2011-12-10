@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 
 import org.springframework.beans.factory.InitializingBean;
 
+import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.view.listeners.AttackListener;
 import com.jostrobin.battleships.view.panels.ChatPanel;
 import com.jostrobin.battleships.view.panels.GamePanel;
@@ -104,9 +105,9 @@ public class GameFrame extends JPanel implements InitializingBean, AttackListene
         initializeFieldSize(length, width);
     }
     
-    public void hitCell(int x, int y, Long clientId)
+    public void hitCell(Command command)
     {
-    	gamePanel.hitCell(x, y, clientId);
+    	gamePanel.hitCell(command);
     }
 
     public void showWaitingView()

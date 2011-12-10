@@ -15,14 +15,16 @@
 
 package com.jostrobin.battleships.view.components;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.*;
+
+import javax.swing.JComponent;
 
 import com.jostrobin.battleships.common.data.Cell;
 import com.jostrobin.battleships.common.data.Ship;
@@ -70,6 +72,7 @@ public class CellComponent extends JComponent implements Cell
         }
         if (hit)
         {
+        	graphics.setColor(Color.BLACK);
             graphics.drawLine(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
             graphics.drawLine(1, CELL_SIZE - 1, CELL_SIZE - 1, 1);
         }
