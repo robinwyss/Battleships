@@ -23,8 +23,8 @@ import javax.swing.JPanel;
 
 import org.springframework.beans.factory.InitializingBean;
 
-import com.jostrobin.battleships.view.panels.BattleFieldPanel;
 import com.jostrobin.battleships.view.panels.ChatPanel;
+import com.jostrobin.battleships.view.panels.GamePanel;
 import com.jostrobin.battleships.view.panels.PlacementPanel;
 
 /**
@@ -35,7 +35,7 @@ import com.jostrobin.battleships.view.panels.PlacementPanel;
 public class GameFrame extends JPanel implements InitializingBean
 {
     private int y;
-    private BattleFieldPanel battleFieldPanel;
+    private GamePanel gamePanel;
     private PlacementPanel placementPanel;
     private ChatPanel chatPanel;
     private List<Long> participants;
@@ -51,8 +51,8 @@ public class GameFrame extends JPanel implements InitializingBean
         battlefieldConstraints.gridy = y;
         battlefieldConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
         battlefieldConstraints.fill = GridBagConstraints.BOTH;
-        add(battleFieldPanel, battlefieldConstraints);
-        battleFieldPanel.setVisible(false);
+        add(gamePanel, battlefieldConstraints);
+        gamePanel.setVisible(false);
 
         GridBagConstraints placementPanelConstraints = new GridBagConstraints();
         placementPanelConstraints.weightx = 1.0;
@@ -83,14 +83,21 @@ public class GameFrame extends JPanel implements InitializingBean
 
     public void showGameView(boolean startingPlayer)
     {
-        battleFieldPanel.setVisible(true);
+    	gamePanel.setVisible(true);
         placementPanel.setVisible(false);
     }
 
     public void showPlacementView()
     {
-        battleFieldPanel.setVisible(false);
+    	gamePanel.setVisible(false);
         placementPanel.setVisible(true);
+    }
+    
+    public void initializeFields(int length, int width, List<Long> participants)
+    {
+    	this.participants = participants;
+    	gamePanel.initUi(length, width, participants);
+    	initializeFieldSize(length, width);
     }
 
     public void showWaitingView()
@@ -98,23 +105,23 @@ public class GameFrame extends JPanel implements InitializingBean
 
     }
 
-    public void setFieldSize(int length, int width)
+    public void initializeFieldSize(int length, int width)
     {
-        battleFieldPanel.setFieldSize(length, width);
+    	gamePanel.initializeFieldSize(length, width);
         placementPanel.setFieldSize(length, width);
     }
 
-    public BattleFieldPanel getBattleFieldPanel()
-    {
-        return battleFieldPanel;
-    }
+    public GamePanel getGamePanel()
+	{
+		return gamePanel;
+	}
 
-    public void setBattleFieldPanel(BattleFieldPanel battleFieldPanel)
-    {
-        this.battleFieldPanel = battleFieldPanel;
-    }
+	public void setGamePanel(GamePanel gamePanel)
+	{
+		this.gamePanel = gamePanel;
+	}
 
-    public PlacementPanel getPlacementPanel()
+	public PlacementPanel getPlacementPanel()
     {
         return placementPanel;
     }

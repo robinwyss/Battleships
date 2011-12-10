@@ -170,7 +170,7 @@ public class PlacementPanel extends JPanel implements ActionListener, Initializi
 
     public void setFieldSize(int length, int width)
     {
-        battleField.setFieldSize(length, width);
+        battleField.initializeFieldSize(length, width);
         revalidate();
     }
 }

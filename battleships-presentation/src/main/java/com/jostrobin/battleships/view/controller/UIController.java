@@ -80,9 +80,8 @@ public class UIController
         {
             show(gameFrame);
         }
-        gameFrame.setFieldSize(length, width);
+        gameFrame.initializeFields(length, width, participants);
         gameFrame.showPlacementView();
-        gameFrame.setParticipants(participants);
     }
 
     public void showReadyFrame()

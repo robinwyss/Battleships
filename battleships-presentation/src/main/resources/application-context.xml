@@ -46,12 +46,12 @@
     <!-- View -->
     <bean id="registrationDialog" class="com.jostrobin.battleships.view.frames.RegistrationDialog"/>
     <bean id="gameFrame" class="com.jostrobin.battleships.view.frames.GameFrame"
-          p:battleFieldPanel-ref="battleFieldPanel"
+          p:gamePanel-ref="gamePanel"
           p:placementPanel-ref="placementPanel"
           p:chatPanel-ref="chatPanel"/>
     <bean id="placementPanel" class="com.jostrobin.battleships.view.panels.PlacementPanel"
           p:placementModel-ref="placementModel"/>
-    <bean id="battleFieldPanel" class="com.jostrobin.battleships.view.panels.BattleFieldPanel"/>
+    <bean id="gamePanel" class="com.jostrobin.battleships.view.panels.GamePanel" />
     <bean id="chatPanel" class="com.jostrobin.battleships.view.panels.ChatPanel"/>
     <bean id="gameSelectionFrame" class="com.jostrobin.battleships.view.frames.GameSelectionFrame"
           p:gameSelectionModel-ref="gameSelectionModel"/>
