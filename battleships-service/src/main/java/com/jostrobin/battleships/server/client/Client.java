@@ -40,6 +40,7 @@ public class Client extends Player implements NetworkListener
     private DefaultCell[][] field;
 
     private boolean ready;
+    private List<Ship> ships;
 
 
     public Client(ServerManager serverManager, Writer clientWriter)
@@ -304,6 +305,7 @@ public class Client extends Player implements NetworkListener
 
     public void placeShips(List<Ship> ships)
     {
+        this.ships = ships;
         for (Ship ship : ships)
         {
             for (int i = 0; i < ship.getSize(); i++)
@@ -326,4 +328,13 @@ public class Client extends Player implements NetworkListener
         return ready;
     }
 
+    public boolean isDestroyed()
+    {
+        boolean destroyed = true;
+        for (Ship ship : ships)
+        {
+            destroyed &= ship.isShipDestroyed();
+        }
+        return destroyed;
+    }
 }
