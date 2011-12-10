@@ -77,6 +77,8 @@ public class Command
     private int fieldLength;
 
     private List<Player> players;
+    
+    private List<Long> participants;
 
     private Long clientId;
 
@@ -233,6 +235,16 @@ public class Command
 	public void setStartingPlayer(boolean startingPlayer)
 	{
 		this.startingPlayer = startingPlayer;
+	}
+
+	public List<Long> getParticipants()
+	{
+		return participants;
+	}
+
+	public void setParticipants(List<Long> participants)
+	{
+		this.participants = participants;
 	}
 
 }

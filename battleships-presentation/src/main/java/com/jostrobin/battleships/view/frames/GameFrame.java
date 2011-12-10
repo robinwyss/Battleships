@@ -17,6 +17,7 @@ package com.jostrobin.battleships.view.frames;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -37,6 +38,7 @@ public class GameFrame extends JPanel implements InitializingBean
     private BattleFieldPanel battleFieldPanel;
     private PlacementPanel placementPanel;
     private ChatPanel chatPanel;
+    private List<Long> participants;
 
     @Override
     public void afterPropertiesSet() throws Exception
@@ -131,5 +133,15 @@ public class GameFrame extends JPanel implements InitializingBean
     {
         this.chatPanel = chatPanel;
     }
+
+	public List<Long> getParticipants()
+	{
+		return participants;
+	}
+
+	public void setParticipants(List<Long> participants)
+	{
+		this.participants = participants;
+	}
 
 }

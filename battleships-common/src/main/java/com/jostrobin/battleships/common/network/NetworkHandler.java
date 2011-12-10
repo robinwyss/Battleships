@@ -118,6 +118,14 @@ public class NetworkHandler implements Runnable
                         int width = inputStream.readInt();
                         command.setFieldLength(length);
                         command.setFieldWidth(width);
+                        int numberOfClients = inputStream.readInt();
+                        List<Long> participants = new ArrayList<Long>();
+                        for (int i=0; i<numberOfClients; i++)
+                        {
+                        	Long id = inputStream.readLong();
+                        	participants.add(id);
+                        }
+                        command.setParticipants(participants);
                         break;
                     case Command.CHAT_MESSAGE:
                         username = inputStream.readUTF();

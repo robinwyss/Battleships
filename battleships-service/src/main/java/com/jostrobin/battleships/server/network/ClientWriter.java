@@ -61,15 +61,21 @@ public class ClientWriter implements Writer
      *
      * @param fieldLength
      * @param fieldWidth
+     * @param participants the clientIds of all the participants
      * @throws IOException
      */
     @Override
     @Async
-    public void sendPrepareGame(int fieldLength, int fieldWidth) throws IOException
+    public void sendPrepareGame(int fieldLength, int fieldWidth, List<Long> participants) throws IOException
     {
         outputStream.writeInt(Command.PREPARE_GAME);
         outputStream.writeInt(fieldLength);
         outputStream.writeInt(fieldWidth);
+        outputStream.writeInt(participants.size());
+        for (Long id : participants)
+        {
+        	outputStream.writeLong(id);
+        }
     }
 
     /**
