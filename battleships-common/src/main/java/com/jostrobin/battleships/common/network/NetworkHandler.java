@@ -107,6 +107,16 @@ public class NetworkHandler implements Runnable
                         Long myClientId = inputStream.readLong();
                         command.setClientId(myClientId);
                         break;
+                    case Command.ATTACK_RESULT:
+                        command.setX(inputStream.readInt());
+                        command.setY(inputStream.readInt());
+                        AttackResult attackResult = AttackResult.valueOf(inputStream.readUTF());
+                        command.setAttackResult(attackResult);
+                        if (attackResult == AttackResult.SHIP_DESTROYED || attackResult == AttackResult.PLAYER_DESTROYED)
+                        {
+                            command.setShip(readShip());
+                        }
+                        command.setClientId(inputStream.readLong());
                     case Command.PREPARE_GAME:
                         int length = inputStream.readInt();
                         int width = inputStream.readInt();
@@ -138,14 +148,7 @@ public class NetworkHandler implements Runnable
                         List<Ship> ships = new ArrayList<Ship>();
                         for (int i = 0; i < nbrOfShips; i++)
                         {
-                            Ship ship = new Ship(0);
-                            ship.setPositionX(inputStream.readInt());
-                            ship.setPositionY(inputStream.readInt());
-                            ship.setSize(inputStream.readInt());
-                            Orientation orientation = Orientation.valueOf(inputStream.readUTF());
-                            ship.setOrientation(orientation);
-                            ShipType shipType = ShipType.valueOf(inputStream.readUTF());
-                            ship.setType(shipType);
+                            Ship ship = readShip();
                             ships.add(ship);
                         }
                         command.setShips(ships);
@@ -163,6 +166,19 @@ public class NetworkHandler implements Runnable
             logger.warn("Communication to client aborted");
             notifyListeners(null);
         }
+    }
+
+    private Ship readShip() throws IOException
+    {
+        Ship ship = new Ship(0);
+        ship.setPositionX(inputStream.readInt());
+        ship.setPositionY(inputStream.readInt());
+        ship.setSize(inputStream.readInt());
+        Orientation orientation = Orientation.valueOf(inputStream.readUTF());
+        ship.setOrientation(orientation);
+        ShipType shipType = ShipType.valueOf(inputStream.readUTF());
+        ship.setType(shipType);
+        return ship;
     }
 
     /**
