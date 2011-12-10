@@ -16,6 +16,7 @@
 package com.jostrobin.battleships.view.controller;
 
 import java.awt.Dimension;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -73,7 +74,7 @@ public class UIController
     	gameFrame.showGameView(startingPlayer);
     }
 
-    public void showPlacementFrame(int length, int width)
+    public void showPlacementFrame(int length, int width, List<Long> participants)
     {
         if (!gameFrame.equals(currentFrame))
         {
@@ -81,6 +82,7 @@ public class UIController
         }
         gameFrame.setFieldSize(length, width);
         gameFrame.showPlacementView();
+        gameFrame.setParticipants(participants);
     }
 
     public void showReadyFrame()

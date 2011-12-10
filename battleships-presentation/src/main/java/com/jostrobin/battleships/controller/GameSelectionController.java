@@ -1,5 +1,11 @@
 package com.jostrobin.battleships.controller;
 
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
+
 import com.jostrobin.battleships.ApplicationController;
 import com.jostrobin.battleships.common.data.GameState;
 import com.jostrobin.battleships.common.data.Player;
@@ -8,9 +14,6 @@ import com.jostrobin.battleships.common.network.NetworkListener;
 import com.jostrobin.battleships.model.GameSelectionModel;
 import com.jostrobin.battleships.view.frames.GameSelectionFrame;
 import com.jostrobin.battleships.view.listeners.EventListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 
 public class GameSelectionController implements NetworkListener, InitializingBean
 {
@@ -60,7 +63,8 @@ public class GameSelectionController implements NetworkListener, InitializingBea
             {
                 int length = command.getFieldLength();
                 int width = command.getFieldWidth();
-                applicationController.showGameFrame(length, width);
+                List<Long> participants = command.getParticipants();
+                applicationController.showGameFrame(length, width, participants);
             }
             else if (command.getCommand() == Command.ACCEPTED)
             {
