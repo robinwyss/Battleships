@@ -99,6 +99,7 @@ public class GameFrame extends JPanel implements InitializingBean
     public void setFieldSize(int length, int width)
     {
         battleFieldPanel.setFieldSize(length, width);
+        placementPanel.setFieldSize(length, width);
     }
 
     public BattleFieldPanel getBattleFieldPanel()

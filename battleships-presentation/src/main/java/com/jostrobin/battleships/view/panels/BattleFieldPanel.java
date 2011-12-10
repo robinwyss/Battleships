@@ -42,8 +42,7 @@ public class BattleFieldPanel extends JPanel implements ActionListener
 
     public BattleFieldPanel()
     {
-
-        drawField(5, 5);
+        drawField(6, 6);
         setLayout(new FlowLayout());
     }
 
@@ -82,7 +81,14 @@ public class BattleFieldPanel extends JPanel implements ActionListener
 
     public Cell findCellAt(int x, int y)
     {
-        return cellArray[x][y];
+        try
+        {
+            return cellArray[x][y];
+        }
+        catch (ArrayIndexOutOfBoundsException e)
+        {
+            return null;
+        }
     }
 
     public void addSelectionListener(SelectionListener<Cell> selectionListener)
