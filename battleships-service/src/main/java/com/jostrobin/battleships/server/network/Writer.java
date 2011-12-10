@@ -14,7 +14,7 @@ public interface Writer
 
     public void sendAvailablePlayers(List<Client> clients) throws IOException;
 
-    public void sendPrepareGame(int fieldLength, int fieldWidth) throws IOException;
+    public void sendPrepareGame(int fieldLength, int fieldWidth, List<Long> participants) throws IOException;
 
     public void acceptPlayer(Long id) throws IOException;
 

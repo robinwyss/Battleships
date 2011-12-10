@@ -54,10 +54,15 @@ public class Game extends GameData
      */
     public void prepareGame() throws IOException
     {
+    	List<Long> participants = new ArrayList<Long>();
+    	for (Client client : players)
+    	{
+    		participants.add(client.getId());
+    	}
         for (Client client : players)
         {
             client.setState(GameState.PREPARING);
-            client.prepareGame();
+            client.prepareGame(participants);
         }
     }
 
