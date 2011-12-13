@@ -38,7 +38,8 @@ public class CreateGameController implements InitializingBean
         if (mode == GameMode.CLASSIC || mode == GameMode.CUSTOM)
         {
         	int numberOfPlayers = frame.getNumberOfPlayersAllowed();
-            GameData game = new GameData(null, mode, 0, numberOfPlayers, 10, 10);
+        	int size = frame.getSelectedFieldSize();
+            GameData game = new GameData(null, mode, 0, numberOfPlayers, size, size);
             applicationController.createGame(game);
         }
         else

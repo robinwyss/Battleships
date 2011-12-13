@@ -137,8 +137,10 @@ public class CreateGameFrame extends JPanel implements ActionListener
         c.anchor = GridBagConstraints.LINE_START;
         optionsPanel.add(fieldSizeLabel, c);
 
-        Object[] fieldSizeItems = new Object[1];
+        Object[] fieldSizeItems = new Object[3];
         fieldSizeItems[0] = "10 x 10";
+        fieldSizeItems[1] = "15 x 15";
+        fieldSizeItems[2] = "20 x 20";
         fieldSizeComboBox = new JComboBox(fieldSizeItems);
         c = createConstraint(1, y++);
         c.insets = new Insets(5, 0, 0, 0);
@@ -220,11 +222,29 @@ public class CreateGameFrame extends JPanel implements ActionListener
     	}
     }
     
+    public int getSelectedFieldSize()
+    {
+    	String size = (String) fieldSizeComboBox.getSelectedItem();
+    	try
+    	{
+    		String[] sizeParts = size.split(" x ");
+    		int fieldSize = Integer.parseInt(sizeParts[0]);
+    		return fieldSize;
+    	}
+    	catch (NumberFormatException e)
+    	{
+    		return 10; // DEFAULT
+    	}
+    }
+    
     public void cancelGame()
     {
         createGameLabel.setText("New game");
         createGameButton.setEnabled(true);
         modeComboBox.setEnabled(true);
+        modeComboBox.setSelectedItem(GameMode.CLASSIC);
+        nrOfPlayersComboBox.setEnabled(false);
+        fieldSizeComboBox.setEnabled(false);
     }
 
     public void showWaitingForPlayers()
@@ -232,6 +252,8 @@ public class CreateGameFrame extends JPanel implements ActionListener
         createGameLabel.setText("Waiting for players to join");
         createGameButton.setEnabled(false);
         modeComboBox.setEnabled(false);
+        nrOfPlayersComboBox.setEnabled(false);
+        fieldSizeComboBox.setEnabled(false);
     }
 
     public void showMessage(String message)
