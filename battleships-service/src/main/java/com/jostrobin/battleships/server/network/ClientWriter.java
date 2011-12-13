@@ -59,6 +59,7 @@ public class ClientWriter implements Writer
                 outputStream.writeInt(game.getFieldLength());
             }
         }
+        outputStream.flush();
         logger.debug("sent {}", Command.PLAYERS_LIST);
     }
 
@@ -82,6 +83,7 @@ public class ClientWriter implements Writer
         {
             outputStream.writeLong(id);
         }
+        outputStream.flush();
         logger.debug("sent {}", Command.PREPARE_GAME);
     }
 
@@ -97,6 +99,7 @@ public class ClientWriter implements Writer
     {
         outputStream.writeInt(Command.ACCEPTED);
         outputStream.writeLong(id);
+        outputStream.flush();
         logger.debug("sent ACCEPTED");
     }
 
@@ -108,6 +111,7 @@ public class ClientWriter implements Writer
         outputStream.writeInt(Command.CHAT_MESSAGE);
         outputStream.writeUTF(username);
         outputStream.writeUTF(message);
+        outputStream.flush();
         logger.debug("sent CHAT_MESSAGE");
     }
 
@@ -129,6 +133,7 @@ public class ClientWriter implements Writer
             outputStream.writeUTF(ship.getType().name());
         }
         outputStream.writeLong(nextPlayer);
+        outputStream.flush();
         logger.debug("sent ATTACK_RESULT");
     }
 
@@ -138,6 +143,7 @@ public class ClientWriter implements Writer
     {
         outputStream.writeInt(Command.START_GAME);
         outputStream.writeLong(clientId);
+        outputStream.flush();
         logger.debug("sent START_GAME");
     }
 }

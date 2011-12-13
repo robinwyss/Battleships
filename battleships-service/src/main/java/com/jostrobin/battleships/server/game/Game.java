@@ -46,6 +46,8 @@ public class Game extends GameData
         {
             this.players.add(client);
             setCurrentPlayers(getCurrentPlayers() + 1);
+            client.setGame(this);
+            client.initializeField(this.getFieldWidth(), this.getFieldLength());
             added = true;
         }
         return added;

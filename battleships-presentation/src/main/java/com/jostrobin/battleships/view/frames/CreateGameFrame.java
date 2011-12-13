@@ -122,8 +122,9 @@ public class CreateGameFrame extends JPanel implements ActionListener
         c.anchor = GridBagConstraints.LINE_START;
         optionsPanel.add(nrOfPlayersLabel, c);
 
-        Object[] nrOfPlayerItems = new Object[1];
+        Object[] nrOfPlayerItems = new Object[2];
         nrOfPlayerItems[0] = "2";
+        nrOfPlayerItems[1] = "4";
         nrOfPlayersComboBox = new JComboBox(nrOfPlayerItems);
         c = createConstraint(1, y++);
         c.insets = new Insets(5, 0, 0, 0);
@@ -203,6 +204,20 @@ public class CreateGameFrame extends JPanel implements ActionListener
             }
             cancelGame();
         }
+    }
+    
+    public int getNumberOfPlayersAllowed()
+    {
+    	String number = (String) nrOfPlayersComboBox.getSelectedItem();
+    	try
+    	{
+    		int numberOfPlayers = Integer.parseInt(number);
+    		return numberOfPlayers;
+    	}
+    	catch (NumberFormatException e)
+    	{
+    		return 2; // DEFAULT
+    	}
     }
     
     public void cancelGame()

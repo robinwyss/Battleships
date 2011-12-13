@@ -87,8 +87,6 @@ public class ServerManager
             boolean added = game.addPlayer(client);
             if (added && game.getCurrentPlayers() == game.getMaxPlayers())
             {
-                client.setGame(game);
-                client.initializeField(game.getFieldWidth(), game.getFieldLength());
                 // the game is full, we can start it
                 try
                 {
