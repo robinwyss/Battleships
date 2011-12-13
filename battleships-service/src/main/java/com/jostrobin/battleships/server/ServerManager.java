@@ -64,6 +64,13 @@ public class ServerManager
 
         resendPlayerLists();
     }
+    
+    public void cancelGame(Client client)
+    {
+    	// TODO: Send cancel game to every client of the game
+    	client.setGame(null);
+    	resendPlayerLists();
+    }
 
     /**
      * The specified client wants to join the specified game.
@@ -81,6 +88,7 @@ public class ServerManager
             if (added && game.getCurrentPlayers() == game.getMaxPlayers())
             {
                 client.setGame(game);
+                client.initializeField(game.getFieldWidth(), game.getFieldLength());
                 // the game is full, we can start it
                 try
                 {

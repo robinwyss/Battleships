@@ -15,12 +15,13 @@
 
 package com.jostrobin.battleships.controller;
 
+import org.springframework.beans.factory.InitializingBean;
+
 import com.jostrobin.battleships.ApplicationController;
 import com.jostrobin.battleships.common.data.GameData;
 import com.jostrobin.battleships.common.data.GameMode;
 import com.jostrobin.battleships.view.frames.CreateGameFrame;
 import com.jostrobin.battleships.view.listeners.EventListener;
-import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author rowyss
@@ -31,7 +32,6 @@ public class CreateGameController implements InitializingBean
     private CreateGameFrame frame;
 
     private ApplicationController applicationController;
-
 
     private void createGame(GameMode mode)
     {
@@ -56,6 +56,7 @@ public class CreateGameController implements InitializingBean
     private void cancel()
     {
         applicationController.showGameSelection();
+        applicationController.cancelGame();
     }
 
     public ApplicationController getApplicationController()

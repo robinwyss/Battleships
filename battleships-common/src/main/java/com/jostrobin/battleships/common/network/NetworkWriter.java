@@ -67,4 +67,9 @@ public class NetworkWriter
     	outputStream.writeInt(y);
     	outputStream.writeLong(clientId);
     }
+
+	public void sendCancelGame() throws IOException
+	{
+		outputStream.writeInt(Command.CANCEL_GAME);
+	}
 }

@@ -108,6 +108,19 @@ public class ApplicationController
             e.printStackTrace();
         }
     }
+    
+    public void cancelGame()
+    {
+    	try
+    	{
+    		writer.sendCancelGame();
+    	}
+    	catch (IOException e)
+    	{
+    		// TODO: COmmunication stopped
+    		e.printStackTrace();
+    	}
+    }
 
     public void joinGame(Player player)
     {

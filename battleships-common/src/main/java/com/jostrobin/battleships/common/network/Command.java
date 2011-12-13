@@ -61,6 +61,11 @@ public class Command
      */
     public static final int START_GAME = 10;
 
+    /**
+     * Cancels a game if the user has started one. Ignored if the user has not started a game.
+     */
+    public static final int CANCEL_GAME = 11;
+
     public static final int DISCONNECT = 100;
 
     private int command;

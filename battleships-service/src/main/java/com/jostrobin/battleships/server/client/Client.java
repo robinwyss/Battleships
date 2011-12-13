@@ -90,6 +90,7 @@ public class Client extends Player implements NetworkListener
                 case Command.LOGIN:
                     try
                     {
+                    	setState(GameState.NEW);
                         clientWriter.acceptPlayer(getId());
                         setUsername(command.getUsername());
                         serverManager.addClient(this);
@@ -105,6 +106,13 @@ public class Client extends Player implements NetworkListener
 
                     serverManager.createGame(this, command);
                     break;
+                case Command.CANCEL_GAME:
+                	if (getState() == GameState.WAITING_FOR_PLAYERS)
+                	{
+                		setState(GameState.NEW);
+                		serverManager.cancelGame(this);
+                	}
+                	break;
                 case Command.JOIN_GAME:
                     serverManager.joinGame(this, command.getGameId());
                     break;
@@ -272,7 +280,6 @@ public class Client extends Player implements NetworkListener
     public void setGame(Game game)
     {
         this.game = game;
-        initializeField(game.getFieldWidth(), game.getFieldLength());
     }
 
     @Override
