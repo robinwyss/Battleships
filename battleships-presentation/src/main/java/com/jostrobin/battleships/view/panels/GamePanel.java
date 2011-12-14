@@ -7,8 +7,11 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.*;
 
+import com.jostrobin.battleships.common.PlacementHelper;
 import com.jostrobin.battleships.common.data.Cell;
+import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.network.Command;
+import com.jostrobin.battleships.model.ShipsModel;
 import com.jostrobin.battleships.view.listeners.AttackListener;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
 import org.slf4j.Logger;
@@ -25,6 +28,9 @@ public class GamePanel extends JPanel
     private Map<Long, BattleFieldPanel> battlefieldPanels;
 
     private List<AttackListener> attackListeners = new ArrayList<AttackListener>();
+
+    private ShipsModel shipsModel;
+    private PlacementHelper placementHelper;
 
     /**
      * Initializes the UI for the specified game type.
@@ -58,7 +64,12 @@ public class GamePanel extends JPanel
                     }
                 });
             }
-            first = false;
+            else
+            {
+                panel.setSelectable(false);
+                first = false;
+                placementHelper = new PlacementHelper(panel);
+            }
 
             this.add(panel);
         }
@@ -108,5 +119,19 @@ public class GamePanel extends JPanel
             Long currentId = entry.getKey();
             battleFieldPanel.setCurrent(playerId.equals(currentId));
         }
+    }
+
+    public void placeShips()
+    {
+        for (Ship ship : shipsModel.getShips())
+        {
+            placementHelper.placeShip(ship, ship.getPositionX(), ship.getPositionY());
+            ship.setSelected(false);
+        }
+    }
+
+    public void setShipsModel(ShipsModel shipsModel)
+    {
+        this.shipsModel = shipsModel;
     }
 }

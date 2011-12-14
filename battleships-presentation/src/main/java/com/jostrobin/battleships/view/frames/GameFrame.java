@@ -89,6 +89,7 @@ public class GameFrame extends JPanel implements InitializingBean, AttackListene
         gamePanel.changeCurrentPlayer(startingPlayer);
         gamePanel.setVisible(true);
         placementPanel.setVisible(false);
+        gamePanel.placeShips();
     }
 
     public void showPlacementView()

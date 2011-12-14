@@ -25,7 +25,7 @@ import com.jostrobin.battleships.common.data.Ship;
  * @author rowyss
  *         Date: 16.11.11 Time: 20:18
  */
-public class PlacementModel
+public class ShipsModel
 {
     private List<Ship> ships = new ArrayList<Ship>()
     {{

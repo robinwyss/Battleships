@@ -5,15 +5,14 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Async;
-
 import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.server.client.Client;
 import com.jostrobin.battleships.server.game.Game;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 
 /**
  * This class is used to send commands to a client.
@@ -40,30 +39,30 @@ public class ClientWriter implements Writer
     @Async
     public void sendAvailablePlayers(List<Client> clients) throws IOException
     {
-    	synchronized(outputStream)
-    	{
-	        outputStream.writeInt(Command.PLAYERS_LIST);
-	        outputStream.writeInt(clients.size());
-	        for (Client client : clients)
-	        {
-	            outputStream.writeLong(client.getId());
-	            outputStream.writeUTF(client.getUsername());
-	            outputStream.writeUTF(client.getState().name());
-	            Game game = client.getGame();
-	            outputStream.writeBoolean(game != null);
-	            if (game != null)
-	            {
-	                outputStream.writeLong(game.getId());
-	                outputStream.writeUTF(game.getMode().name());
-	                outputStream.writeInt(game.getCurrentPlayers());
-	                outputStream.writeInt(game.getMaxPlayers());
-	                outputStream.writeInt(game.getFieldWidth());
-	                outputStream.writeInt(game.getFieldLength());
-	            }
-	        }
-	        outputStream.flush();
-	        logger.debug("sent {}", Command.PLAYERS_LIST);
-    	}
+        synchronized (outputStream)
+        {
+            outputStream.writeInt(Command.PLAYERS_LIST);
+            outputStream.writeInt(clients.size());
+            for (Client client : clients)
+            {
+                outputStream.writeLong(client.getId());
+                outputStream.writeUTF(client.getUsername());
+                outputStream.writeUTF(client.getState().name());
+                Game game = client.getGame();
+                outputStream.writeBoolean(game != null);
+                if (game != null)
+                {
+                    outputStream.writeLong(game.getId());
+                    outputStream.writeUTF(game.getMode().name());
+                    outputStream.writeInt(game.getCurrentPlayers());
+                    outputStream.writeInt(game.getMaxPlayers());
+                    outputStream.writeInt(game.getFieldWidth());
+                    outputStream.writeInt(game.getFieldLength());
+                }
+            }
+            outputStream.flush();
+            logger.debug("sent PLAYERS_LIST");
+        }
     }
 
     /**
@@ -78,19 +77,19 @@ public class ClientWriter implements Writer
     @Async
     public void sendPrepareGame(int fieldLength, int fieldWidth, List<Long> participants) throws IOException
     {
-    	synchronized(outputStream)
-    	{
-	        outputStream.writeInt(Command.PREPARE_GAME);
-	        outputStream.writeInt(fieldLength);
-	        outputStream.writeInt(fieldWidth);
-	        outputStream.writeInt(participants.size());
-	        for (Long id : participants)
-	        {
-	            outputStream.writeLong(id);
-	        }
-	        outputStream.flush();
-	        logger.debug("sent {}", Command.PREPARE_GAME);
-    	}
+        synchronized (outputStream)
+        {
+            outputStream.writeInt(Command.PREPARE_GAME);
+            outputStream.writeInt(fieldLength);
+            outputStream.writeInt(fieldWidth);
+            outputStream.writeInt(participants.size());
+            for (Long id : participants)
+            {
+                outputStream.writeLong(id);
+            }
+            outputStream.flush();
+            logger.debug("sent PREPARE_GAME");
+        }
     }
 
     /**
@@ -103,13 +102,13 @@ public class ClientWriter implements Writer
     @Async
     public void acceptPlayer(Long id) throws IOException
     {
-    	synchronized(outputStream)
-    	{
-	        outputStream.writeInt(Command.ACCEPTED);
-	        outputStream.writeLong(id);
-	        outputStream.flush();
-	        logger.debug("sent ACCEPTED");
-    	}
+        synchronized (outputStream)
+        {
+            outputStream.writeInt(Command.ACCEPTED);
+            outputStream.writeLong(id);
+            outputStream.flush();
+            logger.debug("sent ACCEPTED");
+        }
     }
 
     @Override
@@ -117,14 +116,14 @@ public class ClientWriter implements Writer
     public void sendChatMessage(String username, String message)
             throws IOException
     {
-    	synchronized(outputStream)
-    	{
-	        outputStream.writeInt(Command.CHAT_MESSAGE);
-	        outputStream.writeUTF(username);
-	        outputStream.writeUTF(message);
-	        outputStream.flush();
-	        logger.debug("sent CHAT_MESSAGE");
-    	}
+        synchronized (outputStream)
+        {
+            outputStream.writeInt(Command.CHAT_MESSAGE);
+            outputStream.writeUTF(username);
+            outputStream.writeUTF(message);
+            outputStream.flush();
+            logger.debug("sent CHAT_MESSAGE");
+        }
     }
 
     @Override
@@ -132,36 +131,36 @@ public class ClientWriter implements Writer
     public void sendAttackResult(Long clientId, int x, int y, AttackResult result, Ship ship, Long nextPlayer)
             throws Exception
     {
-    	synchronized(outputStream)
-    	{
-	        outputStream.writeInt(Command.ATTACK_RESULT);
-	        outputStream.writeInt(x);
-	        outputStream.writeInt(y);
-	        outputStream.writeUTF(result.name());
-	        if (ship != null)
-	        {
-	            outputStream.writeInt(ship.getPositionX());
-	            outputStream.writeInt(ship.getPositionY());
-	            outputStream.writeInt(ship.getSize());
-	            outputStream.writeUTF(ship.getOrientation().name());
-	            outputStream.writeUTF(ship.getType().name());
-	        }
-	        outputStream.writeLong(nextPlayer);
-	        outputStream.flush();
-	        logger.debug("sent ATTACK_RESULT");
-    	}
+        synchronized (outputStream)
+        {
+            outputStream.writeInt(Command.ATTACK_RESULT);
+            outputStream.writeInt(x);
+            outputStream.writeInt(y);
+            outputStream.writeUTF(result.name());
+            if (ship != null)
+            {
+                outputStream.writeInt(ship.getPositionX());
+                outputStream.writeInt(ship.getPositionY());
+                outputStream.writeInt(ship.getSize());
+                outputStream.writeUTF(ship.getOrientation().name());
+                outputStream.writeUTF(ship.getType().name());
+            }
+            outputStream.writeLong(nextPlayer);
+            outputStream.flush();
+            logger.debug("sent ATTACK_RESULT");
+        }
     }
 
     @Override
     @Async
     public void sendStartGame(Long clientId) throws Exception
     {
-    	synchronized(outputStream)
-    	{
-	        outputStream.writeInt(Command.START_GAME);
-	        outputStream.writeLong(clientId);
-	        outputStream.flush();
-	        logger.debug("sent START_GAME");
-    	}
+        synchronized (outputStream)
+        {
+            outputStream.writeInt(Command.START_GAME);
+            outputStream.writeLong(clientId);
+            outputStream.flush();
+            logger.debug("sent START_GAME");
+        }
     }
 }

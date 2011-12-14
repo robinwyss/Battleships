@@ -16,13 +16,12 @@
 package com.jostrobin.battleships.controller;
 
 import com.jostrobin.battleships.ApplicationController;
+import com.jostrobin.battleships.common.PlacementHelper;
 import com.jostrobin.battleships.common.data.Cell;
-import com.jostrobin.battleships.common.data.Orientation;
 import com.jostrobin.battleships.common.data.Ship;
-import com.jostrobin.battleships.common.data.enums.CellType;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.common.network.NetworkListener;
-import com.jostrobin.battleships.model.PlacementModel;
+import com.jostrobin.battleships.model.ShipsModel;
 import com.jostrobin.battleships.view.listeners.EventListener;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
 import com.jostrobin.battleships.view.panels.PlacementPanel;
@@ -35,8 +34,9 @@ import org.springframework.beans.factory.InitializingBean;
 public class PlacementController implements InitializingBean, NetworkListener
 {
     private PlacementPanel placementPanel;
-    private PlacementModel model;
+    private ShipsModel model;
     private ApplicationController applicationController;
+    private PlacementHelper placementHelper;
 
     @Override
     public void afterPropertiesSet() throws Exception
@@ -47,29 +47,15 @@ public class PlacementController implements InitializingBean, NetworkListener
         placementPanel.addShipSelectionListener(new ShipSelectionListener());
         placementPanel.addRotationListener(new RotationListener());
         placementPanel.addReadyListener(new ReadyListener());
+
+        placementHelper = new PlacementHelper(placementPanel.getBattleField());
     }
 
     private void rotateShip()
     {
         Ship ship = findSelectedShip();
-        if (ship != null)
-        {
-            Orientation orientation = switchOrientation(ship.getOrientation());
-            if (ship.isPlaced())
-            {
-                if (canBePlaced(ship, ship.getPositionX(), ship.getPositionY(), orientation))
-                {
-                    ship.setOrientation(orientation);
-                    placeShip(ship, ship.getPositionX(), ship.getPositionY());
-                }
-            }
-            else
-            {
-                ship.setOrientation(orientation);
-                ship.setSelected(true);
-                placementPanel.updateShips();
-            }
-        }
+        placementHelper.rotateShip(ship);
+        placementPanel.updateShips();
     }
 
 
@@ -136,48 +122,9 @@ public class PlacementController implements InitializingBean, NetworkListener
 
     private boolean placeShip(Ship ship, int x, int y)
     {
-        boolean placed = false;
-        if (canBePlaced(ship, x, y, ship.getOrientation()))
-        {
-            ship.setPosition(x, y);
-            ship.clearCells();
-            for (int i = 0; i < ship.getSize(); i++)
-            {
-                ship.addCell(placementPanel.findCellAt(x, y));
-                if (ship.getOrientation() == Orientation.HORIZONTAL)
-                {
-                    x++;
-                }
-                else
-                {
-                    y++;
-                }
-            }
-            ship.setSelected(true);
-            ship.setPlaced(true);
-            placed = true;
-        }
-        return placed;
+        return placementHelper.placeShip(ship, x, y);
     }
 
-    private boolean canBePlaced(Ship ship, int x, int y, Orientation orientation)
-    {
-        boolean ok = true;
-        for (int i = 0; i < ship.getSize(); i++)
-        {
-            Cell cell = placementPanel.findCellAt(x, y);
-            ok &= (cell != null && (cell.getType().equals(CellType.WATER) || ship.getCells().contains(cell)));
-            if (orientation == Orientation.HORIZONTAL)
-            {
-                x++;
-            }
-            else
-            {
-                y++;
-            }
-        }
-        return ok;
-    }
 
     private Ship findSelectedShip()
     {
@@ -191,24 +138,12 @@ public class PlacementController implements InitializingBean, NetworkListener
         return null;
     }
 
-    private Orientation switchOrientation(Orientation orientation)
-    {
-        if (Orientation.HORIZONTAL.equals(orientation))
-        {
-            return Orientation.VERTICAL;
-        }
-        else
-        {
-            return Orientation.HORIZONTAL;
-        }
-    }
-
-    public PlacementModel getModel()
+    public ShipsModel getModel()
     {
         return model;
     }
 
-    public void setModel(PlacementModel model)
+    public void setModel(ShipsModel model)
     {
         this.model = model;
     }
@@ -281,7 +216,6 @@ public class PlacementController implements InitializingBean, NetworkListener
         {
             case Command.START_GAME:
                 applicationController.showGameView(command.getStartingPlayer());
-
                 break;
         }
     }

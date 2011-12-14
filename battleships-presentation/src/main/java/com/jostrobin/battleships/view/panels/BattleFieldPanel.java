@@ -40,14 +40,13 @@ public class BattleFieldPanel extends JPanel implements ActionListener
     private List<SelectionListener<Cell>> selectionListeners = new ArrayList<SelectionListener<Cell>>();
     private JPanel contentPanel;
     private Cell[][] cellArray;
-    private List<Cell> cells = new ArrayList<Cell>();
     private final JLabel nameLabel;
     private boolean current;
+    private boolean selectable = true;
 
     public BattleFieldPanel(String participantName)
     {
         setLayout(new GridBagLayout());
-
         nameLabel = new JLabel(participantName);
     }
 
@@ -66,6 +65,7 @@ public class BattleFieldPanel extends JPanel implements ActionListener
             for (int x = 0; x < width; x++)
             {
                 CellComponent cell = new CellComponent(x, y);
+                cell.setSelectable(selectable);
                 cell.addActionListener(this);
                 cellArray[x][y] = cell;
                 contentPanel.add(cell);
@@ -140,5 +140,25 @@ public class BattleFieldPanel extends JPanel implements ActionListener
     public boolean isCurrent()
     {
         return current;
+    }
+
+    public boolean isSelectable()
+    {
+        return selectable;
+    }
+
+    public void setSelectable(boolean selectable)
+    {
+        for (Cell[] cells : cellArray)
+        {
+            for (Cell cell : cells)
+            {
+                if (cell instanceof CellComponent)
+                {
+                    ((CellComponent) cell).setSelectable(selectable);
+                }
+            }
+        }
+        this.selectable = selectable;
     }
 }

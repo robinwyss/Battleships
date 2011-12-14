@@ -48,6 +48,7 @@ public class UIController
     public UIController()
     {
         frame = new JFrame();
+        frame.getRootPane().setDoubleBuffered(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
