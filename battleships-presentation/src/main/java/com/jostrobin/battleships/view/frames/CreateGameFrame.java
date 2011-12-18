@@ -119,6 +119,7 @@ public class CreateGameFrame extends JPanel implements ActionListener
         GridBagConstraints c = createConstraint(0, y);
         c.anchor = GridBagConstraints.LINE_START;
         c.insets = new Insets(5, 0, 0, 0);
+        c.weightx = 1;
         optionsPanel.add(modeLabel, c);
 
         // add all the game modes to a dropdown
@@ -365,6 +366,31 @@ public class CreateGameFrame extends JPanel implements ActionListener
     	{
     		return 10; // DEFAULT
     	}
+    }
+    
+    public int getNumberOfAircraftCarriers()
+    {
+    	return (Integer)((ComboBoxItem)aircraftCarrierComboBox.getSelectedItem()).getKey();
+    }
+    
+    public int getNumberOfBattleships()
+    {
+    	return (Integer)((ComboBoxItem)battleshipComboBox.getSelectedItem()).getKey();
+    }
+    
+    public int getNumberOfADestroyers()
+    {
+    	return (Integer)((ComboBoxItem)destroyerComboBox.getSelectedItem()).getKey();
+    }
+    
+    public int getNumberOfSubmarines()
+    {
+    	return (Integer)((ComboBoxItem)submarineComboBox.getSelectedItem()).getKey();
+    }
+    
+    public int getNumberOfPatrolBoats()
+    {
+    	return (Integer)((ComboBoxItem)patrolBoatComboBox.getSelectedItem()).getKey();
     }
     
     public void cancelGame()
