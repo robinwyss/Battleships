@@ -56,6 +56,11 @@ public class ServerManager
     {
         Game game = new Game(gameIdGenerator.nextId(), command.getGameMode(), 0, command.getMaxPlayers(),
                 command.getFieldWidth(), command.getFieldLength());
+        game.setNrOfAircraftCarriers(command.getNrOfAircraftCarriers());
+        game.setNrOfBattleships(command.getNrOfBattleships());
+        game.setNrOfDestroyers(command.getNrOfDestroyers());
+        game.setNrOfSubmarines(command.getNrOfSubmarines());
+        game.setNrOfPatrolBoats(command.getNrOfPatrolBoats());
         game.setOwner(client);
         game.addPlayer(client);
         client.setGame(game);

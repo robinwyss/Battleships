@@ -262,7 +262,7 @@ public class Client extends Player implements NetworkListener
      */
     public void prepareGame(List<Long> participants) throws IOException
     {
-        clientWriter.sendPrepareGame(game.getFieldLength(), game.getFieldWidth(), participants);
+        clientWriter.sendPrepareGame(game, participants);
     }
 
     @Override

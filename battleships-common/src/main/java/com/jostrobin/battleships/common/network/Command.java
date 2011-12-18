@@ -112,6 +112,16 @@ public class Command
     private AttackResult attackResult;
 
     private Ship ship;
+	
+	private int nrOfAircraftCarriers;
+	
+	private int nrOfDestroyers;
+	
+	private int nrOfBattleships;
+	
+	private int nrOfSubmarines;
+	
+	private int nrOfPatrolBoats;
 
     public Command(int command)
     {
@@ -287,4 +297,54 @@ public class Command
     {
         return ship;
     }
+
+	public int getNrOfAircraftCarriers()
+	{
+		return nrOfAircraftCarriers;
+	}
+
+	public void setNrOfAircraftCarriers(int nrOfAircraftCarriers)
+	{
+		this.nrOfAircraftCarriers = nrOfAircraftCarriers;
+	}
+
+	public int getNrOfDestroyers()
+	{
+		return nrOfDestroyers;
+	}
+
+	public void setNrOfDestroyers(int nrOfDestroyers)
+	{
+		this.nrOfDestroyers = nrOfDestroyers;
+	}
+
+	public int getNrOfBattleships()
+	{
+		return nrOfBattleships;
+	}
+
+	public void setNrOfBattleships(int nrOfBattleships)
+	{
+		this.nrOfBattleships = nrOfBattleships;
+	}
+
+	public int getNrOfSubmarines()
+	{
+		return nrOfSubmarines;
+	}
+
+	public void setNrOfSubmarines(int nrOfSubmarines)
+	{
+		this.nrOfSubmarines = nrOfSubmarines;
+	}
+
+	public int getNrOfPatrolBoats()
+	{
+		return nrOfPatrolBoats;
+	}
+
+	public void setNrOfPatrolBoats(int nrOfPatrolBoats)
+	{
+		this.nrOfPatrolBoats = nrOfPatrolBoats;
+	}
 }

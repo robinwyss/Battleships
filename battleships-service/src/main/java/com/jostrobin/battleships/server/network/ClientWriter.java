@@ -5,14 +5,15 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
+
 import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.server.client.Client;
 import com.jostrobin.battleships.server.game.Game;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Async;
 
 /**
  * This class is used to send commands to a client.
@@ -75,17 +76,23 @@ public class ClientWriter implements Writer
      */
     @Override
     @Async
-    public void sendPrepareGame(int fieldLength, int fieldWidth, List<Long> participants) throws IOException
+    public void sendPrepareGame(Game game, List<Long> participants) throws IOException
     {
         synchronized (outputStream)
         {
             outputStream.writeInt(Command.PREPARE_GAME);
-            outputStream.writeInt(fieldLength);
-            outputStream.writeInt(fieldWidth);
+            outputStream.writeInt(game.getFieldLength());
+            outputStream.writeInt(game.getFieldWidth());
+            outputStream.writeInt(game.getNrOfAircraftCarriers());
+            outputStream.writeInt(game.getNrOfBattleships());
+            outputStream.writeInt(game.getNrOfDestroyers());
+            outputStream.writeInt(game.getNrOfSubmarines());
+            outputStream.writeInt(game.getNrOfPatrolBoats());
             outputStream.writeInt(participants.size());
             for (Long id : participants)
             {
                 outputStream.writeLong(id);
+                outputStream.writeUTF("placeholderusername");
             }
             outputStream.flush();
             logger.debug("sent PREPARE_GAME");

@@ -76,6 +76,11 @@ public class NetworkHandler implements Runnable
                         command.setMaxPlayers(maxPlayers);
                         command.setFieldWidth(fieldWidth);
                         command.setFieldLength(fieldLength);
+                        command.setNrOfAircraftCarriers(aircraftCarriers);
+                        command.setNrOfBattleships(battleships);
+                        command.setNrOfDestroyers(destroyers);
+                        command.setNrOfSubmarines(submarines);
+                        command.setNrOfPatrolBoats(patrolBoats);
                         logger.debug("received CREATE_GAME");
                         break;
                     case Command.JOIN_GAME:
@@ -142,8 +147,18 @@ public class NetworkHandler implements Runnable
                         logger.debug("receiving PREPARE_GAME...");
                         int length = inputStream.readInt();
                         int width = inputStream.readInt();
+                        int nrAircraftCarriers = inputStream.readInt();
+                        int nrBattleships = inputStream.readInt();
+                        int nrDestroyers = inputStream.readInt();
+                        int nrSubmarines = inputStream.readInt();
+                        int nrPatrolBoats = inputStream.readInt();
                         command.setFieldLength(length);
                         command.setFieldWidth(width);
+                        command.setNrOfAircraftCarriers(nrAircraftCarriers);
+                        command.setNrOfBattleships(nrBattleships);
+                        command.setNrOfDestroyers(nrDestroyers);
+                        command.setNrOfSubmarines(nrSubmarines);
+                        command.setNrOfPatrolBoats(nrPatrolBoats);
                         int numberOfClients = inputStream.readInt();
                         List<Long> participants = new ArrayList<Long>();
                         logger.debug("participant list size: {}", numberOfClients);
@@ -151,6 +166,7 @@ public class NetworkHandler implements Runnable
                         {
                             Long id = inputStream.readLong();
                             participants.add(id);
+                            String placeholderUsername = inputStream.readUTF();
                         }
                         command.setParticipants(participants);
                         logger.debug("received PREPARE_GAME");

@@ -7,6 +7,7 @@ import java.util.List;
 import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.server.client.Client;
+import com.jostrobin.battleships.server.game.Game;
 
 public interface Writer
 {
@@ -14,7 +15,7 @@ public interface Writer
 
     public void sendAvailablePlayers(List<Client> clients) throws IOException;
 
-    public void sendPrepareGame(int fieldLength, int fieldWidth, List<Long> participants) throws IOException;
+    public void sendPrepareGame(Game game, List<Long> participants) throws IOException;
 
     public void acceptPlayer(Long id) throws IOException;
 
