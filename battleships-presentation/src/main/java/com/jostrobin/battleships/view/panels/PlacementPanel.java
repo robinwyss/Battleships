@@ -24,7 +24,7 @@ import javax.swing.*;
 
 import com.jostrobin.battleships.common.data.Cell;
 import com.jostrobin.battleships.common.data.Ship;
-import com.jostrobin.battleships.model.PlacementModel;
+import com.jostrobin.battleships.model.ShipsModel;
 import com.jostrobin.battleships.view.listeners.EventListener;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
 import org.slf4j.Logger;
@@ -43,7 +43,7 @@ public class PlacementPanel extends JPanel implements ActionListener, Initializi
     private JButton rotate;
     private JButton ready;
     private int y;
-    private PlacementModel placementModel;
+    private ShipsModel shipsModel;
     private List<EventListener<Object>> rotationListeners = new ArrayList<EventListener<Object>>();
     private List<EventListener<Object>> readyListeners = new ArrayList<EventListener<Object>>();
 
@@ -104,7 +104,7 @@ public class PlacementPanel extends JPanel implements ActionListener, Initializi
 
     public void updateShips()
     {
-        shipsPanel.updateShips(placementModel.getShips());
+        shipsPanel.updateShips(shipsModel.getShips());
     }
 
     public Cell findCellAt(int x, int y)
@@ -112,14 +112,14 @@ public class PlacementPanel extends JPanel implements ActionListener, Initializi
         return battleField.findCellAt(x, y);
     }
 
-    public PlacementModel getPlacementModel()
+    public ShipsModel getShipsModel()
     {
-        return placementModel;
+        return shipsModel;
     }
 
-    public void setPlacementModel(PlacementModel placementModel)
+    public void setShipsModel(ShipsModel shipsModel)
     {
-        this.placementModel = placementModel;
+        this.shipsModel = shipsModel;
     }
 
     public void enableReadyButton(boolean enable)
@@ -144,8 +144,19 @@ public class PlacementPanel extends JPanel implements ActionListener, Initializi
             {
                 listener.actionPerformed(null);
             }
+            battleField.setSelectable(false);
+            ready.setEnabled(false);
+            deselectShips();
         }
 
+    }
+
+    private void deselectShips()
+    {
+        for (Ship ship : shipsModel.getShips())
+        {
+            ship.setSelected(false);
+        }
     }
 
     public void addRotationListener(EventListener<Object> listener)
@@ -172,5 +183,10 @@ public class PlacementPanel extends JPanel implements ActionListener, Initializi
     {
         battleField.initializeFieldSize(length, width);
         revalidate();
+    }
+
+    public BattleFieldPanel getBattleField()
+    {
+        return battleField;
     }
 }

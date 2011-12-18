@@ -11,6 +11,17 @@ public class Command
 {
     public static final int LOGIN = 0;
 
+    public enum CMD
+    {
+        PLAYERS_LIST,
+        CREATE_GAME,
+        JOIN_GAME,
+        PREPARE_GAME,
+        ACCEPTED,
+        CHAT_MESSAGE,
+        START_GAME
+    }
+
     /**
      * The list of available players follows.
      */
@@ -99,7 +110,7 @@ public class Command
     private Long startingPlayer;
 
     private AttackResult attackResult;
-    
+
     private Ship ship;
 
     public Command(int command)

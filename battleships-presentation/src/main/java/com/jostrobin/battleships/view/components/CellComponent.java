@@ -15,20 +15,19 @@
 
 package com.jostrobin.battleships.view.components;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JComponent;
+import javax.swing.*;
 
 import com.jostrobin.battleships.common.data.Cell;
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.data.enums.CellType;
+import com.jostrobin.battleships.view.Theme.DefaultTheme;
 
 /**
  * @author rowyss
@@ -48,13 +47,12 @@ public class CellComponent extends JComponent implements Cell
     private boolean hit;
     private CellType type = CellType.WATER;
     private Ship ship;
-
+    private boolean selectable = true;
 
     public CellComponent(int boardX, int boardY)
     {
         this.boardX = boardX;
         this.boardY = boardY;
-        setDoubleBuffered(true);
         BattleFieldMouseAdapter mouseAdapter = new BattleFieldMouseAdapter();
         addMouseListener(mouseAdapter);
         addMouseMotionListener(mouseAdapter);
@@ -64,7 +62,6 @@ public class CellComponent extends JComponent implements Cell
     public void paint(Graphics graphics)
     {
         drawBackground(graphics);
-
         if (hover)
         {
             graphics.setColor(grey);
@@ -72,7 +69,7 @@ public class CellComponent extends JComponent implements Cell
         }
         if (hit)
         {
-        	graphics.setColor(Color.BLACK);
+            graphics.setColor(Color.BLACK);
             graphics.drawLine(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
             graphics.drawLine(1, CELL_SIZE - 1, CELL_SIZE - 1, 1);
         }
@@ -90,13 +87,13 @@ public class CellComponent extends JComponent implements Cell
         if (CellType.SHIP.equals(type))
         {
             graphics.setColor(Color.GRAY);
-
+            graphics.fillRect(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
         }
         else
         {
-            graphics.setColor(Color.BLUE);
+            graphics.drawImage(DefaultTheme.getWater(), 0, 0, null);
+//            graphics.setColor(Color.BLUE);
         }
-        graphics.fillRect(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
     }
 
     public void addActionListener(ActionListener actionListener)
@@ -181,12 +178,22 @@ public class CellComponent extends JComponent implements Cell
         repaint();
     }
 
+    public boolean isSelectable()
+    {
+        return selectable;
+    }
+
+    public void setSelectable(boolean selectable)
+    {
+        this.selectable = selectable;
+    }
+
     private class BattleFieldMouseAdapter extends MouseAdapter
     {
         @Override
         public void mouseExited(MouseEvent mouseEvent)
         {
-            if (highlight)
+            if (highlight && selectable)
             {
                 hover = false;
                 repaint();
@@ -196,9 +203,12 @@ public class CellComponent extends JComponent implements Cell
         @Override
         public void mouseClicked(MouseEvent mouseEvent)
         {
-            for (ActionListener actionListener : actionListeners)
+            if (selectable)
             {
-                actionListener.actionPerformed(new ActionEvent(CellComponent.this, mouseEvent.hashCode(), "cellClicked"));
+                for (ActionListener actionListener : actionListeners)
+                {
+                    actionListener.actionPerformed(new ActionEvent(CellComponent.this, mouseEvent.hashCode(), "cellClicked"));
+                }
             }
         }
 
@@ -206,7 +216,7 @@ public class CellComponent extends JComponent implements Cell
         @Override
         public void mouseEntered(MouseEvent mouseEvent)
         {
-            if (highlight)
+            if (highlight && selectable)
             {
                 hover = true;
                 repaint();

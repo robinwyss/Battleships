@@ -49,7 +49,7 @@ public class NetworkHandler implements Runnable
                         logger.debug("receiving LOGIN...");
                         username = inputStream.readUTF();
                         command.setUsername(username);
-                        logger.debug("received LOGIN");
+                        logger.debug("received LOGIN(username: {})", username);
                         break;
                     // the user wants to create a new game
                     case Command.CREATE_GAME:
@@ -76,6 +76,7 @@ public class NetworkHandler implements Runnable
                         logger.debug("receiving PLAYERS_LIST...");
                         int nrOfPlayers = inputStream.readInt();
                         List<Player> players = new ArrayList<Player>();
+                        logger.debug("player list size: {}", nrOfPlayers);
                         for (int i = 0; i < nrOfPlayers; i++)
                         {
                             Long clientId = inputStream.readLong();
@@ -133,6 +134,7 @@ public class NetworkHandler implements Runnable
                         command.setFieldWidth(width);
                         int numberOfClients = inputStream.readInt();
                         List<Long> participants = new ArrayList<Long>();
+                        logger.debug("participant list size: {}", numberOfClients);
                         for (int i = 0; i < numberOfClients; i++)
                         {
                             Long id = inputStream.readLong();
@@ -160,6 +162,7 @@ public class NetworkHandler implements Runnable
                         logger.debug("receiving SET_SHIPS...");
                         int nbrOfShips = inputStream.readInt();
                         List<Ship> ships = new ArrayList<Ship>();
+                        logger.debug("ship list size: {}", nbrOfShips);
                         for (int i = 0; i < nbrOfShips; i++)
                         {
                             Ship ship = readShip();
@@ -174,6 +177,9 @@ public class NetworkHandler implements Runnable
                         command.setStartingPlayer(startingPlayer);
                         logger.debug("received START_GAME");
                         break;
+                    default:
+                        logger.warn("Bullshit came over the wire: {}", startingCharacter);
+                        break;
                 }
                 notifyListeners(command);
             }
@@ -182,6 +188,10 @@ public class NetworkHandler implements Runnable
         {
             logger.warn("Communication to client aborted");
             notifyListeners(null);
+        }
+        catch (Exception e)
+        {
+            logger.error("something really bad happened my friend, check da stacktrace", e);
         }
     }
 

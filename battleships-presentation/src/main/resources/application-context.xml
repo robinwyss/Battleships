@@ -23,7 +23,7 @@
           p:gameSelectionFrame-ref="gameSelectionFrame"
           p:createGameFrame-ref="createGameFrame"/>
     <bean id="placementController" class="com.jostrobin.battleships.controller.PlacementController"
-          p:model-ref="placementModel" p:placementPanel-ref="placementPanel"
+          p:model-ref="shipsModel" p:placementPanel-ref="placementPanel"
           p:applicationController-ref="applicationController"/>
     <bean id="chatController" class="com.jostrobin.battleships.controller.ChatController"
           p:chatPanel-ref="chatPanel"
@@ -39,13 +39,13 @@
           p:applicationController-ref="applicationController"
           p:frame-ref="createGameFrame"/>
     <bean id="gameController" class="com.jostrobin.battleships.controller.GameController"
-    	  p:applicationController-ref="applicationController"
-    	  p:gameFrame-ref="gameFrame" />
+          p:applicationController-ref="applicationController"
+          p:gameFrame-ref="gameFrame"/>
 
     <!-- Model -->
-    <bean id="placementModel" class="com.jostrobin.battleships.model.PlacementModel"/>
+    <bean id="shipsModel" class="com.jostrobin.battleships.model.ShipsModel"/>
     <bean id="gameSelectionModel" class="com.jostrobin.battleships.model.GameSelectionModel"/>
-	
+
     <!-- View -->
     <bean id="registrationDialog" class="com.jostrobin.battleships.view.frames.RegistrationDialog"/>
     <bean id="gameFrame" class="com.jostrobin.battleships.view.frames.GameFrame"
@@ -53,8 +53,9 @@
           p:placementPanel-ref="placementPanel"
           p:chatPanel-ref="chatPanel"/>
     <bean id="placementPanel" class="com.jostrobin.battleships.view.panels.PlacementPanel"
-          p:placementModel-ref="placementModel"/>
-    <bean id="gamePanel" class="com.jostrobin.battleships.view.panels.GamePanel" />
+          p:shipsModel-ref="shipsModel"/>
+    <bean id="gamePanel" class="com.jostrobin.battleships.view.panels.GamePanel"
+          p:shipsModel-ref="shipsModel"/>
     <bean id="chatPanel" class="com.jostrobin.battleships.view.panels.ChatPanel"/>
     <bean id="gameSelectionFrame" class="com.jostrobin.battleships.view.frames.GameSelectionFrame"
           p:gameSelectionModel-ref="gameSelectionModel"/>
