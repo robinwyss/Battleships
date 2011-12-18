@@ -6,10 +6,17 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jostrobin.battleships.common.data.*;
-import com.jostrobin.battleships.common.data.enums.ShipType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.jostrobin.battleships.common.data.AttackResult;
+import com.jostrobin.battleships.common.data.GameData;
+import com.jostrobin.battleships.common.data.GameMode;
+import com.jostrobin.battleships.common.data.GameState;
+import com.jostrobin.battleships.common.data.Orientation;
+import com.jostrobin.battleships.common.data.Player;
+import com.jostrobin.battleships.common.data.Ship;
+import com.jostrobin.battleships.common.data.enums.ShipType;
 
 /**
  * The NetworkHandler is responsible for accepting and parsing commands via network and forwarding them to the
@@ -58,6 +65,11 @@ public class NetworkHandler implements Runnable
                         int maxPlayers = inputStream.readInt();
                         int fieldWidth = inputStream.readInt();
                         int fieldLength = inputStream.readInt();
+                        int aircraftCarriers = inputStream.readInt();
+                        int battleships = inputStream.readInt();
+                        int destroyers = inputStream.readInt();
+                        int submarines = inputStream.readInt();
+                        int patrolBoats = inputStream.readInt();
                         GameMode gameMode = GameMode.fromString(mode);
 
                         command.setGameMode(gameMode);

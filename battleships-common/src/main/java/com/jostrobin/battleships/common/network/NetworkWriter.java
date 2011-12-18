@@ -37,6 +37,11 @@ public class NetworkWriter
         outputStream.writeInt(game.getMaxPlayers());
         outputStream.writeInt(game.getFieldLength());
         outputStream.writeInt(game.getFieldWidth());
+        outputStream.writeInt(game.getNrOfAircraftCarriers());
+        outputStream.writeInt(game.getNrOfBattleships());
+        outputStream.writeInt(game.getNrOfDestroyers());
+        outputStream.writeInt(game.getNrOfSubmarines());
+        outputStream.writeInt(game.getNrOfPatrolBoats());
     }
 
     public void sendChatMessage(String username, String message) throws IOException

@@ -187,7 +187,7 @@ public class CreateGameFrame extends JPanel implements ActionListener
     	items[4] = new ComboBoxItem(4, "4");
     	
     	aircraftCarrierComboBox = new JComboBox(items);
-    	aircraftCarrierComboBox.setSelectedIndex(1);
+    	aircraftCarrierComboBox.setSelectedIndex(0);
     	battleshipComboBox = new JComboBox(items);
     	battleshipComboBox.setSelectedIndex(1);
     	destroyerComboBox = new JComboBox(items);
@@ -378,7 +378,7 @@ public class CreateGameFrame extends JPanel implements ActionListener
     	return (Integer)((ComboBoxItem)battleshipComboBox.getSelectedItem()).getKey();
     }
     
-    public int getNumberOfADestroyers()
+    public int getNumberOfDestroyers()
     {
     	return (Integer)((ComboBoxItem)destroyerComboBox.getSelectedItem()).getKey();
     }

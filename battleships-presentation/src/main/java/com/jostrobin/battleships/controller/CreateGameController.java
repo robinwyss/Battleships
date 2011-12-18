@@ -35,17 +35,18 @@ public class CreateGameController implements InitializingBean
 
     private void createGame(GameMode mode)
     {
-        if (mode == GameMode.CLASSIC || mode == GameMode.CUSTOM)
-        {
-        	int numberOfPlayers = frame.getNumberOfPlayersAllowed();
-        	int size = frame.getSelectedFieldSize();
-            GameData game = new GameData(null, mode, 0, numberOfPlayers, size, size);
-            applicationController.createGame(game);
-        }
-        else
-        {
-            frame.showMessage("Currently only classic mode is supported.");
-        }
+    	int numberOfPlayers = frame.getNumberOfPlayersAllowed();
+    	int size = frame.getSelectedFieldSize();
+        GameData game = new GameData(null, mode, 0, numberOfPlayers, size, size);
+        
+        // add the ships allowed in the game
+        game.setNrOfAircraftCarriers(frame.getNumberOfAircraftCarriers());
+        game.setNrOfBattleships(frame.getNumberOfBattleships());
+        game.setNrOfDestroyers(frame.getNumberOfDestroyers());
+        game.setNrOfPatrolBoats(frame.getNumberOfPatrolBoats());
+        game.setNrOfSubmarines(frame.getNumberOfSubmarines());
+        
+        applicationController.createGame(game);
     }
 
     @Override
