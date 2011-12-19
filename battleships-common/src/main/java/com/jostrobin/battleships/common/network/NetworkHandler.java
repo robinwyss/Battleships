@@ -110,8 +110,9 @@ public class NetworkHandler implements Runnable
                                 int remoteMaxPlayers = inputStream.readInt();
                                 int remoteFieldWidth = inputStream.readInt();
                                 int remoteFieldLength = inputStream.readInt();
-                                gameData = new GameData(remoteGameId, parsedMode, currentPlayers, remoteMaxPlayers,
+                                gameData = new GameData(remoteGameId, parsedMode, remoteMaxPlayers,
                                         remoteFieldWidth, remoteFieldLength);
+                                gameData.setCurrentPlayers(currentPlayers);
                             }
                             Player player = new Player();
                             player.setId(clientId);

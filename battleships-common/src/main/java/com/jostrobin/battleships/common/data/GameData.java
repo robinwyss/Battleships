@@ -29,12 +29,11 @@ public class GameData
 	
 	private int nrOfPatrolBoats;
 
-	public GameData(Long id, GameMode mode, int currentPlayers, int maxPlayers, int fieldWidth,
+	public GameData(Long id, GameMode mode, int maxPlayers, int fieldWidth,
 			int fieldLength)
 	{
 		this.id = id;
 		this.mode = mode;
-		this.currentPlayers = currentPlayers;
 		this.maxPlayers = maxPlayers;
 		this.fieldWidth = fieldWidth;
 		this.fieldLength = fieldLength;

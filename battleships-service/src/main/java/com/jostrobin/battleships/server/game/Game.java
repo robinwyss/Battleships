@@ -17,10 +17,10 @@ import com.jostrobin.battleships.server.client.Client;
  */
 public class Game extends GameData
 {
-    public Game(Long id, GameMode mode, int currentPlayers, int maxPlayers, int fieldWidth,
+    public Game(Long id, GameMode mode, int maxPlayers, int fieldWidth,
                 int fieldLength)
     {
-        super(id, mode, currentPlayers, maxPlayers, fieldWidth, fieldLength);
+        super(id, mode, maxPlayers, fieldWidth, fieldLength);
     }
 
     private List<Client> players = new ArrayList<Client>();
@@ -46,8 +46,12 @@ public class Game extends GameData
         {
             this.players.add(client);
             setCurrentPlayers(getCurrentPlayers() + 1);
-            client.setGame(this);
-            client.initializeField(this.getFieldWidth(), this.getFieldLength());
+            
+            // set him as current player if there is none so far
+            if (currentPlayer == null)
+            {
+            	currentPlayer = client;
+            }
             added = true;
         }
         return added;

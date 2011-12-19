@@ -54,7 +54,7 @@ public class ServerManager
      */
     public void createGame(Client client, Command command)
     {
-        Game game = new Game(gameIdGenerator.nextId(), command.getGameMode(), 0, command.getMaxPlayers(),
+        Game game = new Game(gameIdGenerator.nextId(), command.getGameMode(), command.getMaxPlayers(),
                 command.getFieldWidth(), command.getFieldLength());
         game.setNrOfAircraftCarriers(command.getNrOfAircraftCarriers());
         game.setNrOfBattleships(command.getNrOfBattleships());
@@ -63,6 +63,8 @@ public class ServerManager
         game.setNrOfPatrolBoats(command.getNrOfPatrolBoats());
         game.setOwner(client);
         game.addPlayer(client);
+        client.setGame(game);
+        client.initializeField(command.getFieldWidth(), command.getFieldLength());
         client.setGame(game);
 
         client.initializeField(command.getFieldWidth(), command.getFieldLength());
@@ -90,6 +92,8 @@ public class ServerManager
         if (game != null && !game.getOwner().equals(client))
         {
             boolean added = game.addPlayer(client);
+            client.setGame(game);
+            client.initializeField(game.getFieldWidth(), game.getFieldLength());
             if (added && game.getCurrentPlayers() == game.getMaxPlayers())
             {
                 // the game is full, we can start it

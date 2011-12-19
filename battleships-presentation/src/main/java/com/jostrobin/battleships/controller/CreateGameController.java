@@ -37,7 +37,7 @@ public class CreateGameController implements InitializingBean
     {
     	int numberOfPlayers = frame.getNumberOfPlayersAllowed();
     	int size = frame.getSelectedFieldSize();
-        GameData game = new GameData(null, mode, 0, numberOfPlayers, size, size);
+        GameData game = new GameData(null, mode, numberOfPlayers, size, size);
         
         // add the ships allowed in the game
         game.setNrOfAircraftCarriers(frame.getNumberOfAircraftCarriers());
