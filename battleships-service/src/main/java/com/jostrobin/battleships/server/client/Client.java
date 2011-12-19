@@ -1,5 +1,6 @@
 package com.jostrobin.battleships.server.client;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class Client extends Player implements NetworkListener
         super.setUsername(username);
 
         this.socket = socket;
-        clientWriter.init(socket);
+        clientWriter.init(new DataOutputStream(socket.getOutputStream()));
     }
 
     /**

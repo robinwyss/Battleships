@@ -2,7 +2,6 @@ package com.jostrobin.battleships.server.network;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Socket;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -26,9 +25,9 @@ public class ClientWriter implements Writer
 
     private static Logger logger = LoggerFactory.getLogger(ClientWriter.class);
 
-    public void init(Socket socket) throws IOException
+    public void init(DataOutputStream outputStream) throws IOException
     {
-        this.outputStream = new DataOutputStream(socket.getOutputStream());
+    	this.outputStream = outputStream;
     }
 
     /**
