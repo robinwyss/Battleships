@@ -35,7 +35,7 @@ public class BattleshipsServer implements Runnable, ApplicationContextAware
 
     private IdGenerator clientIdGenerator = new IdGenerator();
 
-    private ServerManager serverManager = new ServerManager();
+    private ServerManager serverManager;
 
     private static boolean running = true;
     
@@ -132,12 +132,25 @@ public class BattleshipsServer implements Runnable, ApplicationContextAware
                 String line = in.nextLine();
                 if (line.equals("shutdown"))
                 {
+                	serverManager.sendGlobalChatMessage("Server going down now....", "");
                     BattleshipsServer.running = false;
                     System.exit(0);
                 }
                 else if (line.equals("status"))
                 {
                     System.out.println(serverManager.getServerStatus());
+                }
+                else if (line.equals("help"))
+                {
+                	System.out.println("\nAvailable commands:");
+                	System.out.println("\tstatus - displays the current server status");
+                	System.out.println("\tsend [msg] - sends [msg] to every connected client");
+                	System.out.println("\tshutdown - shuts down the server immediately");
+                }
+                else if (line.startsWith("send "))
+                {
+                	String message = line.split(" ", 2)[1];
+                	serverManager.sendGlobalChatMessage("Server message", message);
                 }
             }
         }
@@ -250,6 +263,16 @@ public class BattleshipsServer implements Runnable, ApplicationContextAware
 			throws BeansException
 	{
 		this.context = context;
+	}
+
+	public ServerManager getServerManager()
+	{
+		return serverManager;
+	}
+
+	public void setServerManager(ServerManager serverManager)
+	{
+		this.serverManager = serverManager;
 	}
 
 }

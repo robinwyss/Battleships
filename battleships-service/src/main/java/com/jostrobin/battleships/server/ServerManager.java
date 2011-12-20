@@ -69,6 +69,26 @@ public class ServerManager
         resendPlayerLists();
     }
     
+    /**
+     * Sends a chat message to every connected client.
+     * @param username
+     * @param message
+     */
+    public void sendGlobalChatMessage(String username, String message)
+    {
+    	for (Client client : clients)
+    	{
+    		try
+			{
+				client.sendChatMessage(username, message);
+			}
+    		catch (IOException ignore)
+			{
+    			logger.info("Could not send global chat message", ignore);
+			}
+    	}
+    }
+    
     public void cancelGame(Client client)
     {
     	// TODO: Send cancel game to every client of the game
