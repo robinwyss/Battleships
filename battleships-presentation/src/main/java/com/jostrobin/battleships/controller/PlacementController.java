@@ -15,6 +15,10 @@
 
 package com.jostrobin.battleships.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.InitializingBean;
+
 import com.jostrobin.battleships.ApplicationController;
 import com.jostrobin.battleships.common.PlacementHelper;
 import com.jostrobin.battleships.common.data.Cell;
@@ -25,7 +29,6 @@ import com.jostrobin.battleships.model.ShipsModel;
 import com.jostrobin.battleships.view.listeners.EventListener;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
 import com.jostrobin.battleships.view.panels.PlacementPanel;
-import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author rowyss
@@ -49,6 +52,12 @@ public class PlacementController implements InitializingBean, NetworkListener
         placementPanel.addReadyListener(new ReadyListener());
 
         placementHelper = new PlacementHelper(placementPanel.getBattleField());
+    }
+    
+    public void initializeShips(List<Ship> ships)
+    {
+    	model.setShips(ships);
+    	placementPanel.updateShips();
     }
 
     private void rotateShip()

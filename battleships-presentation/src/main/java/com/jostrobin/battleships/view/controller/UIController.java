@@ -15,18 +15,23 @@
 
 package com.jostrobin.battleships.view.controller;
 
-import java.awt.*;
+import java.awt.Dimension;
 import java.util.List;
-import javax.swing.*;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.controller.GameSelectionController;
+import com.jostrobin.battleships.controller.PlacementController;
 import com.jostrobin.battleships.view.effects.SmoothResize;
 import com.jostrobin.battleships.view.frames.CreateGameFrame;
 import com.jostrobin.battleships.view.frames.GameFrame;
 import com.jostrobin.battleships.view.frames.GameSelectionFrame;
 import com.jostrobin.battleships.view.frames.RegistrationDialog;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author rowyss
@@ -44,6 +49,7 @@ public class UIController
     private GameFrame gameFrame;
     private SmoothResize smoothResize = new SmoothResize();
     private GameSelectionController gameSelectionController;
+    private PlacementController placementController;
 
     public UIController()
     {
@@ -72,12 +78,13 @@ public class UIController
         gameFrame.showGameView(startingPlayer);
     }
 
-    public void showPlacementFrame(int length, int width, List<Long> participants)
+    public void showPlacementFrame(int length, int width, List<Long> participants, List<Ship> ships)
     {
         if (!gameFrame.equals(currentFrame))
         {
             show(gameFrame);
         }
+        placementController.initializeShips(ships);
         gameFrame.initializeFields(length, width, participants);
         gameFrame.showPlacementView();
     }
@@ -130,5 +137,15 @@ public class UIController
     {
         this.createGameFrame = createGameFrame;
     }
+
+	public PlacementController getPlacementController()
+	{
+		return placementController;
+	}
+
+	public void setPlacementController(PlacementController placementController)
+	{
+		this.placementController = placementController;
+	}
 
 }

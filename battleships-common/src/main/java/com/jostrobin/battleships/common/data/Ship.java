@@ -24,10 +24,10 @@ public class Ship
 
     private boolean shipDestroyed;
 
-    public Ship(int size)
+    public Ship(ShipType type)
     {
-        this.size = size;
-        type = ShipType.getType(size);
+        this.size = type.getLength();
+        this.type = type;
     }
 
     public void setPosition(int positionX, int positionY)
@@ -202,5 +202,6 @@ public class Ship
     public void setType(ShipType type)
     {
         this.type = type;
+        this.size = type.getLength();
     }
 }

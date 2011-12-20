@@ -187,15 +187,11 @@ public class CreateGameFrame extends JPanel implements ActionListener
     	items[4] = new ComboBoxItem(4, "4");
     	
     	aircraftCarrierComboBox = new JComboBox(items);
-    	aircraftCarrierComboBox.setSelectedIndex(0);
     	battleshipComboBox = new JComboBox(items);
-    	battleshipComboBox.setSelectedIndex(1);
     	destroyerComboBox = new JComboBox(items);
-    	destroyerComboBox.setSelectedIndex(1);
     	submarineComboBox = new JComboBox(items);
-    	submarineComboBox.setSelectedIndex(1);
     	patrolBoatComboBox = new JComboBox(items);
-    	patrolBoatComboBox.setSelectedIndex(1);
+    	initializeClassicShips();
 
         GridBagConstraints c = createConstraint(0, y);
         c.insets = new Insets(5, 0, 0, 0);
@@ -248,6 +244,33 @@ public class CreateGameFrame extends JPanel implements ActionListener
         optionsPanel.add(patrolBoatComboBox, c);
     }
     
+    private void initializeClassicShips()
+    {
+    	aircraftCarrierComboBox.setSelectedIndex(0);
+    	battleshipComboBox.setSelectedIndex(1);
+    	destroyerComboBox.setSelectedIndex(1);
+    	submarineComboBox.setSelectedIndex(1);
+    	patrolBoatComboBox.setSelectedIndex(1);
+    }
+    
+    private void initializeCustomShips()
+    {
+    	aircraftCarrierComboBox.setSelectedIndex(1);
+    	battleshipComboBox.setSelectedIndex(1);
+    	destroyerComboBox.setSelectedIndex(0);
+    	submarineComboBox.setSelectedIndex(1);
+    	patrolBoatComboBox.setSelectedIndex(2);
+    }
+    
+    private void initializeHardcoreShips()
+    {
+    	aircraftCarrierComboBox.setSelectedIndex(0);
+    	battleshipComboBox.setSelectedIndex(0);
+    	destroyerComboBox.setSelectedIndex(2);
+    	submarineComboBox.setSelectedIndex(2);
+    	patrolBoatComboBox.setSelectedIndex(2);
+    }
+    
     private void showShipsPanel()
     {
     	aircraftCarrierComboBox.setVisible(true);
@@ -285,18 +308,21 @@ public class CreateGameFrame extends JPanel implements ActionListener
         GameMode mode = (GameMode) item.getKey();
         if (mode == GameMode.CLASSIC)
         {
+        	initializeClassicShips();
             nrOfPlayersComboBox.setEnabled(false);
             fieldSizeComboBox.setEnabled(false);
             hideShipsPanel();
         }
         else if (mode == GameMode.HARDCORE)
         {
+        	initializeHardcoreShips();
             nrOfPlayersComboBox.setEnabled(false);
             fieldSizeComboBox.setEnabled(false);
             hideShipsPanel();
         }
         else if (mode == GameMode.CUSTOM)
         {
+        	initializeCustomShips();
             nrOfPlayersComboBox.setEnabled(true);
             fieldSizeComboBox.setEnabled(true);
             showShipsPanel();

@@ -189,8 +189,8 @@ public class ApplicationController
         uiController.showGameView(startingPlayer);
     }
 
-    public void showGameFrame(int length, int width, List<Long> participants)
+    public void showGameFrame(int length, int width, List<Long> participants, List<Ship> ships)
     {
-        uiController.showPlacementFrame(length, width, participants);
+        uiController.showPlacementFrame(length, width, participants, ships);
     }
 }

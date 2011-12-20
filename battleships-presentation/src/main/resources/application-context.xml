@@ -21,7 +21,8 @@
           p:gameFrame-ref="gameFrame"
           p:registrationDialog-ref="registrationDialog"
           p:gameSelectionFrame-ref="gameSelectionFrame"
-          p:createGameFrame-ref="createGameFrame"/>
+          p:createGameFrame-ref="createGameFrame"
+          p:placementController-ref="placementController"/>
     <bean id="placementController" class="com.jostrobin.battleships.controller.PlacementController"
           p:model-ref="shipsModel" p:placementPanel-ref="placementPanel"
           p:applicationController-ref="applicationController"/>

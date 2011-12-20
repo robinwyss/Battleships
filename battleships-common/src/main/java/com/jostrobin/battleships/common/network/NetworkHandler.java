@@ -226,7 +226,7 @@ public class NetworkHandler implements Runnable
 
     private Ship readShip() throws IOException
     {
-        Ship ship = new Ship(0);
+        Ship ship = new Ship(ShipType.PATROL_BOAT);
         ship.setPositionX(inputStream.readInt());
         ship.setPositionY(inputStream.readInt());
         ship.setSize(inputStream.readInt());

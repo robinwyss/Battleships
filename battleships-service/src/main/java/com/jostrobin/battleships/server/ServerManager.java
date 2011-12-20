@@ -65,9 +65,6 @@ public class ServerManager
         game.addPlayer(client);
         client.setGame(game);
         client.initializeField(command.getFieldWidth(), command.getFieldLength());
-        client.setGame(game);
-
-        client.initializeField(command.getFieldWidth(), command.getFieldLength());
 
         resendPlayerLists();
     }

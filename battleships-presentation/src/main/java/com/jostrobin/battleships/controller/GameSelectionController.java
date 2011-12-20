@@ -1,5 +1,6 @@
 package com.jostrobin.battleships.controller;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.InitializingBean;
 import com.jostrobin.battleships.ApplicationController;
 import com.jostrobin.battleships.common.data.GameState;
 import com.jostrobin.battleships.common.data.Player;
+import com.jostrobin.battleships.common.data.Ship;
+import com.jostrobin.battleships.common.data.enums.ShipType;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.common.network.NetworkListener;
 import com.jostrobin.battleships.common.util.ParticipantComparator;
@@ -67,8 +70,35 @@ public class GameSelectionController implements NetworkListener, InitializingBea
                 int width = command.getFieldWidth();
                 List<Long> participants = command.getParticipants();
                 
+                List<Ship> ships = new ArrayList<Ship>();
+                for (int i=0; i<command.getNrOfAircraftCarriers(); i++)
+                {
+                	Ship ship = new Ship(ShipType.AIRCRAFT_CARRIER);
+                	ships.add(ship);
+                }
+                for (int i=0; i<command.getNrOfBattleships(); i++)
+                {
+                	Ship ship = new Ship(ShipType.BATTLESHIP);
+                	ships.add(ship);
+                }
+                for (int i=0; i<command.getNrOfDestroyers(); i++)
+                {
+                	Ship ship = new Ship(ShipType.DESTROYER);
+                	ships.add(ship);
+                }
+                for (int i=0; i<command.getNrOfSubmarines(); i++)
+                {
+                	Ship ship = new Ship(ShipType.SUBMARINE);
+                	ships.add(ship);
+                }
+                for (int i=0; i<command.getNrOfPatrolBoats(); i++)
+                {
+                	Ship ship = new Ship(ShipType.PATROL_BOAT);
+                	ships.add(ship);
+                }
+                
                 Collections.sort(participants, new ParticipantComparator(model.getClientId()));
-                applicationController.showGameFrame(length, width, participants);
+                applicationController.showGameFrame(length, width, participants, ships);
             }
             else if (command.getCommand() == Command.ACCEPTED)
             {

@@ -13,6 +13,7 @@ import com.jostrobin.battleships.common.data.Cell;
 import com.jostrobin.battleships.common.data.DefaultCell;
 import com.jostrobin.battleships.common.data.Orientation;
 import com.jostrobin.battleships.common.data.Ship;
+import com.jostrobin.battleships.common.data.enums.ShipType;
 
 public class TestShip
 {
@@ -39,7 +40,7 @@ public class TestShip
 		cell.setBoardY(3);
 		cells.add(cell);
 		
-		hor = new Ship(3);
+		hor = new Ship(ShipType.DESTROYER);
 		hor.setCells(cells);
 		hor.setPosition(3, 3);
 		hor.setOrientation(Orientation.HORIZONTAL);
@@ -50,7 +51,7 @@ public class TestShip
 		cell.setBoardY(8);
 		cells.add(cell);
 		
-		small = new Ship(1);
+		small = new Ship(ShipType.PATROL_BOAT);
 		small.setCells(cells);
 		small.setPosition(4, 8);
 		small.setOrientation(Orientation.HORIZONTAL);
@@ -85,7 +86,7 @@ public class TestShip
 	@Test
 	public void testSmallShip()
 	{
-		assertEquals(AttackResult.NO_HIT, small.attack(5, 8));
+		assertEquals(AttackResult.HIT, small.attack(5, 8));
 		assertEquals(AttackResult.NO_HIT, small.attack(3, 8));
 		assertEquals(AttackResult.NO_HIT, small.attack(4, 9));
 		assertEquals(AttackResult.NO_HIT, small.attack(4, 7));

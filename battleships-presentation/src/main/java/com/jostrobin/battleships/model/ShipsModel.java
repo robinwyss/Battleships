@@ -20,6 +20,7 @@ import java.util.List;
 
 import com.jostrobin.battleships.common.data.Cell;
 import com.jostrobin.battleships.common.data.Ship;
+import com.jostrobin.battleships.common.data.enums.ShipType;
 
 /**
  * @author rowyss
@@ -29,11 +30,11 @@ public class ShipsModel
 {
     private List<Ship> ships = new ArrayList<Ship>()
     {{
-            add(new Ship(2));
-            add(new Ship(3));
-            add(new Ship(4));
-            add(new Ship(3));
-        }};
+    	add(new Ship(ShipType.BATTLESHIP));
+    	add(new Ship(ShipType.DESTROYER));
+    	add(new Ship(ShipType.SUBMARINE));
+    	add(new Ship(ShipType.PATROL_BOAT));
+    }};
 
     private List<Cell> cells = new ArrayList<Cell>();
 

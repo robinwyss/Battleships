@@ -15,9 +15,10 @@
 
 package com.jostrobin.battleships.view.Theme;
 
-import java.awt.*;
+import java.awt.Image;
 import java.io.IOException;
 import java.io.InputStream;
+
 import javax.imageio.ImageIO;
 
 import org.slf4j.Logger;
