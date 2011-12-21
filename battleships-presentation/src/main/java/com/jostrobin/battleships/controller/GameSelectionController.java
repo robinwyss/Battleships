@@ -1,8 +1,10 @@
 package com.jostrobin.battleships.controller;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +70,7 @@ public class GameSelectionController implements NetworkListener, InitializingBea
             {
                 int length = command.getFieldLength();
                 int width = command.getFieldWidth();
-                List<Long> participants = command.getParticipants();
+                Map<Long, String> participants = command.getParticipants();
                 
                 List<Ship> ships = new ArrayList<Ship>();
                 for (int i=0; i<command.getNrOfAircraftCarriers(); i++)
@@ -97,8 +99,14 @@ public class GameSelectionController implements NetworkListener, InitializingBea
                 	ships.add(ship);
                 }
                 
-                Collections.sort(participants, new ParticipantComparator(model.getClientId()));
-                applicationController.showGameFrame(length, width, participants, ships);
+                Comparator<Long> comparator = new ParticipantComparator(model.getClientId());
+                Map<Long, String> sortedMap = new TreeMap<Long, String>(comparator);
+                for (Long id : participants.keySet())
+                {
+                	sortedMap.put(id, participants.get(id));
+                }
+                
+                applicationController.showGameFrame(length, width, sortedMap, ships);
             }
             else if (command.getCommand() == Command.ACCEPTED)
             {

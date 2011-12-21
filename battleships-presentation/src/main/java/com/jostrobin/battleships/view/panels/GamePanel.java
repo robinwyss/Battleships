@@ -1,11 +1,15 @@
 package com.jostrobin.battleships.view.panels;
 
-import java.awt.*;
+import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.swing.*;
+
+import javax.swing.JPanel;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.jostrobin.battleships.common.PlacementHelper;
 import com.jostrobin.battleships.common.data.Cell;
@@ -14,8 +18,6 @@ import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.model.ShipsModel;
 import com.jostrobin.battleships.view.listeners.AttackListener;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel
@@ -39,15 +41,15 @@ public class GamePanel extends JPanel
      * @param width        field width
      * @param participants list of participants
      */
-    public void initUi(int length, int width, List<Long> participants)
+    public void initUi(int length, int width, Map<Long, String> participants)
     {
         setLayout(new FlowLayout());
 
         battlefieldPanels = new HashMap<Long, BattleFieldPanel>();
         boolean first = true;
-        for (final Long id : participants)
+        for (final Long id : participants.keySet())
         {
-            BattleFieldPanel panel = new BattleFieldPanel(id.toString());
+            BattleFieldPanel panel = new BattleFieldPanel(participants.get(id));
             panel.initializeFieldSize(length, width);
             battlefieldPanels.put(id, panel);
 
