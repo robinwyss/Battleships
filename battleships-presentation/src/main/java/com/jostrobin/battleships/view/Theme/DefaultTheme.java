@@ -15,10 +15,9 @@
 
 package com.jostrobin.battleships.view.Theme;
 
-import java.awt.Image;
+import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.imageio.ImageIO;
 
 import org.slf4j.Logger;
@@ -42,7 +41,7 @@ public class DefaultTheme
     static
     {
         ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-        InputStream waterImgInputStream = classLoader.getResourceAsStream("tiles/water.bmp");
+        InputStream waterImgInputStream = classLoader.getResourceAsStream("tiles/water.gif");
         try
         {
             water = ImageIO.read(waterImgInputStream);
