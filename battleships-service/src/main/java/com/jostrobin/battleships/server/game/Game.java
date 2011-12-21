@@ -2,7 +2,9 @@ package com.jostrobin.battleships.server.game;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.jostrobin.battleships.common.data.GameData;
 import com.jostrobin.battleships.common.data.GameMode;
@@ -64,10 +66,10 @@ public class Game extends GameData
      */
     public void prepareGame() throws IOException
     {
-        List<Long> participants = new ArrayList<Long>();
+        Map<Long, String> participants = new HashMap<Long, String>();
         for (Client client : players)
         {
-            participants.add(client.getId());
+            participants.put(client.getId(), client.getUsername());
         }
         for (Client client : players)
         {

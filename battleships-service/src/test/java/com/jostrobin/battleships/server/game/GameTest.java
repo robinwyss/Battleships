@@ -9,7 +9,9 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import junit.framework.Assert;
 
@@ -46,7 +48,7 @@ public class GameTest
 	{
 		Game game = new Game(new Long(1), GameMode.CLASSIC, 5, 1, 1);
 		List<Client> clients = new ArrayList<Client>();
-		List<Long> ids = new ArrayList<Long>();
+		Map<Long, String> ids = new HashMap<Long, String>();
 		for (Long i=new Long(0); i<5; i++)
 		{
 			Client client = mock(Client.class);
@@ -55,7 +57,7 @@ public class GameTest
 			clients.add(client);
 			game.addPlayer(client);
 			
-			ids.add(i); // save for later
+			ids.put(i, "test"); // save for later
 		}
 		
 		game.prepareGame();

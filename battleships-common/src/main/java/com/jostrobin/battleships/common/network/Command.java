@@ -1,6 +1,7 @@
 package com.jostrobin.battleships.common.network;
 
 import java.util.List;
+import java.util.Map;
 
 import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.data.GameMode;
@@ -95,7 +96,7 @@ public class Command
 
     private List<Player> players;
 
-    private List<Long> participants;
+    private Map<Long, String> participants;
 
     private Long clientId;
 
@@ -268,12 +269,12 @@ public class Command
         return startingPlayer;
     }
 
-    public List<Long> getParticipants()
+    public Map<Long, String> getParticipants()
     {
         return participants;
     }
 
-    public void setParticipants(List<Long> participants)
+    public void setParticipants(Map<Long, String> participants)
     {
         this.participants = participants;
     }

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -261,7 +262,7 @@ public class Client extends Player implements NetworkListener
      *
      * @throws IOException
      */
-    public void prepareGame(List<Long> participants) throws IOException
+    public void prepareGame(Map<Long, String> participants) throws IOException
     {
         clientWriter.sendPrepareGame(game, participants);
     }

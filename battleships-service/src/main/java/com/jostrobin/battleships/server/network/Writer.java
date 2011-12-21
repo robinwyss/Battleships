@@ -3,6 +3,7 @@ package com.jostrobin.battleships.server.network;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.data.Ship;
@@ -15,7 +16,7 @@ public interface Writer
 
     public void sendAvailablePlayers(List<Client> clients) throws IOException;
 
-    public void sendPrepareGame(Game game, List<Long> participants) throws IOException;
+    public void sendPrepareGame(Game game, Map<Long, String> participants) throws IOException;
 
     public void acceptPlayer(Long id) throws IOException;
 

@@ -3,6 +3,7 @@ package com.jostrobin.battleships.server.network;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,7 +76,7 @@ public class ClientWriter implements Writer
      */
     @Override
     @Async
-    public void sendPrepareGame(Game game, List<Long> participants) throws IOException
+    public void sendPrepareGame(Game game, Map<Long, String> participants) throws IOException
     {
         synchronized (outputStream)
         {
@@ -88,10 +89,10 @@ public class ClientWriter implements Writer
             outputStream.writeInt(game.getNrOfSubmarines());
             outputStream.writeInt(game.getNrOfPatrolBoats());
             outputStream.writeInt(participants.size());
-            for (Long id : participants)
+            for (Long id : participants.keySet())
             {
                 outputStream.writeLong(id);
-                outputStream.writeUTF("placeholderusername");
+                outputStream.writeUTF(participants.get(id));
             }
             outputStream.flush();
             logger.debug("sent PREPARE_GAME");
