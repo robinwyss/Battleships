@@ -47,9 +47,10 @@ public class GamePanel extends JPanel
 
         battlefieldPanels = new HashMap<Long, BattleFieldPanel>();
         boolean first = true;
-        for (final Long id : participants.keySet())
+        for (Map.Entry<Long, String> entry : participants.entrySet())
         {
-            BattleFieldPanel panel = new BattleFieldPanel(participants.get(id));
+        	final Long id = entry.getKey();
+            BattleFieldPanel panel = new BattleFieldPanel(entry.getValue());
             panel.initializeFieldSize(length, width);
             battlefieldPanels.put(id, panel);
 
