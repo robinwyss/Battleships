@@ -114,25 +114,22 @@ public class CellComponent extends JComponent implements Cell
                 }
                 if (tileNumber != null)
                 {
-                	Image shipImage = null;
-                    switch (ship.getType())
-                    {
-                    case SUBMARINE:
-                    	shipImage = theme.getSubmarine();
-                    	break;
-                    }
+                	Image shipImage = theme.getByShipType(ship.getType());
                     
-                    if (ship.getOrientation() == Orientation.HORIZONTAL)
-                    {
-	                    graphics.drawImage(shipImage, 0, 0, CELL_SIZE, CELL_SIZE, tileNumber*TILE_SIZE, 0,
-	                    		(tileNumber+1)*TILE_SIZE, TILE_SIZE, null);
-                    }
-                    else if (ship.getOrientation() == Orientation.VERTICAL)
-                    {
-	                    graphics.drawImage(shipImage, 0, 0, CELL_SIZE, CELL_SIZE, 0, (tileNumber+1)*TILE_SIZE,
-	                    		TILE_SIZE, (tileNumber+2)*TILE_SIZE, null);
-                    }
-//                    graphics.fillRect(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
+                	if (shipImage != null)
+                	{
+	                    if (ship.getOrientation() == Orientation.HORIZONTAL)
+	                    {
+		                    graphics.drawImage(shipImage, 0, 0, CELL_SIZE, CELL_SIZE, tileNumber*TILE_SIZE, 0,
+		                    		(tileNumber+1)*TILE_SIZE, TILE_SIZE, null);
+	                    }
+	                    else if (ship.getOrientation() == Orientation.VERTICAL)
+	                    {
+		                    graphics.drawImage(shipImage, 0, 0, CELL_SIZE, CELL_SIZE, 0, (tileNumber+1)*TILE_SIZE,
+		                    		TILE_SIZE, (tileNumber+2)*TILE_SIZE, null);
+	                    }
+	//                    graphics.fillRect(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
+                	}
                 }
             }
         }
