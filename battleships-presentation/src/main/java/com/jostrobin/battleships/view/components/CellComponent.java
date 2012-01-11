@@ -15,14 +15,16 @@
 
 package com.jostrobin.battleships.view.components;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.*;
+
+import javax.swing.JComponent;
 
 import com.jostrobin.battleships.common.data.Cell;
 import com.jostrobin.battleships.common.data.Ship;
@@ -88,6 +90,38 @@ public class CellComponent extends JComponent implements Cell
         {
             graphics.setColor(Color.GRAY);
             graphics.fillRect(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
+
+            if (ship != null && hit)
+            {
+	            int x = ship.getPositionX();
+	            int y = ship.getPositionY();
+	            Integer tileNumber = null; // which part of the ship is this component?
+	            
+	            for (int i=0; i<ship.getSize(); i++)
+	            {
+	            	if ((x+i == boardX && boardY == y) || (y+i == boardY && boardX == x))
+	            	{
+	            		tileNumber = i;
+	            		break;
+	            	}
+	            }
+	            if (tileNumber != null)
+	            {
+	            	switch (tileNumber)
+	            	{
+	            	case 0:
+	            		graphics.setColor(Color.BLUE);
+	            		break;
+	            	case 1:
+	            		graphics.setColor(Color.GREEN);
+	            		break;
+	            	case 2:
+	            		graphics.setColor(Color.RED);
+	            		break;
+	            	}
+	                graphics.fillRect(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
+	            }
+            }
         }
         else
         {
