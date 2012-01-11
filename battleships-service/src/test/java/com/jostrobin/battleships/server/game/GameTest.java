@@ -46,6 +46,7 @@ public class GameTest
         {
             Client client = mock(Client.class);
             when(client.getId()).thenReturn(i);
+            when(client.getUsername()).thenReturn("test");
 
             clients.add(client);
             game.addPlayer(client);
