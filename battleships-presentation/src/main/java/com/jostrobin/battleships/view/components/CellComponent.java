@@ -98,7 +98,7 @@ public class CellComponent extends JComponent implements Cell
             graphics.fillRect(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
 
             // if either the ship has been completely destroyed or this board may always display ships
-            if ((ship != null && hit && ship.isShipDestroyed()) || alwaysDisplayShips)
+            if (ship != null && ((hit && ship.isShipDestroyed()) || alwaysDisplayShips))
             {
                 int x = ship.getPositionX();
                 int y = ship.getPositionY();

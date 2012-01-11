@@ -119,7 +119,7 @@ public class Ship
         }
     }
 
-    private void setShipDestroyed(boolean shipDestroyed)
+    public void setShipDestroyed(boolean shipDestroyed)
     {
         this.shipDestroyed = shipDestroyed;
     }
