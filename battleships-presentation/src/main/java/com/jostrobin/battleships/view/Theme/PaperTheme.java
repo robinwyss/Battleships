@@ -17,22 +17,16 @@ package com.jostrobin.battleships.view.theme;
 
 import java.awt.*;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * @author rowyss
- *         Date: 14.12.11 Time: 18:44
+ *         Date: 27.12.11 Time: 11:26
  */
-public class DefaultTheme extends BaseTheme
+public class PaperTheme extends BaseTheme
 {
-
-    public static final Logger logger = LoggerFactory.getLogger(DefaultTheme.class);
-
     @Override
     public String getThemeName()
     {
-        return "Default theme";
+        return "Paper theme";
     }
 
     @Override
@@ -40,9 +34,9 @@ public class DefaultTheme extends BaseTheme
     {
         if (background == null)
         {
-            background = loadImage("tiles/water.gif");
+            background = loadImage("tiles/paper-theme/background.gif");
         }
-        return background;  //To change body of implemented methods use File | Settings | File Templates.
+        return background;
     }
 
     @Override
@@ -74,7 +68,4 @@ public class DefaultTheme extends BaseTheme
     {
         return new Image[0];  //To change body of implemented methods use File | Settings | File Templates.
     }
-
-
 }
-

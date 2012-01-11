@@ -19,15 +19,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <dependencies>
-    	<dependency>
-    		<groupId>org.mockito</groupId>
-    		<artifactId>mockito-core</artifactId>
-    		<version>1.9.0-rc1</version>
-    		<type>jar</type>
-    		<scope>test</scope>
-    	</dependency>
-    </dependencies>
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -41,12 +32,6 @@
                 <version>1.6.1</version>
             </dependency>
             <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>4.8.1</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
                 <groupId>com.jostrobin</groupId>
                 <artifactId>battleships-service</artifactId>
                 <version>${project.version}</version>
@@ -56,27 +41,46 @@
                 <artifactId>battleships-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            
-	    	<dependency>
-	    		<groupId>org.springframework</groupId>
-	    		<artifactId>spring-core</artifactId>
-	    		<version>3.0.6.RELEASE</version>
-	    	</dependency>
-	    	<dependency>
-	    		<groupId>org.springframework</groupId>
-	    		<artifactId>spring-beans</artifactId>
-	    		<version>3.0.6.RELEASE</version>
-	    	</dependency>
-	    	<dependency>
-	    		<groupId>org.springframework</groupId>
-	    		<artifactId>spring-context</artifactId>
-	    		<version>3.0.6.RELEASE</version>
-	    	</dependency>
-	    	<dependency>
-	    		<groupId>org.springframework</groupId>
-	    		<artifactId>spring-context-support</artifactId>
-	    		<version>3.0.6.RELEASE</version>
-	    	</dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>3.0.6.RELEASE</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
+                <version>3.0.6.RELEASE</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>3.0.6.RELEASE</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context-support</artifactId>
+                <version>3.0.6.RELEASE</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>3.0.5.RELEASE</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>1.9.0-rc1</version>
+                <type>jar</type>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.10</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

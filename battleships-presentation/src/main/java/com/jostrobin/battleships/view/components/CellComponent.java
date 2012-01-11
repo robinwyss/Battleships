@@ -27,7 +27,8 @@ import javax.swing.*;
 import com.jostrobin.battleships.common.data.Cell;
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.data.enums.CellType;
-import com.jostrobin.battleships.view.Theme.DefaultTheme;
+import com.jostrobin.battleships.view.theme.ConfigurableTheme;
+import com.jostrobin.battleships.view.theme.Theme;
 
 /**
  * @author rowyss
@@ -48,6 +49,7 @@ public class CellComponent extends JComponent implements Cell
     private CellType type = CellType.WATER;
     private Ship ship;
     private boolean selectable = true;
+    private Theme theme = ConfigurableTheme.getInstance();
 
     public CellComponent(int boardX, int boardY)
     {
@@ -91,7 +93,8 @@ public class CellComponent extends JComponent implements Cell
         }
         else
         {
-            graphics.drawImage(DefaultTheme.getWater(), 0, 0, null);
+//            graphics.drawImage(theme.getBackground(), 0, 0, null);
+            graphics.drawImage(theme.getBackground(), 0, 0, CELL_SIZE, CELL_SIZE, boardX * CELL_SIZE, boardY * CELL_SIZE, (boardX + 1) * CELL_SIZE, (boardY + 1) * CELL_SIZE, null);
 //            graphics.setColor(Color.BLUE);
         }
     }

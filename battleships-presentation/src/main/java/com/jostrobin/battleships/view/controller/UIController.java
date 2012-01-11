@@ -15,14 +15,9 @@
 
 package com.jostrobin.battleships.view.controller;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.util.List;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.swing.*;
 
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.controller.GameSelectionController;
@@ -32,6 +27,8 @@ import com.jostrobin.battleships.view.frames.CreateGameFrame;
 import com.jostrobin.battleships.view.frames.GameFrame;
 import com.jostrobin.battleships.view.frames.GameSelectionFrame;
 import com.jostrobin.battleships.view.frames.RegistrationDialog;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author rowyss
@@ -56,6 +53,7 @@ public class UIController
         frame = new JFrame();
         frame.getRootPane().setDoubleBuffered(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setTitle("Battleships");
     }
 
     public void showRegistrationDialog()
@@ -138,14 +136,14 @@ public class UIController
         this.createGameFrame = createGameFrame;
     }
 
-	public PlacementController getPlacementController()
-	{
-		return placementController;
-	}
+    public PlacementController getPlacementController()
+    {
+        return placementController;
+    }
 
-	public void setPlacementController(PlacementController placementController)
-	{
-		this.placementController = placementController;
-	}
+    public void setPlacementController(PlacementController placementController)
+    {
+        this.placementController = placementController;
+    }
 
 }

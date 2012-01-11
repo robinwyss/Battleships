@@ -3,11 +3,17 @@
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd ">
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+            http://www.springframework.org/schema/task
+           http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
     <context:annotation-config/>
+
+    <task:executor id="executor" pool-size="2"/>
+    <task:annotation-driven executor="executor"/>
 
     <bean id="serverDetectionController" class="com.jostrobin.battleships.controller.ServerDetectionController"
           p:applicationController-ref="applicationController"/>
@@ -22,7 +28,8 @@
           p:registrationDialog-ref="registrationDialog"
           p:gameSelectionFrame-ref="gameSelectionFrame"
           p:createGameFrame-ref="createGameFrame"
-          p:placementController-ref="placementController"/>
+          p:placementController-ref="placementController"
+          depends-on="configurableTheme"/>
     <bean id="placementController" class="com.jostrobin.battleships.controller.PlacementController"
           p:model-ref="shipsModel" p:placementPanel-ref="placementPanel"
           p:applicationController-ref="applicationController"/>
@@ -41,7 +48,8 @@
           p:frame-ref="createGameFrame"/>
     <bean id="gameController" class="com.jostrobin.battleships.controller.GameController"
           p:applicationController-ref="applicationController"
-          p:gameFrame-ref="gameFrame"/>
+          p:gameFrame-ref="gameFrame"
+          p:soundEffects-ref="soundEffects"/>
 
     <!-- Model -->
     <bean id="shipsModel" class="com.jostrobin.battleships.model.ShipsModel"/>
@@ -64,4 +72,11 @@
 
     <!-- Network -->
     <bean id="networkHandler" class="com.jostrobin.battleships.common.network.NetworkHandler"/>
+
+    <!-- Misc -->
+    <bean id="soundEffects" class="com.jostrobin.battleships.view.sound.DefaultSoundEffects"/>
+    <bean id="configurableTheme" class="com.jostrobin.battleships.view.theme.ConfigurableTheme"
+          p:currentTheme-ref="defaultTheme"/>
+    <bean id="defaultTheme" class="com.jostrobin.battleships.view.theme.DefaultTheme"/>
+    <bean id="paperTheme" class="com.jostrobin.battleships.view.theme.PaperTheme"/>
 </beans>

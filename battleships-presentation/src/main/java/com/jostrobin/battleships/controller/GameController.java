@@ -21,11 +21,14 @@ import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.common.network.NetworkListener;
 import com.jostrobin.battleships.view.frames.GameFrame;
 import com.jostrobin.battleships.view.listeners.AttackListener;
+import com.jostrobin.battleships.view.sound.SoundEffects;
 import org.springframework.beans.factory.InitializingBean;
 
 public class GameController implements NetworkListener, InitializingBean, AttackListener
 {
     private ApplicationController applicationController;
+
+    private SoundEffects soundEffects;
 
     private GameFrame gameFrame;
 
@@ -43,6 +46,10 @@ public class GameController implements NetworkListener, InitializingBean, Attack
         {
             case Command.ATTACK_RESULT:
                 AttackResult result = command.getAttackResult();
+                if (result.equals(AttackResult.HIT) || result.equals(AttackResult.SHIP_DESTROYED) || result.equals(AttackResult.PLAYER_DESTROYED))
+                {
+                    soundEffects.explosion();
+                }
                 gameFrame.hitCell(command);
                 gameFrame.changeCurrentPlayer(command.getClientId());
                 break;
@@ -75,4 +82,8 @@ public class GameController implements NetworkListener, InitializingBean, Attack
         this.gameFrame = gameFrame;
     }
 
+    public void setSoundEffects(SoundEffects soundEffects)
+    {
+        this.soundEffects = soundEffects;
+    }
 }
