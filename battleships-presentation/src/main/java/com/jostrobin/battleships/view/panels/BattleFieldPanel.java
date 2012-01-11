@@ -118,7 +118,10 @@ public class BattleFieldPanel extends JPanel implements ActionListener
         cell.setHit(true);
         if (result == AttackResult.SHIP_DESTROYED || result == AttackResult.PLAYER_DESTROYED)
         {
-        	cell.getShip().setShipDestroyed(true);
+        	if (cell.getShip() != null)
+        	{
+        		cell.getShip().setShipDestroyed(true);
+        	}
         }
         else if (result != AttackResult.NO_HIT)
         {
