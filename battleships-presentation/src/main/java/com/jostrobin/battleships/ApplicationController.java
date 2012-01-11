@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.List;
+import java.util.Map;
 
 import com.jostrobin.battleships.common.data.GameData;
 import com.jostrobin.battleships.common.data.Player;
@@ -38,7 +39,7 @@ public class ApplicationController
     private Socket socket;
 
     private String username;
-    
+
     public ApplicationController(NetworkHandler handler)
     {
         this.networkHandler = handler;
@@ -108,18 +109,18 @@ public class ApplicationController
             e.printStackTrace();
         }
     }
-    
+
     public void cancelGame()
     {
-    	try
-    	{
-    		writer.sendCancelGame();
-    	}
-    	catch (IOException e)
-    	{
-    		// TODO: COmmunication stopped
-    		e.printStackTrace();
-    	}
+        try
+        {
+            writer.sendCancelGame();
+        }
+        catch (IOException e)
+        {
+            // TODO: COmmunication stopped
+            e.printStackTrace();
+        }
     }
 
     public void joinGame(Player player)
@@ -189,7 +190,7 @@ public class ApplicationController
         uiController.showGameView(startingPlayer);
     }
 
-    public void showGameFrame(int length, int width, List<Long> participants, List<Ship> ships)
+    public void showGameFrame(int length, int width, Map<Long, String> participants, List<Ship> ships)
     {
         uiController.showPlacementFrame(length, width, participants, ships);
     }

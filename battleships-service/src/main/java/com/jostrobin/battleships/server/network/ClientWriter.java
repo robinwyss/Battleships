@@ -3,16 +3,16 @@ package com.jostrobin.battleships.server.network;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Async;
+import java.util.Map;
 
 import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.server.client.Client;
 import com.jostrobin.battleships.server.game.Game;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 
 /**
  * This class is used to send commands to a client.
@@ -27,7 +27,7 @@ public class ClientWriter implements Writer
 
     public void init(DataOutputStream outputStream) throws IOException
     {
-    	this.outputStream = outputStream;
+        this.outputStream = outputStream;
     }
 
     /**
@@ -75,7 +75,7 @@ public class ClientWriter implements Writer
      */
     @Override
     @Async
-    public void sendPrepareGame(Game game, List<Long> participants) throws IOException
+    public void sendPrepareGame(Game game, Map<Long, String> participants) throws IOException
     {
         synchronized (outputStream)
         {
@@ -88,10 +88,10 @@ public class ClientWriter implements Writer
             outputStream.writeInt(game.getNrOfSubmarines());
             outputStream.writeInt(game.getNrOfPatrolBoats());
             outputStream.writeInt(participants.size());
-            for (Long id : participants)
+            for (Long id : participants.keySet())
             {
                 outputStream.writeLong(id);
-                outputStream.writeUTF("placeholderusername");
+                outputStream.writeUTF(participants.get(id));
             }
             outputStream.flush();
             logger.debug("sent PREPARE_GAME");

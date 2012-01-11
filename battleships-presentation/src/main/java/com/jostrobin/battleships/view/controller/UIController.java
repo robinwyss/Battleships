@@ -17,6 +17,7 @@ package com.jostrobin.battleships.view.controller;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Map;
 import javax.swing.*;
 
 import com.jostrobin.battleships.common.data.Ship;
@@ -76,7 +77,7 @@ public class UIController
         gameFrame.showGameView(startingPlayer);
     }
 
-    public void showPlacementFrame(int length, int width, List<Long> participants, List<Ship> ships)
+    public void showPlacementFrame(int length, int width, Map<Long, String> participants, List<Ship> ships)
     {
         if (!gameFrame.equals(currentFrame))
         {

@@ -1,12 +1,6 @@
 package com.jostrobin.battleships.controller;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
+import java.util.*;
 
 import com.jostrobin.battleships.ApplicationController;
 import com.jostrobin.battleships.common.data.GameState;
@@ -19,6 +13,9 @@ import com.jostrobin.battleships.common.util.ParticipantComparator;
 import com.jostrobin.battleships.model.GameSelectionModel;
 import com.jostrobin.battleships.view.frames.GameSelectionFrame;
 import com.jostrobin.battleships.view.listeners.EventListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 
 public class GameSelectionController implements NetworkListener, InitializingBean
 {
@@ -68,37 +65,43 @@ public class GameSelectionController implements NetworkListener, InitializingBea
             {
                 int length = command.getFieldLength();
                 int width = command.getFieldWidth();
-                List<Long> participants = command.getParticipants();
-                
+                Map<Long, String> participants = command.getParticipants();
+
                 List<Ship> ships = new ArrayList<Ship>();
-                for (int i=0; i<command.getNrOfAircraftCarriers(); i++)
+                for (int i = 0; i < command.getNrOfAircraftCarriers(); i++)
                 {
-                	Ship ship = new Ship(ShipType.AIRCRAFT_CARRIER);
-                	ships.add(ship);
+                    Ship ship = new Ship(ShipType.AIRCRAFT_CARRIER);
+                    ships.add(ship);
                 }
-                for (int i=0; i<command.getNrOfBattleships(); i++)
+                for (int i = 0; i < command.getNrOfBattleships(); i++)
                 {
-                	Ship ship = new Ship(ShipType.BATTLESHIP);
-                	ships.add(ship);
+                    Ship ship = new Ship(ShipType.BATTLESHIP);
+                    ships.add(ship);
                 }
-                for (int i=0; i<command.getNrOfDestroyers(); i++)
+                for (int i = 0; i < command.getNrOfDestroyers(); i++)
                 {
-                	Ship ship = new Ship(ShipType.DESTROYER);
-                	ships.add(ship);
+                    Ship ship = new Ship(ShipType.DESTROYER);
+                    ships.add(ship);
                 }
-                for (int i=0; i<command.getNrOfSubmarines(); i++)
+                for (int i = 0; i < command.getNrOfSubmarines(); i++)
                 {
-                	Ship ship = new Ship(ShipType.SUBMARINE);
-                	ships.add(ship);
+                    Ship ship = new Ship(ShipType.SUBMARINE);
+                    ships.add(ship);
                 }
-                for (int i=0; i<command.getNrOfPatrolBoats(); i++)
+                for (int i = 0; i < command.getNrOfPatrolBoats(); i++)
                 {
-                	Ship ship = new Ship(ShipType.PATROL_BOAT);
-                	ships.add(ship);
+                    Ship ship = new Ship(ShipType.PATROL_BOAT);
+                    ships.add(ship);
                 }
-                
-                Collections.sort(participants, new ParticipantComparator(model.getClientId()));
-                applicationController.showGameFrame(length, width, participants, ships);
+
+                Comparator<Long> comparator = new ParticipantComparator(model.getClientId());
+                Map<Long, String> sortedMap = new TreeMap<Long, String>(comparator);
+                for (Long id : participants.keySet())
+                {
+                    sortedMap.put(id, participants.get(id));
+                }
+
+                applicationController.showGameFrame(length, width, sortedMap, ships);
             }
             else if (command.getCommand() == Command.ACCEPTED)
             {

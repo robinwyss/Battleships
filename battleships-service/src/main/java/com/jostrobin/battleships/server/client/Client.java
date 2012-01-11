@@ -5,23 +5,17 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.jostrobin.battleships.common.data.AttackResult;
-import com.jostrobin.battleships.common.data.Cell;
-import com.jostrobin.battleships.common.data.DefaultCell;
-import com.jostrobin.battleships.common.data.GameState;
-import com.jostrobin.battleships.common.data.Orientation;
-import com.jostrobin.battleships.common.data.Player;
-import com.jostrobin.battleships.common.data.Ship;
+import com.jostrobin.battleships.common.data.*;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.common.network.NetworkHandler;
 import com.jostrobin.battleships.common.network.NetworkListener;
 import com.jostrobin.battleships.server.ServerManager;
 import com.jostrobin.battleships.server.game.Game;
 import com.jostrobin.battleships.server.network.Writer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Represents a client.  Extends the player data with server side used objects.
@@ -91,7 +85,7 @@ public class Client extends Player implements NetworkListener
                 case Command.LOGIN:
                     try
                     {
-                    	setState(GameState.NEW);
+                        setState(GameState.NEW);
                         clientWriter.acceptPlayer(getId());
                         setUsername(command.getUsername());
                         serverManager.addClient(this);
@@ -108,12 +102,12 @@ public class Client extends Player implements NetworkListener
                     serverManager.createGame(this, command);
                     break;
                 case Command.CANCEL_GAME:
-                	if (getState() == GameState.WAITING_FOR_PLAYERS)
-                	{
-                		setState(GameState.NEW);
-                		serverManager.cancelGame(this);
-                	}
-                	break;
+                    if (getState() == GameState.WAITING_FOR_PLAYERS)
+                    {
+                        setState(GameState.NEW);
+                        serverManager.cancelGame(this);
+                    }
+                    break;
                 case Command.JOIN_GAME:
                     serverManager.joinGame(this, command.getGameId());
                     break;
@@ -136,7 +130,7 @@ public class Client extends Player implements NetworkListener
 
                 // the player wants to attack someone else
                 case Command.ATTACK:
-                	logger.debug("Attack at " + command.getX() + ":" + command.getY() + "," + command.getClientId());
+                    logger.debug("Attack at " + command.getX() + ":" + command.getY() + "," + command.getClientId());
                     serverManager.attack(this, command.getClientId(), command.getX(), command.getY());
                     break;
                 case Command.SET_SHIPS:
@@ -196,7 +190,7 @@ public class Client extends Player implements NetworkListener
         {
             for (int y = 0; y < length; y++)
             {
-            	DefaultCell cell = new DefaultCell();
+                DefaultCell cell = new DefaultCell();
                 cell.setBoardX(x);
                 cell.setBoardY(y);
                 field[x][y] = cell;
@@ -261,7 +255,7 @@ public class Client extends Player implements NetworkListener
      *
      * @throws IOException
      */
-    public void prepareGame(List<Long> participants) throws IOException
+    public void prepareGame(Map<Long, String> participants) throws IOException
     {
         clientWriter.sendPrepareGame(game, participants);
     }
@@ -301,7 +295,7 @@ public class Client extends Player implements NetworkListener
             {
                 if (ship.getOrientation().equals(Orientation.VERTICAL))
                 {
-                	Cell cell = field[ship.getPositionX()][ship.getPositionY() + i];
+                    Cell cell = field[ship.getPositionX()][ship.getPositionY() + i];
                     cell.setShip(ship);
                     ship.addCell(cell);
                 }

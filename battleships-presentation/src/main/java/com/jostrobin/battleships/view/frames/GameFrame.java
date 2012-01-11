@@ -18,6 +18,7 @@ package com.jostrobin.battleships.view.frames;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.swing.*;
 
 import com.jostrobin.battleships.common.network.Command;
@@ -38,7 +39,7 @@ public class GameFrame extends JPanel implements InitializingBean, AttackListene
     private GamePanel gamePanel;
     private PlacementPanel placementPanel;
     private ChatPanel chatPanel;
-    private List<Long> participants;
+    private Map<Long, String> participants;
     private List<AttackListener> attackListeners = new ArrayList<AttackListener>();
 
     @Override
@@ -98,7 +99,7 @@ public class GameFrame extends JPanel implements InitializingBean, AttackListene
         placementPanel.setVisible(true);
     }
 
-    public void initializeFields(int length, int width, List<Long> participants)
+    public void initializeFields(int length, int width, Map<Long, String> participants)
     {
         this.participants = participants;
         gamePanel.initUi(length, width, participants);
@@ -156,12 +157,12 @@ public class GameFrame extends JPanel implements InitializingBean, AttackListene
         this.chatPanel = chatPanel;
     }
 
-    public List<Long> getParticipants()
+    public Map<Long, String> getParticipants()
     {
         return participants;
     }
 
-    public void setParticipants(List<Long> participants)
+    public void setParticipants(Map<Long, String> participants)
     {
         this.participants = participants;
     }

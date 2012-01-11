@@ -39,15 +39,16 @@ public class GamePanel extends JPanel
      * @param width        field width
      * @param participants list of participants
      */
-    public void initUi(int length, int width, List<Long> participants)
+    public void initUi(int length, int width, Map<Long, String> participants)
     {
         setLayout(new FlowLayout());
 
         battlefieldPanels = new HashMap<Long, BattleFieldPanel>();
         boolean first = true;
-        for (final Long id : participants)
+        for (Map.Entry<Long, String> entry : participants.entrySet())
         {
-            BattleFieldPanel panel = new BattleFieldPanel(id.toString());
+            final Long id = entry.getKey();
+            BattleFieldPanel panel = new BattleFieldPanel(entry.getValue());
             panel.initializeFieldSize(length, width);
             battlefieldPanels.put(id, panel);
 
