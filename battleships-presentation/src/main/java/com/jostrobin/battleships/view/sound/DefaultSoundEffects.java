@@ -16,14 +16,16 @@
 package com.jostrobin.battleships.view.sound;
 
 import java.io.InputStream;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
-import com.jostrobin.battleships.common.util.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
+
+import com.jostrobin.battleships.common.util.IOUtils;
 
 /**
  * @author rowyss
