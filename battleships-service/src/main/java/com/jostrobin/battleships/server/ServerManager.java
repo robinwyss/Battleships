@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.data.GameState;
 import com.jostrobin.battleships.common.data.Player;
@@ -16,6 +13,8 @@ import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.server.client.Client;
 import com.jostrobin.battleships.server.game.Game;
 import com.jostrobin.battleships.server.util.IdGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ServerManager
 {
@@ -68,32 +67,32 @@ public class ServerManager
 
         resendPlayerLists();
     }
-    
+
     /**
      * Sends a chat message to every connected client.
-     * @param username
+     *
      * @param message
      */
-    public void sendGlobalChatMessage(String username, String message)
+    public void sendGlobalChatMessage(String message)
     {
-    	for (Client client : clients)
-    	{
-    		try
-			{
-				client.sendChatMessage(username, message);
-			}
-    		catch (IOException ignore)
-			{
-    			logger.info("Could not send global chat message", ignore);
-			}
-    	}
+        for (Client client : clients)
+        {
+            try
+            {
+                client.sendChatMessage("Info", message);
+            }
+            catch (IOException ignore)
+            {
+                logger.info("Could not send global chat message", ignore);
+            }
+        }
     }
-    
+
     public void cancelGame(Client client)
     {
-    	// TODO: Send cancel game to every client of the game
-    	client.setGame(null);
-    	resendPlayerLists();
+        // TODO: Send cancel game to every client of the game
+        client.setGame(null);
+        resendPlayerLists();
     }
 
     /**
@@ -182,6 +181,7 @@ public class ServerManager
                 if (attackedClient.isDestroyed())
                 {
                     result = AttackResult.PLAYER_DESTROYED;
+                    sendGlobalChatMessage(attackedClient.getUsername() + " has been destroyed");
                 }
             }
             Player nextPlayer = game.getNextPlayer();

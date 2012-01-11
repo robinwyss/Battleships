@@ -45,12 +45,16 @@ public class GameController implements NetworkListener, InitializingBean, Attack
         switch (command.getCommand())
         {
             case Command.ATTACK_RESULT:
+                gameFrame.hitCell(command);
                 AttackResult result = command.getAttackResult();
-                if (result.equals(AttackResult.HIT) || result.equals(AttackResult.SHIP_DESTROYED) || result.equals(AttackResult.PLAYER_DESTROYED))
+                if (result == AttackResult.HIT || result == AttackResult.SHIP_DESTROYED || result == AttackResult.PLAYER_DESTROYED)
                 {
                     soundEffects.explosion();
                 }
-                gameFrame.hitCell(command);
+                else if (result == AttackResult.NO_HIT)
+                {
+                    soundEffects.splash();
+                }
                 gameFrame.changeCurrentPlayer(command.getClientId());
                 break;
         }

@@ -1,23 +1,17 @@
 package com.jostrobin.battleships.server;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketException;
+import java.net.*;
 import java.util.Scanner;
 
+import com.jostrobin.battleships.server.client.Client;
+import com.jostrobin.battleships.server.util.IdGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import com.jostrobin.battleships.server.client.Client;
-import com.jostrobin.battleships.server.util.IdGenerator;
 
 /**
  * The server opens a ServerSocket and waits for connections. For every connection a new thread is started which
@@ -38,7 +32,7 @@ public class BattleshipsServer implements Runnable, ApplicationContextAware
     private ServerManager serverManager;
 
     private static boolean running = true;
-    
+
     private ApplicationContext context;
 
     public BattleshipsServer()
@@ -46,7 +40,7 @@ public class BattleshipsServer implements Runnable, ApplicationContextAware
         Thread detectionThread = new Thread(new DetectionManager());
         detectionThread.start();
     }
-    
+
     public static void main(String[] args)
     {
         // parse the startup arguments
@@ -65,7 +59,7 @@ public class BattleshipsServer implements Runnable, ApplicationContextAware
                 }
             }
         }
-        
+
         ApplicationContext context = new ClassPathXmlApplicationContext("classpath:service-context.xml");
         BattleshipsServer server = context.getBean(BattleshipsServer.class);
         Thread serverThread = new Thread(server);
@@ -97,7 +91,7 @@ public class BattleshipsServer implements Runnable, ApplicationContextAware
                     Long id = clientIdGenerator.nextId();
                     logger.debug("New client accepted. id=" + id + ", ip=" + clientSocket.getInetAddress());
 
-                    Client client = context.getBean(Client.class); 
+                    Client client = context.getBean(Client.class);
                     client.init(clientSocket, id, null);
                     client.startup();
                     logger.debug("Done preparing");
@@ -132,7 +126,7 @@ public class BattleshipsServer implements Runnable, ApplicationContextAware
                 String line = in.nextLine();
                 if (line.equals("shutdown"))
                 {
-                	serverManager.sendGlobalChatMessage("Server going down now....", "");
+                    serverManager.sendGlobalChatMessage("Server going down now....");
                     BattleshipsServer.running = false;
                     System.exit(0);
                 }
@@ -142,15 +136,15 @@ public class BattleshipsServer implements Runnable, ApplicationContextAware
                 }
                 else if (line.equals("help"))
                 {
-                	System.out.println("\nAvailable commands:");
-                	System.out.println("\tstatus - displays the current server status");
-                	System.out.println("\tsend [msg] - sends [msg] to every connected client");
-                	System.out.println("\tshutdown - shuts down the server immediately");
+                    System.out.println("\nAvailable commands:");
+                    System.out.println("\tstatus - displays the current server status");
+                    System.out.println("\tsend [msg] - sends [msg] to every connected client");
+                    System.out.println("\tshutdown - shuts down the server immediately");
                 }
                 else if (line.startsWith("send "))
                 {
-                	String message = line.split(" ", 2)[1];
-                	serverManager.sendGlobalChatMessage("Server message", message);
+                    String message = line.split(" ", 2)[1];
+                    serverManager.sendGlobalChatMessage(message);
                 }
             }
         }
@@ -258,21 +252,21 @@ public class BattleshipsServer implements Runnable, ApplicationContextAware
         }
     }
 
-	@Override
-	public void setApplicationContext(ApplicationContext context)
-			throws BeansException
-	{
-		this.context = context;
-	}
+    @Override
+    public void setApplicationContext(ApplicationContext context)
+            throws BeansException
+    {
+        this.context = context;
+    }
 
-	public ServerManager getServerManager()
-	{
-		return serverManager;
-	}
+    public ServerManager getServerManager()
+    {
+        return serverManager;
+    }
 
-	public void setServerManager(ServerManager serverManager)
-	{
-		this.serverManager = serverManager;
-	}
+    public void setServerManager(ServerManager serverManager)
+    {
+        this.serverManager = serverManager;
+    }
 
 }

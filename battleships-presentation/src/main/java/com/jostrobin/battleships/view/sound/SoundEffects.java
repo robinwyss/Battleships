@@ -25,4 +25,6 @@ public interface SoundEffects
      * Plays an explosion sound.
      */
     void explosion();
+
+    void splash();
 }

@@ -42,14 +42,24 @@ public class DefaultSoundEffects implements SoundEffects
     @Async
     public void explosion()
     {
-        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-        InputStream is = null;
+        playSound(EXPLOSION_SOUND_FILE_PATH);
+    }
+
+    @Override
+    @Async
+    public void splash()
+    {
+        playSound(SPLASH_SOUND_FILE_PATH);
+    }
+
+    private void playSound(final String path)
+    {
+        InputStream is = ClassLoader.getSystemResourceAsStream(path);
         AudioInputStream audioInputStream = null;
         try
         {
-            Clip clip = AudioSystem.getClip();
-            is = classLoader.getResourceAsStream(EXPLOSION_SOUND_FILE_PATH);
             audioInputStream = AudioSystem.getAudioInputStream(is);
+            Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
             while (clip.isRunning())
@@ -66,6 +76,5 @@ public class DefaultSoundEffects implements SoundEffects
             IOUtils.closeSilently(is, audioInputStream);
         }
     }
-
 
 }
