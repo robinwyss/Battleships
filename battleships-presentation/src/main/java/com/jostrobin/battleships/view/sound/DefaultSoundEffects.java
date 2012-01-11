@@ -16,14 +16,16 @@
 package com.jostrobin.battleships.view.sound;
 
 import java.io.InputStream;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
-import com.jostrobin.battleships.common.util.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
+
+import com.jostrobin.battleships.common.util.IOUtils;
 
 /**
  * @author rowyss
@@ -33,7 +35,7 @@ public class DefaultSoundEffects implements SoundEffects
 {
     private static final Logger logger = LoggerFactory.getLogger(DefaultSoundEffects.class);
 
-    public static final String EXPLOSION_SOUND_FILE_PATH = "sounds/explosions.wav";
+    public static final String EXPLOSION_SOUND_FILE_PATH = "sounds/explosion.wav";
     public static final String SPLASH_SOUND_FILE_PATH = "sounds/splash.wav";
 
     @Override

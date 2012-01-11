@@ -15,16 +15,20 @@
 
 package com.jostrobin.battleships.view.components;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.*;
+
+import javax.swing.JComponent;
 
 import com.jostrobin.battleships.common.data.Cell;
+import com.jostrobin.battleships.common.data.Orientation;
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.data.enums.CellType;
 import com.jostrobin.battleships.view.theme.ConfigurableTheme;
@@ -38,6 +42,7 @@ public class CellComponent extends JComponent implements Cell
 {
 
     public static final int CELL_SIZE = 25;
+    public static final int TILE_SIZE = 20;
     private boolean hover;
     private Color grey = new Color(127, 127, 127, 64);
     private List<ActionListener> actionListeners = new ArrayList<ActionListener>();
@@ -50,6 +55,7 @@ public class CellComponent extends JComponent implements Cell
     private Ship ship;
     private boolean selectable = true;
     private Theme theme = ConfigurableTheme.getInstance();
+    private boolean alwaysDisplayShips = false;
 
     public CellComponent(int boardX, int boardY)
     {
@@ -91,7 +97,8 @@ public class CellComponent extends JComponent implements Cell
             graphics.setColor(Color.GRAY);
             graphics.fillRect(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
 
-            if (ship != null && hit)
+            // if either the ship has been completely destroyed or this board may always display ships
+            if ((ship != null && hit && ship.isShipDestroyed()) || alwaysDisplayShips)
             {
                 int x = ship.getPositionX();
                 int y = ship.getPositionY();
@@ -107,19 +114,25 @@ public class CellComponent extends JComponent implements Cell
                 }
                 if (tileNumber != null)
                 {
-                    switch (tileNumber)
+                	Image shipImage = null;
+                    switch (ship.getType())
                     {
-                        case 0:
-                            graphics.setColor(Color.BLUE);
-                            break;
-                        case 1:
-                            graphics.setColor(Color.GREEN);
-                            break;
-                        case 2:
-                            graphics.setColor(Color.RED);
-                            break;
+                    case SUBMARINE:
+                    	shipImage = theme.getSubmarine();
+                    	break;
                     }
-                    graphics.fillRect(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
+                    
+                    if (ship.getOrientation() == Orientation.HORIZONTAL)
+                    {
+	                    graphics.drawImage(shipImage, 0, 0, CELL_SIZE, CELL_SIZE, tileNumber*TILE_SIZE, 0,
+	                    		(tileNumber+1)*TILE_SIZE, TILE_SIZE, null);
+                    }
+                    else if (ship.getOrientation() == Orientation.VERTICAL)
+                    {
+	                    graphics.drawImage(shipImage, 0, 0, CELL_SIZE, CELL_SIZE, 0, (tileNumber+1)*TILE_SIZE,
+	                    		TILE_SIZE, (tileNumber+2)*TILE_SIZE, null);
+                    }
+//                    graphics.fillRect(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
                 }
             }
         }
@@ -223,7 +236,17 @@ public class CellComponent extends JComponent implements Cell
         this.selectable = selectable;
     }
 
-    private class BattleFieldMouseAdapter extends MouseAdapter
+    public boolean isAlwaysDisplayShips()
+	{
+		return alwaysDisplayShips;
+	}
+
+	public void setAlwaysDisplayShips(boolean alwaysDisplayShips)
+	{
+		this.alwaysDisplayShips = alwaysDisplayShips;
+	}
+
+	private class BattleFieldMouseAdapter extends MouseAdapter
     {
         @Override
         public void mouseExited(MouseEvent mouseEvent)
