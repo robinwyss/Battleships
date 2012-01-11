@@ -10,6 +10,7 @@ import javax.swing.*;
 import com.jostrobin.battleships.common.PlacementHelper;
 import com.jostrobin.battleships.common.data.Cell;
 import com.jostrobin.battleships.common.data.Ship;
+import com.jostrobin.battleships.common.data.enums.CellType;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.model.ShipsModel;
 import com.jostrobin.battleships.view.listeners.AttackListener;
@@ -101,7 +102,10 @@ public class GamePanel extends JPanel
         logger.debug("Cell {} of client {} clicked", cell, clientId);
         for (AttackListener listener : attackListeners)
         {
-            listener.attack(cell.getBoardX(), cell.getBoardY(), clientId);
+            if (cell.getType() == CellType.WATER)
+            {
+                listener.attack(cell.getBoardX(), cell.getBoardY(), clientId);
+            }
         }
     }
 

@@ -34,6 +34,10 @@ public class RegistrationController implements EventListener<String>
         {
             registrationDialog.showMessage("You must provide a name!");
         }
+        else if (username.toLowerCase().equals("info"))
+        {
+            registrationDialog.showMessage("Name is not allowed");
+        }
         else
         {
             applicationController.login(username);

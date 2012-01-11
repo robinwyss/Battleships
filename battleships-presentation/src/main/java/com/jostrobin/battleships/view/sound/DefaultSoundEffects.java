@@ -33,21 +33,31 @@ public class DefaultSoundEffects implements SoundEffects
 {
     private static final Logger logger = LoggerFactory.getLogger(DefaultSoundEffects.class);
 
-    public static final String EXPLOSION_SOUND_FILE_PATH = "sounds/explosions.wav";
+    public static final String EXPLOSION_SOUND_FILE_PATH = "sounds/explosion.wav";
     public static final String SPLASH_SOUND_FILE_PATH = "sounds/splash.wav";
 
     @Override
     @Async
     public void explosion()
     {
-        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-        InputStream is = null;
+        playSound(EXPLOSION_SOUND_FILE_PATH);
+    }
+
+    @Override
+    @Async
+    public void splash()
+    {
+        playSound(SPLASH_SOUND_FILE_PATH);
+    }
+
+    private void playSound(final String path)
+    {
+        InputStream is = ClassLoader.getSystemResourceAsStream(path);
         AudioInputStream audioInputStream = null;
         try
         {
-            Clip clip = AudioSystem.getClip();
-            is = classLoader.getResourceAsStream(EXPLOSION_SOUND_FILE_PATH);
             audioInputStream = AudioSystem.getAudioInputStream(is);
+            Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
             while (clip.isRunning())
@@ -64,6 +74,5 @@ public class DefaultSoundEffects implements SoundEffects
             IOUtils.closeSilently(is, audioInputStream);
         }
     }
-
 
 }

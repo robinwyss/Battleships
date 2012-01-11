@@ -38,5 +38,7 @@ public class SoundEffectTest
     public void testSoundEffect()
     {
         soundEffects.explosion();
+        soundEffects.splash();
     }
+
 }

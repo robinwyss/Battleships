@@ -12,7 +12,7 @@
 
     <context:annotation-config/>
 
-    <task:executor id="executor" pool-size="2"/>
+    <task:executor id="executor" pool-size="5"/>
     <task:annotation-driven executor="executor"/>
 
     <bean id="serverDetectionController" class="com.jostrobin.battleships.controller.ServerDetectionController"
