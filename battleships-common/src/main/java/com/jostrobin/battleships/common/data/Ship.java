@@ -92,7 +92,7 @@ public class Ship
             {
                 if (cell.isHit())
                 {
-                    return AttackResult.NO_HIT;
+                    return AttackResult.INVALID;
                 }
                 else
                 {

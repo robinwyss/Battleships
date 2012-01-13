@@ -15,17 +15,14 @@
 
 package com.jostrobin.battleships.view.components;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JComponent;
+import javax.swing.*;
 
 import com.jostrobin.battleships.common.data.Cell;
 import com.jostrobin.battleships.common.data.Orientation;
@@ -114,22 +111,21 @@ public class CellComponent extends JComponent implements Cell
                 }
                 if (tileNumber != null)
                 {
-                	Image shipImage = theme.getByShipType(ship.getType());
-                    
-                	if (shipImage != null)
-                	{
-	                    if (ship.getOrientation() == Orientation.HORIZONTAL)
-	                    {
-		                    graphics.drawImage(shipImage, 0, 0, CELL_SIZE, CELL_SIZE, tileNumber*TILE_SIZE, 0,
-		                    		(tileNumber+1)*TILE_SIZE, TILE_SIZE, null);
-	                    }
-	                    else if (ship.getOrientation() == Orientation.VERTICAL)
-	                    {
-		                    graphics.drawImage(shipImage, 0, 0, CELL_SIZE, CELL_SIZE, 0, (tileNumber+1)*TILE_SIZE,
-		                    		TILE_SIZE, (tileNumber+2)*TILE_SIZE, null);
-	                    }
-	//                    graphics.fillRect(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
-                	}
+                    Image shipImage = theme.getByShipType(ship.getType());
+                    if (shipImage != null)
+                    {
+                        if (ship.getOrientation() == Orientation.HORIZONTAL)
+                        {
+                            graphics.drawImage(shipImage, 0, 0, CELL_SIZE, CELL_SIZE, tileNumber * TILE_SIZE, 0,
+                                    (tileNumber + 1) * TILE_SIZE, TILE_SIZE, null);
+                        }
+                        else if (ship.getOrientation() == Orientation.VERTICAL)
+                        {
+                            graphics.drawImage(shipImage, 0, 0, CELL_SIZE, CELL_SIZE, 0, (tileNumber + 1) * TILE_SIZE,
+                                    TILE_SIZE, (tileNumber + 2) * TILE_SIZE, null);
+                        }
+                        //                    graphics.fillRect(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
+                    }
                 }
             }
         }
@@ -234,16 +230,16 @@ public class CellComponent extends JComponent implements Cell
     }
 
     public boolean isAlwaysDisplayShips()
-	{
-		return alwaysDisplayShips;
-	}
+    {
+        return alwaysDisplayShips;
+    }
 
-	public void setAlwaysDisplayShips(boolean alwaysDisplayShips)
-	{
-		this.alwaysDisplayShips = alwaysDisplayShips;
-	}
+    public void setAlwaysDisplayShips(boolean alwaysDisplayShips)
+    {
+        this.alwaysDisplayShips = alwaysDisplayShips;
+    }
 
-	private class BattleFieldMouseAdapter extends MouseAdapter
+    private class BattleFieldMouseAdapter extends MouseAdapter
     {
         @Override
         public void mouseExited(MouseEvent mouseEvent)

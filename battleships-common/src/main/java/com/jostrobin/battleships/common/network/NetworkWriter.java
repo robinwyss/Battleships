@@ -2,7 +2,6 @@ package com.jostrobin.battleships.common.network;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Socket;
 import java.util.List;
 
 import com.jostrobin.battleships.common.data.GameData;
@@ -13,9 +12,9 @@ public class NetworkWriter
 {
     private DataOutputStream outputStream;
 
-    public NetworkWriter(Socket socket) throws IOException
+    public NetworkWriter(DataOutputStream outputStream) throws IOException
     {
-        outputStream = new DataOutputStream(socket.getOutputStream());
+        this.outputStream = outputStream;
     }
 
     public void login(String username) throws IOException
@@ -64,17 +63,17 @@ public class NetworkWriter
             outputStream.writeUTF(ship.getType().name());
         }
     }
-    
+
     public void sendAttack(int x, int y, Long clientId) throws IOException
     {
-    	outputStream.writeInt(Command.ATTACK);
-    	outputStream.writeInt(x);
-    	outputStream.writeInt(y);
-    	outputStream.writeLong(clientId);
+        outputStream.writeInt(Command.ATTACK);
+        outputStream.writeInt(x);
+        outputStream.writeInt(y);
+        outputStream.writeLong(clientId);
     }
 
-	public void sendCancelGame() throws IOException
-	{
-		outputStream.writeInt(Command.CANCEL_GAME);
-	}
+    public void sendCancelGame() throws IOException
+    {
+        outputStream.writeInt(Command.CANCEL_GAME);
+    }
 }

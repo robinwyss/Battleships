@@ -7,21 +7,11 @@ import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.data.GameMode;
 import com.jostrobin.battleships.common.data.Player;
 import com.jostrobin.battleships.common.data.Ship;
+import com.jostrobin.battleships.common.data.enums.GameUpdate;
 
 public class Command
 {
     public static final int LOGIN = 0;
-
-    public enum CMD
-    {
-        PLAYERS_LIST,
-        CREATE_GAME,
-        JOIN_GAME,
-        PREPARE_GAME,
-        ACCEPTED,
-        CHAT_MESSAGE,
-        START_GAME
-    }
 
     /**
      * The list of available players follows.
@@ -88,6 +78,8 @@ public class Command
 
     private GameMode gameMode;
 
+    private GameUpdate gameUpdate;
+
     private int maxPlayers;
 
     private int fieldWidth;
@@ -123,6 +115,10 @@ public class Command
     private int nrOfSubmarines;
 
     private int nrOfPatrolBoats;
+
+    private Long attackingClient;
+
+    private Long attackedClient;
 
     public Command(int command)
     {
@@ -347,5 +343,35 @@ public class Command
     public void setNrOfPatrolBoats(int nrOfPatrolBoats)
     {
         this.nrOfPatrolBoats = nrOfPatrolBoats;
+    }
+
+    public Long getAttackedClient()
+    {
+        return attackedClient;
+    }
+
+    public void setAttackedClient(Long attackedClient)
+    {
+        this.attackedClient = attackedClient;
+    }
+
+    public Long getAttackingClient()
+    {
+        return attackingClient;
+    }
+
+    public void setAttackingClient(Long attackingClient)
+    {
+        this.attackingClient = attackingClient;
+    }
+
+    public GameUpdate getGameUpdate()
+    {
+        return gameUpdate;
+    }
+
+    public void setGameUpdate(GameUpdate gameUpdate)
+    {
+        this.gameUpdate = gameUpdate;
     }
 }

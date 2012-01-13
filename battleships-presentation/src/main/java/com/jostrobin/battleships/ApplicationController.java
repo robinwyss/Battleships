@@ -1,5 +1,7 @@
 package com.jostrobin.battleships;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -60,7 +62,7 @@ public class ApplicationController
         this.address = address;
 
         socket = new Socket(address, SERVER_PORT);
-        networkHandler.init(socket);
+        networkHandler.init(new DataInputStream(socket.getInputStream()));
     }
 
     public void login(String username)
@@ -74,7 +76,7 @@ public class ApplicationController
 
         try
         {
-            writer = new NetworkWriter(socket);
+            writer = new NetworkWriter(new DataOutputStream(socket.getOutputStream()));
             writer.login(username);
         }
         catch (IOException e)

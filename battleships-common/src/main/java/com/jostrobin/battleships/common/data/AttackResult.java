@@ -5,5 +5,6 @@ public enum AttackResult
     HIT,
     NO_HIT,
     SHIP_DESTROYED,
-    PLAYER_DESTROYED;
+    PLAYER_DESTROYED,
+    INVALID;
 }

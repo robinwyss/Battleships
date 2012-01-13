@@ -1,5 +1,6 @@
 package com.jostrobin.battleships.server.client;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.jostrobin.battleships.common.data.*;
+import com.jostrobin.battleships.common.data.enums.GameUpdate;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.common.network.NetworkHandler;
 import com.jostrobin.battleships.common.network.NetworkListener;
@@ -68,7 +70,7 @@ public class Client extends Player implements NetworkListener
     public void startup() throws IOException
     {
         NetworkHandler handler = new NetworkHandler();
-        handler.init(socket);
+        handler.init(new DataInputStream(socket.getInputStream()));
         handler.addNetworkListener(this);
 
         Thread thread = new Thread(handler);
@@ -212,7 +214,7 @@ public class Client extends Player implements NetworkListener
         {
             return field[x][y].attack(x, y);
         }
-        return AttackResult.NO_HIT;
+        return AttackResult.INVALID;
     }
 
     /**
@@ -239,16 +241,26 @@ public class Client extends Player implements NetworkListener
     /**
      * The result from an attack to transmit to this client.
      *
-     * @param clientId the id of the attacked player
-     * @param x        where the user attacked
-     * @param y        where the user attacked
+     * @param x          where the user attacked
+     * @param y          where the user attacked
      * @param result
-     * @param ship     can be null if the result != SHIP_DESTROYED
+     * @param attacker
+     * @param attacked
+     * @param gameUpdate can be null
+     * @param ship       can be null if the result != SHIP_DESTROYED
      * @throws Exception
      */
-    public void sendAttackResult(Long clientId, int x, int y, AttackResult result, Ship ship, Long nextPlayer) throws Exception
+    public void sendAttackResult(int x, int y, AttackResult result, Ship ship, Long attacker, Long attacked, GameUpdate gameUpdate, Long nextPlayer) throws Exception
     {
-        clientWriter.sendAttackResult(clientId, x, y, result, ship, nextPlayer);
+        if (gameUpdate == GameUpdate.PLAYER_HAS_WON && attacker.equals(getId()))
+        {
+            gameUpdate = GameUpdate.YOU_HAVE_WON;
+        }
+        if (gameUpdate == GameUpdate.PLAYER_HAS_BEEN_DESTROYED && attacked.equals(getId()))
+        {
+            gameUpdate = GameUpdate.YOU_ARE_DESTROYED;
+        }
+        clientWriter.sendAttackResult(x, y, result, ship, attacker, attacked, gameUpdate, nextPlayer);
     }
 
     /**

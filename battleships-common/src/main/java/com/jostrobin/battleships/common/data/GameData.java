@@ -2,151 +2,230 @@ package com.jostrobin.battleships.common.data;
 
 /**
  * Contains the data which define a game.
- * @author joscht
  *
+ * @author joscht
  */
 public class GameData
 {
-	private Long id;
-	
-	private GameMode mode;
-	
-	private int currentPlayers;
-	
-	private int maxPlayers;
-	
-	private int fieldWidth;
-	
-	private int fieldLength;
-	
-	private int nrOfAircraftCarriers;
-	
-	private int nrOfDestroyers;
-	
-	private int nrOfBattleships;
-	
-	private int nrOfSubmarines;
-	
-	private int nrOfPatrolBoats;
+    private Long id;
 
-	public GameData(Long id, GameMode mode, int maxPlayers, int fieldWidth,
-			int fieldLength)
-	{
-		this.id = id;
-		this.mode = mode;
-		this.maxPlayers = maxPlayers;
-		this.fieldWidth = fieldWidth;
-		this.fieldLength = fieldLength;
-	}
+    private GameMode mode;
 
-	public Long getId()
-	{
-		return id;
-	}
+    private int currentPlayers;
 
-	public void setId(Long id)
-	{
-		this.id = id;
-	}
+    private int maxPlayers;
 
-	public GameMode getMode()
-	{
-		return mode;
-	}
+    private int fieldWidth;
 
-	public void setMode(GameMode mode)
-	{
-		this.mode = mode;
-	}
+    private int fieldLength;
 
-	public int getCurrentPlayers()
-	{
-		return currentPlayers;
-	}
+    private int nrOfAircraftCarriers;
 
-	public void setCurrentPlayers(int currentPlayers)
-	{
-		this.currentPlayers = currentPlayers;
-	}
+    private int nrOfDestroyers;
 
-	public int getMaxPlayers()
-	{
-		return maxPlayers;
-	}
+    private int nrOfBattleships;
 
-	public void setMaxPlayers(int maxPlayers)
-	{
-		this.maxPlayers = maxPlayers;
-	}
+    private int nrOfSubmarines;
 
-	public int getFieldWidth()
-	{
-		return fieldWidth;
-	}
+    private int nrOfPatrolBoats;
 
-	public void setFieldWidth(int fieldWidth)
-	{
-		this.fieldWidth = fieldWidth;
-	}
+    public GameData(Long id, GameMode mode, int maxPlayers, int fieldWidth,
+                    int fieldLength)
+    {
+        this.id = id;
+        this.mode = mode;
+        this.maxPlayers = maxPlayers;
+        this.fieldWidth = fieldWidth;
+        this.fieldLength = fieldLength;
+    }
 
-	public int getFieldLength()
-	{
-		return fieldLength;
-	}
+    public Long getId()
+    {
+        return id;
+    }
 
-	public void setFieldLength(int fieldLength)
-	{
-		this.fieldLength = fieldLength;
-	}
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
 
-	public int getNrOfAircraftCarriers()
-	{
-		return nrOfAircraftCarriers;
-	}
+    public GameMode getMode()
+    {
+        return mode;
+    }
 
-	public void setNrOfAircraftCarriers(int nrOfAircraftCarriers)
-	{
-		this.nrOfAircraftCarriers = nrOfAircraftCarriers;
-	}
+    public void setMode(GameMode mode)
+    {
+        this.mode = mode;
+    }
 
-	public int getNrOfDestroyers()
-	{
-		return nrOfDestroyers;
-	}
+    public int getCurrentPlayers()
+    {
+        return currentPlayers;
+    }
 
-	public void setNrOfDestroyers(int nrOfDestroyers)
-	{
-		this.nrOfDestroyers = nrOfDestroyers;
-	}
+    public void setCurrentPlayers(int currentPlayers)
+    {
+        this.currentPlayers = currentPlayers;
+    }
 
-	public int getNrOfBattleships()
-	{
-		return nrOfBattleships;
-	}
+    public int getMaxPlayers()
+    {
+        return maxPlayers;
+    }
 
-	public void setNrOfBattleships(int nrOfBattleships)
-	{
-		this.nrOfBattleships = nrOfBattleships;
-	}
+    public void setMaxPlayers(int maxPlayers)
+    {
+        this.maxPlayers = maxPlayers;
+    }
 
-	public int getNrOfSubmarines()
-	{
-		return nrOfSubmarines;
-	}
+    public int getFieldWidth()
+    {
+        return fieldWidth;
+    }
 
-	public void setNrOfSubmarines(int nrOfSubmarines)
-	{
-		this.nrOfSubmarines = nrOfSubmarines;
-	}
+    public void setFieldWidth(int fieldWidth)
+    {
+        this.fieldWidth = fieldWidth;
+    }
 
-	public int getNrOfPatrolBoats()
-	{
-		return nrOfPatrolBoats;
-	}
+    public int getFieldLength()
+    {
+        return fieldLength;
+    }
 
-	public void setNrOfPatrolBoats(int nrOfPatrolBoats)
-	{
-		this.nrOfPatrolBoats = nrOfPatrolBoats;
-	}
+    public void setFieldLength(int fieldLength)
+    {
+        this.fieldLength = fieldLength;
+    }
 
+    public int getNrOfAircraftCarriers()
+    {
+        return nrOfAircraftCarriers;
+    }
+
+    public void setNrOfAircraftCarriers(int nrOfAircraftCarriers)
+    {
+        this.nrOfAircraftCarriers = nrOfAircraftCarriers;
+    }
+
+    public int getNrOfDestroyers()
+    {
+        return nrOfDestroyers;
+    }
+
+    public void setNrOfDestroyers(int nrOfDestroyers)
+    {
+        this.nrOfDestroyers = nrOfDestroyers;
+    }
+
+    public int getNrOfBattleships()
+    {
+        return nrOfBattleships;
+    }
+
+    public void setNrOfBattleships(int nrOfBattleships)
+    {
+        this.nrOfBattleships = nrOfBattleships;
+    }
+
+    public int getNrOfSubmarines()
+    {
+        return nrOfSubmarines;
+    }
+
+    public void setNrOfSubmarines(int nrOfSubmarines)
+    {
+        this.nrOfSubmarines = nrOfSubmarines;
+    }
+
+    public int getNrOfPatrolBoats()
+    {
+        return nrOfPatrolBoats;
+    }
+
+    public void setNrOfPatrolBoats(int nrOfPatrolBoats)
+    {
+        this.nrOfPatrolBoats = nrOfPatrolBoats;
+    }
+
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (!(o instanceof GameData))
+        {
+            return false;
+        }
+
+        GameData gameData = (GameData) o;
+
+        if (currentPlayers != gameData.currentPlayers)
+        {
+            return false;
+        }
+        if (fieldLength != gameData.fieldLength)
+        {
+            return false;
+        }
+        if (fieldWidth != gameData.fieldWidth)
+        {
+            return false;
+        }
+        if (maxPlayers != gameData.maxPlayers)
+        {
+            return false;
+        }
+        if (nrOfAircraftCarriers != gameData.nrOfAircraftCarriers)
+        {
+            return false;
+        }
+        if (nrOfBattleships != gameData.nrOfBattleships)
+        {
+            return false;
+        }
+        if (nrOfDestroyers != gameData.nrOfDestroyers)
+        {
+            return false;
+        }
+        if (nrOfPatrolBoats != gameData.nrOfPatrolBoats)
+        {
+            return false;
+        }
+        if (nrOfSubmarines != gameData.nrOfSubmarines)
+        {
+            return false;
+        }
+        if (id != null ? !id.equals(gameData.id) : gameData.id != null)
+        {
+            return false;
+        }
+        if (mode != gameData.mode)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (mode != null ? mode.hashCode() : 0);
+        result = 31 * result + currentPlayers;
+        result = 31 * result + maxPlayers;
+        result = 31 * result + fieldWidth;
+        result = 31 * result + fieldLength;
+        result = 31 * result + nrOfAircraftCarriers;
+        result = 31 * result + nrOfDestroyers;
+        result = 31 * result + nrOfBattleships;
+        result = 31 * result + nrOfSubmarines;
+        result = 31 * result + nrOfPatrolBoats;
+        return result;
+    }
 }

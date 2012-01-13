@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.data.Ship;
+import com.jostrobin.battleships.common.data.enums.GameUpdate;
 import com.jostrobin.battleships.server.client.Client;
 import com.jostrobin.battleships.server.game.Game;
 
@@ -22,7 +23,8 @@ public interface Writer
 
     public void sendChatMessage(String username, String message) throws IOException;
 
-    public void sendAttackResult(Long clientId, int x, int y, AttackResult result, Ship ship, Long nextPlayer) throws Exception;
+    public void sendAttackResult(int x, int y, AttackResult result, Ship ship, Long attacker, Long attacked, GameUpdate gameUpdate, Long nextPlayer) throws Exception;
 
     public void sendStartGame(Long clientId) throws Exception;
+
 }

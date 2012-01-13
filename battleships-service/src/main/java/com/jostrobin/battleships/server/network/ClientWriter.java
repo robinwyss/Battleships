@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.data.Ship;
+import com.jostrobin.battleships.common.data.enums.GameUpdate;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.server.client.Client;
 import com.jostrobin.battleships.server.game.Game;
@@ -68,8 +69,7 @@ public class ClientWriter implements Writer
     /**
      * Players can start placing their ships.
      *
-     * @param fieldLength
-     * @param fieldWidth
+     * @param game
      * @param participants the clientIds of all the participants
      * @throws IOException
      */
@@ -134,7 +134,7 @@ public class ClientWriter implements Writer
 
     @Override
     @Async
-    public void sendAttackResult(Long clientId, int x, int y, AttackResult result, Ship ship, Long nextPlayer)
+    public void sendAttackResult(int x, int y, AttackResult result, Ship ship, Long attacker, Long attacked, GameUpdate gameUpdate, Long nextPlayer)
             throws Exception
     {
         synchronized (outputStream)
@@ -151,6 +151,9 @@ public class ClientWriter implements Writer
                 outputStream.writeUTF(ship.getOrientation().name());
                 outputStream.writeUTF(ship.getType().name());
             }
+            outputStream.writeLong(attacked);
+            outputStream.writeLong(attacked);
+            outputStream.writeUTF(gameUpdate.name());
             outputStream.writeLong(nextPlayer);
             outputStream.flush();
             logger.debug("sent ATTACK_RESULT");
@@ -169,4 +172,5 @@ public class ClientWriter implements Writer
             logger.debug("sent START_GAME");
         }
     }
+
 }

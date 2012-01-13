@@ -2,15 +2,14 @@ package com.jostrobin.battleships.common.network;
 
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.jostrobin.battleships.common.data.*;
+import com.jostrobin.battleships.common.data.enums.GameUpdate;
 import com.jostrobin.battleships.common.data.enums.ShipType;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,10 +26,11 @@ public class NetworkHandler implements Runnable
     private List<NetworkListener> listeners = new ArrayList<NetworkListener>();
 
     private DataInputStream inputStream;
+    private boolean running = true;
 
-    public void init(Socket socket) throws IOException
+    public void init(DataInputStream inputStream) throws IOException
     {
-        inputStream = new DataInputStream(socket.getInputStream());
+        this.inputStream = inputStream;
     }
 
     @Override
@@ -39,7 +39,6 @@ public class NetworkHandler implements Runnable
         String username = null;
         try
         {
-            boolean running = true;
             while (running)
             {
                 int startingCharacter = inputStream.readInt();
@@ -137,6 +136,9 @@ public class NetworkHandler implements Runnable
                         {
                             command.setShip(readShip());
                         }
+                        command.setAttackingClient(inputStream.readLong());
+                        command.setAttackedClient(inputStream.readLong());
+                        command.setGameUpdate(GameUpdate.valueOf(inputStream.readUTF()));
                         command.setClientId(inputStream.readLong());
                         logger.debug("received ATTACK_RESULT");
                         break;
@@ -251,4 +253,8 @@ public class NetworkHandler implements Runnable
         listeners.add(listener);
     }
 
+    public void stop()
+    {
+        running = false;
+    }
 }

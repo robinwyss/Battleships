@@ -9,6 +9,7 @@ import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.data.GameState;
 import com.jostrobin.battleships.common.data.Player;
 import com.jostrobin.battleships.common.data.Ship;
+import com.jostrobin.battleships.common.data.enums.GameUpdate;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.server.client.Client;
 import com.jostrobin.battleships.server.game.Game;
@@ -173,7 +174,7 @@ public class ServerManager
             logger.warn("Player {} tried to attack, but it is not his turn", attackedClient);
             return;
         }
-        if (attackedClient != null)
+        if (attackedClient != null && !attackingClient.isDestroyed())
         {
             AttackResult result = attackedClient.attack(x, y);
             if (AttackResult.SHIP_DESTROYED.equals(result))
@@ -185,24 +186,42 @@ public class ServerManager
                 }
             }
             Player nextPlayer = game.getNextPlayer();
-            notifyParticipants(attackedClient, x, y, nextPlayer, result);
+            notifyParticipants(attackingClient, attackedClient, x, y, nextPlayer, result);
         }
     }
 
-    private void notifyParticipants(Client client, int x, int y, Player nextPlayer, AttackResult result)
+    private void notifyParticipants(Client attacker, Client attacked, int x, int y, Player nextPlayer, AttackResult result)
     {
-        for (Client toBeNotified : client.getGame().getPlayers())
+        List<Client> clients = attacked.getGame().getPlayers();
+        boolean gameOver = true;
+        for (Client client : clients)
+        {
+            gameOver &= client.isDestroyed() || client.equals(attacker);
+        }
+        for (Client toBeNotified : attacked.getGame().getPlayers())
         {
             Ship ship = null;
             if (result == AttackResult.SHIP_DESTROYED || result == AttackResult.PLAYER_DESTROYED)
             {
                 // we also need to transmit the ship which has been destroyed
-                ship = client.getShipAtPosition(x, y);
+                ship = attacked.getShipAtPosition(x, y);
             }
+            GameUpdate gameUpdate = null;
+            if (gameOver)
+            {
+                gameUpdate = GameUpdate.PLAYER_HAS_WON;
+            }
+            if (result == AttackResult.PLAYER_DESTROYED)
+            {
+                gameUpdate = GameUpdate.PLAYER_HAS_BEEN_DESTROYED;
+            }
+            // TODO: continue here, send game update
+            // TODO: remove GAME_STATE from Communication
+            // TODO: a lot
 
             try
             {
-                toBeNotified.sendAttackResult(client.getId(), x, y, result, ship, nextPlayer.getId());
+                toBeNotified.sendAttackResult(x, y, result, ship, attacker.getId(), attacked.getId(), gameUpdate, nextPlayer.getId());
             }
             catch (Exception e)
             {
@@ -210,6 +229,18 @@ public class ServerManager
                 removeClient(toBeNotified);
                 resendPlayerLists();
             }
+        }
+    }
+
+    public void sendGameUpdate(Client attacker, Client attacked, AttackResult attackResult)
+    {
+        if (attackResult == AttackResult.PLAYER_DESTROYED)
+        {
+
+        }
+        for (Client client : attacked.getGame().getPlayers())
+        {
+
         }
     }
 
