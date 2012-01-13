@@ -16,14 +16,21 @@
 package com.jostrobin.battleships.server.network;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.jostrobin.battleships.common.data.AttackResult;
+import com.jostrobin.battleships.common.data.GameMode;
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.data.enums.GameUpdate;
 import com.jostrobin.battleships.common.data.enums.ShipType;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.common.network.NetworkHandler;
 import com.jostrobin.battleships.common.network.NetworkListener;
+import com.jostrobin.battleships.server.client.Client;
+import com.jostrobin.battleships.server.game.Game;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import org.junit.Before;
@@ -57,46 +64,104 @@ public class ServerClientTest
     @Test
     public void testSendAttackResult() throws Exception
     {
-        clientWriter.sendAttackResult(3,6, AttackResult.PLAYER_DESTROYED,new Ship(ShipType.DESTROYER),1l,2l, GameUpdate.PLAYER_HAS_BEEN_DESTROYED,3l);
         networkHandler.addNetworkListener(new NetworkListener()
         {
             @Override
             public void notify(Command command)
             {
+                assertThat(command.getCommand(), is(Command.ATTACK_RESULT));
                 assertThat(command.getX(), is(3));
                 assertThat(command.getY(), is(6));
                 assertThat(command.getAttackResult(), is(AttackResult.PLAYER_DESTROYED));
                 assertThat(command.getShip(), is(new Ship(ShipType.DESTROYER)));
-                assertThat(command.getAttackingClient(), is(3));
-                assertThat(command.getX(), is(3));
-                assertThat(command.getX(), is(3));
-                assertThat(command.getX(), is(3));
-                assertThat(command.getX(), is(3));
+                assertThat(command.getAttackingClient(), is(1l));
+                assertThat(command.getAttackedClient(), is(2l));
+                assertThat(command.getGameUpdate(), is(GameUpdate.PLAYER_HAS_BEEN_DESTROYED));
+                assertThat(command.getClientId(), is(3l));
+                networkHandler.stop();
             }
         });
+        clientWriter.sendAttackResult(3, 6, AttackResult.PLAYER_DESTROYED, new Ship(ShipType.DESTROYER), 1l, 2l, GameUpdate.PLAYER_HAS_BEEN_DESTROYED, 3l);
     }
 
     @Test
-    public void testSendAvailablePlayers()
+    public void testSendAvailablePlayers() throws IOException
     {
-        clientWriter.sendAvailablePlayers();
+        final List<Client> clients = new ArrayList<Client>();
+        clients.add(new Client(null, null));
+        clients.add(new Client(null, null));
+        clients.add(new Client(null, null));
+        clients.add(new Client(null, null));
+        networkHandler.addNetworkListener(new NetworkListener()
+        {
+            @Override
+            public void notify(Command command)
+            {
+                assertThat(command.getCommand(), is(Command.PLAYERS_LIST));
+                assertThat(command.getPlayers().size(), is(clients.size()));
+                networkHandler.stop();
+            }
+        });
+        clientWriter.sendAvailablePlayers(clients);
     }
 
     @Test
-    public void testSendChatMessage()
+    public void testSendChatMessage() throws IOException
     {
-        clientWriter.sendChatMessage();
+        final String username = "Barbie";
+        final String message = "Hello Battleships";
+        networkHandler.addNetworkListener(new NetworkListener()
+        {
+            @Override
+            public void notify(Command command)
+            {
+                assertThat(command.getCommand(), is(Command.CHAT_MESSAGE));
+                assertThat(command.getMessage(), is(message));
+                assertThat(command.getUsername(), is(username));
+                networkHandler.stop();
+            }
+        });
+        clientWriter.sendChatMessage(username, message);
     }
 
     @Test
-    public void testPrepareGame()
+    public void testPrepareGame() throws IOException
     {
-        clientWriter.sendPrepareGame();
+        Game game = new Game(4l, GameMode.HARDCORE, 4, 20, 10);
+        final Map<Long, String> players = new HashMap<Long, String>();
+        players.put(2l, "Robin");
+        players.put(4l, "Joscht");
+        networkHandler.addNetworkListener(new NetworkListener()
+        {
+            @Override
+            public void notify(Command command)
+            {
+                assertThat(command.getCommand(), is(Command.PREPARE_GAME));
+                assertThat(command.getGameId(), is(4l));
+                assertThat(command.getGameMode(), is(GameMode.HARDCORE));
+                assertThat(command.getFieldLength(), is(20));
+                assertThat(command.getFieldWidth(), is(20));
+                assertThat(command.getParticipants(), is(players));
+                networkHandler.stop();
+            }
+        });
+        clientWriter.sendPrepareGame(game, players);
     }
 
     @Test
-    public void testSendStartGame()
+    public void testSendStartGame() throws Exception
     {
-        clientWriter.sendStartGame();
+        final Long startingClient = 6l;
+        networkHandler.addNetworkListener(new NetworkListener()
+        {
+            @Override
+            public void notify(Command command)
+            {
+                assertThat(command.getCommand(), is(Command.START_GAME));
+                assertThat(command.getStartingPlayer(), is(startingClient));
+                networkHandler.stop();
+            }
+        });
+        clientWriter.sendStartGame(startingClient);
     }
 }
