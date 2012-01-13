@@ -118,7 +118,7 @@ public class GamePanel extends JPanel
 
     public void addShip(Long attackedClientId, Ship ship)
     {
-        BattleFieldPanel panel  = battlefieldPanels.get(attackedClientId);
+        BattleFieldPanel panel = battlefieldPanels.get(attackedClientId);
     	PlacementHelper helper = new PlacementHelper(panel);
     	helper.placeShipWithoutCheck(ship, ship.getPositionX(), ship.getPositionY());
     	ship.setSelected(false);

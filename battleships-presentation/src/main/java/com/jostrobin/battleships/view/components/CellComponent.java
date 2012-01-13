@@ -77,7 +77,16 @@ public class CellComponent extends JComponent implements Cell
         }
         if (hit)
         {
-            graphics.setColor(Color.BLACK);
+        	// there is nothing to be hit
+        	if (type == CellType.WATER)
+        	{
+        		graphics.setColor(Color.BLACK);
+        	}
+        	// this is a part of a ship
+        	else
+        	{
+        		graphics.setColor(Color.RED);
+        	}
             graphics.drawLine(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
             graphics.drawLine(1, CELL_SIZE - 1, CELL_SIZE - 1, 1);
         }
