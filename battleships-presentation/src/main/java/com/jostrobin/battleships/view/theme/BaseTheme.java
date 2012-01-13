@@ -15,7 +15,9 @@
 
 package com.jostrobin.battleships.view.theme;
 
+import java.awt.Color;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -43,12 +45,30 @@ public abstract class BaseTheme implements Theme
 
     protected Image loadImage(String imageFilePath)
     {
-        Image image = null;
+    	Color transparentColor = new Color(255, 0, 255);
+    	
+        BufferedImage image = null;
         ClassLoader classLoader = ClassLoader.getSystemClassLoader();
         InputStream imgInputStream = classLoader.getResourceAsStream(imageFilePath);
         try
         {
-            image = ImageIO.read(imgInputStream);
+            BufferedImage nonTransparentImage = ImageIO.read(imgInputStream);
+            image = new BufferedImage(nonTransparentImage.getWidth(), nonTransparentImage.getHeight(),
+            		BufferedImage.TYPE_INT_ARGB);
+            image.getGraphics().drawImage(nonTransparentImage, 0, 0, image.getWidth(), image.getHeight(),
+            		0, 0, image.getWidth(), image.getHeight(), null);
+
+            // remove transparent colors
+            for (int y=0; y<image.getHeight(); y++)
+            {
+            	for (int x=0; x<image.getWidth(); x++)
+            	{
+            		if (image.getRGB(x, y) == transparentColor.getRGB())
+            		{
+            			image.setRGB(x, y, new Color(0, 0, 0, 0).getRGB()); // replace with transparency
+            		}
+            	}
+            }
         }
         catch (IOException e)
         {
