@@ -33,7 +33,7 @@ public interface Theme
 
     Image[] getBattleship();
 
-    Image[] getDestroyer();
+    Image getDestroyer();
 
     Image[] getPatrolBoat();
 

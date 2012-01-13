@@ -60,9 +60,13 @@ public class DefaultTheme extends BaseTheme
     }
 
     @Override
-    public Image[] getDestroyer()
+    public Image getDestroyer()
     {
-        return new Image[0];  //To change body of implemented methods use File | Settings | File Templates.
+    	if (destroyer == null)
+    	{
+//    		destroyer = loadImage("tiles/destroyer.bmp");
+    	}
+    	return destroyer;
     }
 
     @Override
@@ -88,6 +92,8 @@ public class DefaultTheme extends BaseTheme
 		{
 		case SUBMARINE:
 			return getSubmarine();
+		case DESTROYER:
+			return getDestroyer();
 		}
 		return null;
 	}

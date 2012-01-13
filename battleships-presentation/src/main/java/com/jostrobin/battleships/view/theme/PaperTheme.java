@@ -54,9 +54,9 @@ public class PaperTheme extends BaseTheme
     }
 
     @Override
-    public Image[] getDestroyer()
+    public Image getDestroyer()
     {
-        return new Image[0];  //To change body of implemented methods use File | Settings | File Templates.
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override

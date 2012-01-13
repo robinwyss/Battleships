@@ -75,7 +75,7 @@ public class ConfigurableTheme implements Theme, InitializingBean
     }
 
     @Override
-    public Image[] getDestroyer()
+    public Image getDestroyer()
     {
         return currentTheme.getDestroyer();
     }
