@@ -204,4 +204,73 @@ public class Ship
         this.type = type;
         this.size = type.getLength();
     }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (!(o instanceof Ship))
+        {
+            return false;
+        }
+
+        Ship ship = (Ship) o;
+
+        if (placed != ship.placed)
+        {
+            return false;
+        }
+        if (positionX != ship.positionX)
+        {
+            return false;
+        }
+        if (positionY != ship.positionY)
+        {
+            return false;
+        }
+        if (selected != ship.selected)
+        {
+            return false;
+        }
+        if (shipDestroyed != ship.shipDestroyed)
+        {
+            return false;
+        }
+        if (size != ship.size)
+        {
+            return false;
+        }
+        if (cells != null ? !cells.equals(ship.cells) : ship.cells != null)
+        {
+            return false;
+        }
+        if (orientation != ship.orientation)
+        {
+            return false;
+        }
+        if (type != ship.type)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = type != null ? type.hashCode() : 0;
+        result = 31 * result + size;
+        result = 31 * result + positionX;
+        result = 31 * result + positionY;
+        result = 31 * result + (cells != null ? cells.hashCode() : 0);
+        result = 31 * result + (selected ? 1 : 0);
+        result = 31 * result + (placed ? 1 : 0);
+        result = 31 * result + (orientation != null ? orientation.hashCode() : 0);
+        result = 31 * result + (shipDestroyed ? 1 : 0);
+        return result;
+    }
 }
