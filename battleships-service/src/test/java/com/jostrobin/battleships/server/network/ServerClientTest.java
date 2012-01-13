@@ -21,9 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.jostrobin.battleships.common.data.AttackResult;
-import com.jostrobin.battleships.common.data.GameMode;
-import com.jostrobin.battleships.common.data.Ship;
+import com.jostrobin.battleships.common.data.*;
 import com.jostrobin.battleships.common.data.enums.GameUpdate;
 import com.jostrobin.battleships.common.data.enums.ShipType;
 import com.jostrobin.battleships.common.network.Command;
@@ -88,10 +86,10 @@ public class ServerClientTest
     public void testSendAvailablePlayers() throws IOException
     {
         final List<Client> clients = new ArrayList<Client>();
-        clients.add(new Client(null, null));
-        clients.add(new Client(null, null));
-        clients.add(new Client(null, null));
-        clients.add(new Client(null, null));
+        clients.add(new MockClient());
+        clients.add(new MockClient());
+        clients.add(new MockClient());
+        clients.add(new MockClient());
         networkHandler.addNetworkListener(new NetworkListener()
         {
             @Override
@@ -163,5 +161,38 @@ public class ServerClientTest
             }
         });
         clientWriter.sendStartGame(startingClient);
+    }
+
+    private class MockClient extends Client
+    {
+
+        public MockClient()
+        {
+            super(null, null);
+        }
+
+        @Override
+        public String getUsername()
+        {
+            return "username";
+        }
+
+        @Override
+        public Long getId()
+        {
+            return 7l;
+        }
+
+        @Override
+        public GameData getGameData()
+        {
+            return new GameData(1l, GameMode.CUSTOM, 2, 5, 6);
+        }
+
+        @Override
+        public GameState getState()
+        {
+            return GameState.INIT;
+        }
     }
 }
