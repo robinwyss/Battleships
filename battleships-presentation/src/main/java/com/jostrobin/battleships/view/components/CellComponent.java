@@ -15,14 +15,17 @@
 
 package com.jostrobin.battleships.view.components;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.*;
+
+import javax.swing.JComponent;
 
 import com.jostrobin.battleships.common.data.Cell;
 import com.jostrobin.battleships.common.data.Orientation;
@@ -89,10 +92,13 @@ public class CellComponent extends JComponent implements Cell
 
     private void drawBackground(Graphics graphics)
     {
+    	// draw the water first
+        graphics.drawImage(theme.getBackground(), 0, 0, CELL_SIZE, CELL_SIZE, boardX * CELL_SIZE, boardY * CELL_SIZE, (boardX + 1) * CELL_SIZE, (boardY + 1) * CELL_SIZE, null);
+        
         if (CellType.SHIP.equals(type))
         {
-            graphics.setColor(Color.GRAY);
-            graphics.fillRect(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
+//            graphics.setColor(Color.GRAY);
+//            graphics.fillRect(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
 
             // if either the ship has been completely destroyed or this board may always display ships
             if (ship != null && ((hit && ship.isShipDestroyed()) || alwaysDisplayShips))
@@ -128,12 +134,6 @@ public class CellComponent extends JComponent implements Cell
                     }
                 }
             }
-        }
-        else
-        {
-//            graphics.drawImage(theme.getBackground(), 0, 0, null);
-            graphics.drawImage(theme.getBackground(), 0, 0, CELL_SIZE, CELL_SIZE, boardX * CELL_SIZE, boardY * CELL_SIZE, (boardX + 1) * CELL_SIZE, (boardY + 1) * CELL_SIZE, null);
-//            graphics.setColor(Color.BLUE);
         }
     }
 
