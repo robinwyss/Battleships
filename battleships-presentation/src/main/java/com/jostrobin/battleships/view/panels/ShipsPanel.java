@@ -81,13 +81,16 @@ public class ShipsPanel extends JPanel
             }
             for (int i = 0; i < ship.getSize(); i++)
             {
-                CellComponent cell = new CellComponent(1, i);
+                CellComponent cell = new CellComponent(0, i);
                 cell.setAlwaysDisplayShips(true);
                 cell.setShip(ship);
                 cell.addMouseListener(mouseListener);
                 ship.addCell(cell);
                 shipPanel.add(cell);
             }
+            ship.setPositionX(0);
+            ship.setPositionY(0);
+            
             GridBagConstraints shipConstraints = new GridBagConstraints();
             shipConstraints.gridy = y++;
             shipConstraints.anchor = GridBagConstraints.BASELINE;
