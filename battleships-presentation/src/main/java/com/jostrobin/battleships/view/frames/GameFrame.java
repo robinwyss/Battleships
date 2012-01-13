@@ -15,11 +15,16 @@
 
 package com.jostrobin.battleships.view.frames;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.swing.*;
+
+import javax.swing.JPanel;
+
+import org.springframework.beans.factory.InitializingBean;
 
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.network.Command;
@@ -27,7 +32,6 @@ import com.jostrobin.battleships.view.listeners.AttackListener;
 import com.jostrobin.battleships.view.panels.ChatPanel;
 import com.jostrobin.battleships.view.panels.GamePanel;
 import com.jostrobin.battleships.view.panels.PlacementPanel;
-import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author rowyss

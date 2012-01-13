@@ -20,6 +20,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -145,10 +148,12 @@ public class BattleFieldPanel extends JPanel implements ActionListener
         if (current)
         {
             nameLabel.setForeground(Color.BLUE);
+            contentPanel.setBorder(new LineBorder(Color.RED));
         }
         else
         {
             nameLabel.setForeground(Color.BLACK);
+            contentPanel.setBorder(new EmptyBorder(new Insets(0, 0, 0, 0)));
         }
     }
 

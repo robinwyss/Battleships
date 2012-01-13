@@ -112,7 +112,7 @@ public class GamePanel extends JPanel
 
     public void hitCell(Command command)
     {
-        BattleFieldPanel panel = battlefieldPanels.get(command.getClientId());
+        BattleFieldPanel panel = battlefieldPanels.get(command.getAttackedClient());
         panel.hitCell(command.getX(), command.getY(), command.getAttackResult());
     }
 
