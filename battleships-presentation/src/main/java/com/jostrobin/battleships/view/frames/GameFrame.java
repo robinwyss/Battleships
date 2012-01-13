@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.*;
 
+import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.view.listeners.AttackListener;
 import com.jostrobin.battleships.view.panels.ChatPanel;
@@ -109,6 +110,17 @@ public class GameFrame extends JPanel implements InitializingBean, AttackListene
     public void hitCell(Command command)
     {
         gamePanel.hitCell(command);
+    }
+
+    /**
+     * Adds a ship to the currently attacked field. Used when a ship has been destroyed and we receive its complete
+     * position.
+     *
+     * @param ship
+     */
+    public void addShip(Long attackedClientId, Ship ship)
+    {
+        gamePanel.addShip(attackedClientId, ship);
     }
 
     public void showWaitingView()

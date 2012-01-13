@@ -114,6 +114,12 @@ public class GamePanel extends JPanel
         panel.hitCell(command.getX(), command.getY(), command.getAttackResult());
     }
 
+    public void addShip(Long attackedClientId, Ship ship)
+    {
+        BattleFieldPanel panel  = battlefieldPanels.get(attackedClientId);
+    	PlacementHelper helper = new PlacementHelper(panel);
+    	helper.placeShip(ship, ship.getPositionX(), ship.getPositionY());
+    }
 
     public void changeCurrentPlayer(Long playerId)
     {

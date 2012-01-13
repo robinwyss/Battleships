@@ -48,7 +48,15 @@ public class GameController implements NetworkListener, InitializingBean, Attack
                 if (command.getAttackResult() != AttackResult.INVALID)
                 {
                     gameFrame.hitCell(command);
+
                     AttackResult result = command.getAttackResult();
+
+                    // if a ship has been destroyed, add it to the game field
+                    if (result == AttackResult.SHIP_DESTROYED || result == AttackResult.PLAYER_DESTROYED)
+                    {
+                        gameFrame.addShip(command.getClientId(), command.getShip());
+                    }
+
                     playSound(result);
                     gameFrame.changeCurrentPlayer(command.getClientId());
                 }
