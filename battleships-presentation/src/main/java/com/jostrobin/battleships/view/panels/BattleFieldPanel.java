@@ -128,7 +128,7 @@ public class BattleFieldPanel extends JPanel implements ActionListener
             cell.setType(CellType.SHIP);
         }
     }
-
+    
     public void addSelectionListener(SelectionListener<Cell> selectionListener)
     {
         selectionListeners.add(selectionListener);
