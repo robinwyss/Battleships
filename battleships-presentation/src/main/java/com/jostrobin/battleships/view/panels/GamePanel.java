@@ -1,15 +1,11 @@
 package com.jostrobin.battleships.view.panels;
 
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.swing.JPanel;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.swing.*;
 
 import com.jostrobin.battleships.common.PlacementHelper;
 import com.jostrobin.battleships.common.data.Cell;
@@ -18,6 +14,8 @@ import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.model.ShipsModel;
 import com.jostrobin.battleships.view.listeners.AttackListener;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel
@@ -112,15 +110,16 @@ public class GamePanel extends JPanel
 
     public void hitCell(Command command)
     {
-        BattleFieldPanel panel = battlefieldPanels.get(command.getClientId());
+        BattleFieldPanel panel = battlefieldPanels.get(command.getAttackedClient());
         panel.hitCell(command.getX(), command.getY(), command.getAttackResult());
     }
 
     public void addShip(Long attackedClientId, Ship ship)
     {
-        BattleFieldPanel panel  = battlefieldPanels.get(attackedClientId);
-    	PlacementHelper helper = new PlacementHelper(panel);
-    	helper.placeShipWithoutCheck(ship, ship.getPositionX(), ship.getPositionY());
+        BattleFieldPanel panel = battlefieldPanels.get(attackedClientId);
+        PlacementHelper helper = new PlacementHelper(panel);
+        helper.placeShipWithoutCheck(ship, ship.getPositionX(), ship.getPositionY());
+        ship.setSelected(false);
     }
 
     public void changeCurrentPlayer(Long playerId)

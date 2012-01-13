@@ -15,27 +15,21 @@
 
 package com.jostrobin.battleships.view.panels;
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.swing.JPanel;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.swing.*;
 
 import com.jostrobin.battleships.common.data.Orientation;
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.view.components.CellComponent;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author rowyss
@@ -81,13 +75,16 @@ public class ShipsPanel extends JPanel
             }
             for (int i = 0; i < ship.getSize(); i++)
             {
-                CellComponent cell = new CellComponent(1, i);
+                CellComponent cell = new CellComponent(0, i);
                 cell.setAlwaysDisplayShips(true);
                 cell.setShip(ship);
                 cell.addMouseListener(mouseListener);
                 ship.addCell(cell);
                 shipPanel.add(cell);
             }
+            ship.setPositionX(0);
+            ship.setPositionY(0);
+
             GridBagConstraints shipConstraints = new GridBagConstraints();
             shipConstraints.gridy = y++;
             shipConstraints.anchor = GridBagConstraints.BASELINE;

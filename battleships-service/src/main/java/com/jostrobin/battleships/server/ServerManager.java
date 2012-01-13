@@ -89,6 +89,26 @@ public class ServerManager
         }
     }
 
+    /**
+     * Sends a chat message to every client of the specified game
+     *
+     * @param message
+     */
+    public void sendGameChatMessage(Game game, String message)
+    {
+        for (Client client : game.getPlayers())
+        {
+            try
+            {
+                client.sendChatMessage("Info", message);
+            }
+            catch (IOException ignore)
+            {
+                logger.info("Could not send global chat message", ignore);
+            }
+        }
+    }
+
     public void cancelGame(Client client)
     {
         // TODO: Send cancel game to every client of the game
@@ -183,7 +203,7 @@ public class ServerManager
                 {
                     result = AttackResult.PLAYER_DESTROYED;
                     game.addDestroyedPlayer(attackedClient);
-                    sendGlobalChatMessage(attackedClient.getUsername() + " has been destroyed");
+                    sendGameChatMessage(game, attackedClient.getUsername() + " has been destroyed");
                 }
             }
             Player nextPlayer = game.getNextPlayer();

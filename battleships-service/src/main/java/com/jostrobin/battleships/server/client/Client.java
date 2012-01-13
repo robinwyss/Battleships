@@ -139,7 +139,7 @@ public class Client extends Player implements NetworkListener
                     LOG.info("Player '{}' has placed his ships", getUsername());
                     placeShips(command.getShips());
                     serverManager.updateGameState(game);
-                    serverManager.sendGlobalChatMessage(getUsername() + " is ready.");
+                    serverManager.sendGameChatMessage(game, getUsername() + " is ready.");
                     break;
             }
         }

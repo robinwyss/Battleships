@@ -134,7 +134,9 @@ public class NetworkHandler implements Runnable
                         command.setAttackResult(attackResult);
                         if (attackResult == AttackResult.SHIP_DESTROYED || attackResult == AttackResult.PLAYER_DESTROYED)
                         {
-                            command.setShip(readShip());
+                            Ship ship = readShip();
+                            ship.setShipDestroyed(true);
+                            command.setShip(ship);
                         }
                         command.setAttackingClient(inputStream.readLong());
                         command.setAttackedClient(inputStream.readLong());
