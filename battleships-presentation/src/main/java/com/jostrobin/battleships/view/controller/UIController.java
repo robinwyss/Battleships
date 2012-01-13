@@ -72,6 +72,11 @@ public class UIController
         show(createGameFrame);
     }
 
+    public void showWinnerScreen()
+    {
+
+    }
+
     public void showGameView(Long startingPlayer)
     {
         gameFrame.showGameView(startingPlayer);
@@ -86,16 +91,6 @@ public class UIController
         placementController.initializeShips(ships);
         gameFrame.initializeFields(length, width, participants);
         gameFrame.showPlacementView();
-    }
-
-    public void showReadyFrame()
-    {
-        if (!gameFrame.equals(currentFrame))
-        {
-            show(gameFrame);
-        }
-
-        // TODO: show ready frame
     }
 
     private void show(JPanel newFrame)
@@ -135,11 +130,6 @@ public class UIController
     public void setCreateGameFrame(CreateGameFrame createGameFrame)
     {
         this.createGameFrame = createGameFrame;
-    }
-
-    public PlacementController getPlacementController()
-    {
-        return placementController;
     }
 
     public void setPlacementController(PlacementController placementController)

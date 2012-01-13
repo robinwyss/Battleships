@@ -15,15 +15,16 @@
 
 package com.jostrobin.battleships.controller;
 
-import org.springframework.beans.factory.InitializingBean;
-
 import com.jostrobin.battleships.ApplicationController;
 import com.jostrobin.battleships.common.data.AttackResult;
+import com.jostrobin.battleships.common.data.Player;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.common.network.NetworkListener;
+import com.jostrobin.battleships.model.GameModel;
 import com.jostrobin.battleships.view.frames.GameFrame;
 import com.jostrobin.battleships.view.listeners.AttackListener;
 import com.jostrobin.battleships.view.sound.SoundEffects;
+import org.springframework.beans.factory.InitializingBean;
 
 public class GameController implements NetworkListener, InitializingBean, AttackListener
 {
@@ -32,6 +33,8 @@ public class GameController implements NetworkListener, InitializingBean, Attack
     private SoundEffects soundEffects;
 
     private GameFrame gameFrame;
+
+    private GameModel gameModel;
 
     @Override
     public void afterPropertiesSet() throws Exception
@@ -57,10 +60,31 @@ public class GameController implements NetworkListener, InitializingBean, Attack
                     {
                         gameFrame.addShip(command.getAttackedClient(), command.getShip());
                     }
-
                     playSound(result);
+                    checkGameUpdate(command);
                     gameFrame.changeCurrentPlayer(command.getClientId());
                 }
+                break;
+        }
+    }
+
+    private void checkGameUpdate(Command command)
+    {
+        switch (command.getGameUpdate())
+        {
+            case PLAYER_HAS_WON:
+                Player winner = gameModel.findPlayerById(command.getAttackingClient());
+                gameFrame.showWinnerDialog(winner.getUsername());
+                break;
+            case YOU_HAVE_WON:
+                gameFrame.showWinnerDialog();
+                break;
+            case PLAYER_HAS_BEEN_DESTROYED:
+                Player player = gameModel.findPlayerById(command.getAttackedClient());
+                gameFrame.showDestroyedDialog(player.getUsername());
+                break;
+            case YOU_ARE_DESTROYED:
+                gameFrame.showDestroyedDialog();
                 break;
         }
     }
@@ -106,5 +130,11 @@ public class GameController implements NetworkListener, InitializingBean, Attack
     public void setSoundEffects(SoundEffects soundEffects)
     {
         this.soundEffects = soundEffects;
+    }
+
+
+    public void setGameModel(GameModel gameModel)
+    {
+        this.gameModel = gameModel;
     }
 }

@@ -123,9 +123,24 @@ public class GameFrame extends JPanel implements InitializingBean, AttackListene
         gamePanel.addShip(attackedClientId, ship);
     }
 
-    public void showWaitingView()
+    public void showWinnerDialog()
     {
+        JOptionPane.showMessageDialog(this, "You have won", "Game End", JOptionPane.PLAIN_MESSAGE);
+    }
 
+    public void showWinnerDialog(String username)
+    {
+        JOptionPane.showMessageDialog(this, username + " has won", "Game End", JOptionPane.PLAIN_MESSAGE);
+    }
+
+    public void showDestroyedDialog()
+    {
+        JOptionPane.showMessageDialog(this, "You have been destroyed", "Destroyed", JOptionPane.PLAIN_MESSAGE);
+    }
+
+    public void showDestroyedDialog(String username)
+    {
+        JOptionPane.showMessageDialog(this, username + " has  been destroyed", "Destroyed", JOptionPane.PLAIN_MESSAGE);
     }
 
     public void initializeFieldSize(int length, int width)

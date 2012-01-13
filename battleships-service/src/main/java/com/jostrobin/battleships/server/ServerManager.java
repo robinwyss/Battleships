@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.data.GameState;
 import com.jostrobin.battleships.common.data.Player;
@@ -17,6 +14,8 @@ import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.server.client.Client;
 import com.jostrobin.battleships.server.game.Game;
 import com.jostrobin.battleships.server.util.IdGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ServerManager
 {
@@ -183,6 +182,7 @@ public class ServerManager
                 if (attackedClient.isDestroyed())
                 {
                     result = AttackResult.PLAYER_DESTROYED;
+                    game.addDestroyedPlayer(attackedClient);
                     sendGlobalChatMessage(attackedClient.getUsername() + " has been destroyed");
                 }
             }

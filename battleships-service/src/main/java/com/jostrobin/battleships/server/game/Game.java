@@ -28,6 +28,7 @@ public class Game extends GameData
     private List<Client> players = new ArrayList<Client>();
 
     private Player currentPlayer;
+    private List<Client> destroyedPlayers = new ArrayList<Client>();
 
     /**
      * The player who started the game.
@@ -111,8 +112,19 @@ public class Game extends GameData
         this.currentPlayer = currentPlayer;
     }
 
+    public List<Client> getDestroyedPlayers()
+    {
+        return destroyedPlayers;
+    }
+
+    public void addDestroyedPlayer(Client player)
+    {
+        destroyedPlayers.add(player);
+    }
+
     public Player getNextPlayer()
     {
+        players.removeAll(destroyedPlayers);
         int index = players.indexOf(currentPlayer);
         int nextPlayerIndex = ++index % players.size();
         Player nextPlayer = players.get(nextPlayerIndex);

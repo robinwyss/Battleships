@@ -10,7 +10,7 @@ import com.jostrobin.battleships.common.data.enums.ShipType;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.common.network.NetworkListener;
 import com.jostrobin.battleships.common.util.ParticipantComparator;
-import com.jostrobin.battleships.model.GameSelectionModel;
+import com.jostrobin.battleships.model.GameModel;
 import com.jostrobin.battleships.view.frames.GameSelectionFrame;
 import com.jostrobin.battleships.view.listeners.EventListener;
 import org.slf4j.Logger;
@@ -23,7 +23,7 @@ public class GameSelectionController implements NetworkListener, InitializingBea
 
     private ApplicationController applicationController;
 
-    private GameSelectionModel model;
+    private GameModel model;
 
     private GameSelectionFrame gameSelectionFrame;
 
@@ -96,10 +96,7 @@ public class GameSelectionController implements NetworkListener, InitializingBea
 
                 Comparator<Long> comparator = new ParticipantComparator(model.getClientId());
                 Map<Long, String> sortedMap = new TreeMap<Long, String>(comparator);
-                for (Long id : participants.keySet())
-                {
-                    sortedMap.put(id, participants.get(id));
-                }
+                sortedMap.putAll(participants);
 
                 applicationController.showGameFrame(length, width, sortedMap, ships);
             }
@@ -116,7 +113,7 @@ public class GameSelectionController implements NetworkListener, InitializingBea
         this.applicationController = applicationController;
     }
 
-    public void setModel(GameSelectionModel model)
+    public void setModel(GameModel model)
     {
         this.model = model;
     }
