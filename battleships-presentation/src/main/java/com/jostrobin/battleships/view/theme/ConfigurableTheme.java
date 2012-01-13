@@ -30,7 +30,6 @@ public class ConfigurableTheme extends BaseTheme implements InitializingBean
     private static ConfigurableTheme INSTANCE;
     private Theme currentTheme;
 
-
     @Override
     public void afterPropertiesSet() throws Exception
     {
