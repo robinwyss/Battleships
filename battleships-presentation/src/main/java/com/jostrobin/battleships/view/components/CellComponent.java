@@ -142,6 +142,13 @@ public class CellComponent extends JComponent implements Cell
                         //                    graphics.fillRect(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
                     }
                 }
+
+            	// if the ship has been destroyed, make it greeeey
+            	if (ship.isShipDestroyed())
+            	{
+	                graphics.setColor(grey);
+	                graphics.fillRect(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
+            	}
             }
         }
     }
