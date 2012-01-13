@@ -15,21 +15,21 @@
 
 package com.jostrobin.battleships.view.theme;
 
-import java.awt.Image;
-
-import org.springframework.beans.factory.InitializingBean;
+import java.awt.*;
 
 import com.jostrobin.battleships.common.data.enums.ShipType;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author rowyss
  *         Date: 27.12.11 Time: 14:19
  */
-public class ConfigurableTheme implements Theme, InitializingBean
+public class ConfigurableTheme extends BaseTheme implements InitializingBean
 {
 
-    private Theme currentTheme;
     private static ConfigurableTheme INSTANCE;
+    private Theme currentTheme;
+
 
     @Override
     public void afterPropertiesSet() throws Exception
@@ -57,9 +57,9 @@ public class ConfigurableTheme implements Theme, InitializingBean
     }
 
     @Override
-    public Image[] getAircraftCarrier()
+    public String getThemeName()
     {
-        return currentTheme.getAircraftCarrier();
+        return currentTheme.getThemeName();
     }
 
     @Override
@@ -69,39 +69,9 @@ public class ConfigurableTheme implements Theme, InitializingBean
     }
 
     @Override
-    public Image[] getBattleship()
+    public Image getByShipType(ShipType type)
     {
-        return currentTheme.getBattleship();
+        return currentTheme.getByShipType(type);
     }
-
-    @Override
-    public Image[] getDestroyer()
-    {
-        return currentTheme.getDestroyer();
-    }
-
-    @Override
-    public Image[] getPatrolBoat()
-    {
-        return currentTheme.getPatrolBoat();
-    }
-
-    @Override
-    public Image getSubmarine()
-    {
-        return currentTheme.getSubmarine();
-    }
-
-    @Override
-    public String getThemeName()
-    {
-        return currentTheme.getThemeName();
-    }
-
-	@Override
-	public Image getByShipType(ShipType type)
-	{
-		return currentTheme.getByShipType(type);
-	}
 
 }

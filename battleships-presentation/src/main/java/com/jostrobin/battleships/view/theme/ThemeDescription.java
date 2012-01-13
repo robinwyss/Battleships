@@ -15,20 +15,32 @@
 
 package com.jostrobin.battleships.view.theme;
 
-import java.awt.*;
-
-import com.jostrobin.battleships.common.data.enums.ShipType;
-
 /**
  * @author rowyss
- *         Date: 27.12.11 Time: 11:17
+ *         Date: 13.01.12 Time: 22:49
  */
-public interface Theme
+public enum ThemeDescription
 {
-    String getThemeName();
+    DEFAULT_THEME("Default Theme", "default-theme"),
+    PAPER_THEME("Paper Theme", "paper-theme"),
+    SPACE_THEME("Space Theme", "space-theme");
 
-    Image getBackground();
+    private String name;
+    private String folder;
 
-    Image getByShipType(ShipType type);
+    private ThemeDescription(String name, String folder)
+    {
+        this.name = name;
+        this.folder = folder;
+    }
 
+    public String getFolder()
+    {
+        return folder;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
 }
