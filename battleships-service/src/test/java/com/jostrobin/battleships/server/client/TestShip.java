@@ -78,9 +78,9 @@ public class TestShip
 
 		assertEquals(AttackResult.HIT, hor.attack(3, 3));
 		assertEquals(AttackResult.HIT, hor.attack(4, 3));
-		assertEquals(AttackResult.NO_HIT, hor.attack(4, 3)); // double attack
+		assertEquals(AttackResult.INVALID, hor.attack(4, 3)); // double attack
 		assertEquals(AttackResult.SHIP_DESTROYED, hor.attack(5, 3));
-		assertEquals(AttackResult.NO_HIT, hor.attack(5, 3)); // double attack
+		assertEquals(AttackResult.INVALID, hor.attack(5, 3)); // double attack
 	}
 	
 	@Test

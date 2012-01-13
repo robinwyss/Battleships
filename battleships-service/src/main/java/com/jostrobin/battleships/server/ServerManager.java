@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.data.GameState;
 import com.jostrobin.battleships.common.data.Player;
@@ -14,8 +17,6 @@ import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.server.client.Client;
 import com.jostrobin.battleships.server.game.Game;
 import com.jostrobin.battleships.server.util.IdGenerator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ServerManager
 {
@@ -206,7 +207,7 @@ public class ServerManager
                 // we also need to transmit the ship which has been destroyed
                 ship = attacked.getShipAtPosition(x, y);
             }
-            GameUpdate gameUpdate = null;
+            GameUpdate gameUpdate = GameUpdate.NOTHING;
             if (gameOver)
             {
                 gameUpdate = GameUpdate.PLAYER_HAS_WON;

@@ -24,5 +24,6 @@ public enum GameUpdate
     YOU_ARE_DESTROYED,
     YOU_HAVE_WON,
     PLAYER_HAS_BEEN_DESTROYED,
-    PLAYER_HAS_WON;
+    PLAYER_HAS_WON,
+    NOTHING;
 }
