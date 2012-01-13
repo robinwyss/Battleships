@@ -40,25 +40,30 @@ public class PlacementHelper
         boolean placed = false;
         if (canBePlaced(ship, x, y, ship.getOrientation()))
         {
-            ship.setPosition(x, y);
-            ship.clearCells();
-            for (int i = 0; i < ship.getSize(); i++)
-            {
-                ship.addCell(battleFieldPanel.findCellAt(x, y));
-                if (ship.getOrientation() == Orientation.HORIZONTAL)
-                {
-                    x++;
-                }
-                else
-                {
-                    y++;
-                }
-            }
-            ship.setSelected(true);
-            ship.setPlaced(true);
-            placed = true;
+        	placed = placeShipWithoutCheck(ship, x, y);
         }
         return placed;
+    }
+    
+    public boolean placeShipWithoutCheck(Ship ship, int x, int y)
+    {
+        ship.setPosition(x, y);
+        ship.clearCells();
+        for (int i = 0; i < ship.getSize(); i++)
+        {
+            ship.addCell(battleFieldPanel.findCellAt(x, y));
+            if (ship.getOrientation() == Orientation.HORIZONTAL)
+            {
+                x++;
+            }
+            else
+            {
+                y++;
+            }
+        }
+        ship.setSelected(true);
+        ship.setPlaced(true);
+        return true;
     }
 
     private boolean canBePlaced(Ship ship, int x, int y, Orientation orientation)
