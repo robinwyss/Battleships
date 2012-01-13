@@ -15,16 +15,11 @@
 
 package com.jostrobin.battleships.view.frames;
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import javax.swing.JPanel;
-
-import org.springframework.beans.factory.InitializingBean;
+import javax.swing.*;
 
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.network.Command;
@@ -32,6 +27,7 @@ import com.jostrobin.battleships.view.listeners.AttackListener;
 import com.jostrobin.battleships.view.panels.ChatPanel;
 import com.jostrobin.battleships.view.panels.GamePanel;
 import com.jostrobin.battleships.view.panels.PlacementPanel;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author rowyss
@@ -127,9 +123,24 @@ public class GameFrame extends JPanel implements InitializingBean, AttackListene
         gamePanel.addShip(attackedClientId, ship);
     }
 
-    public void showWaitingView()
+    public void showWinnerDialog()
     {
+        JOptionPane.showMessageDialog(this, "You have won", "Game End", JOptionPane.PLAIN_MESSAGE);
+    }
 
+    public void showWinnerDialog(String username)
+    {
+        JOptionPane.showMessageDialog(this, username + " has won", "Game End", JOptionPane.PLAIN_MESSAGE);
+    }
+
+    public void showDestroyedDialog()
+    {
+        JOptionPane.showMessageDialog(this, "You have been destroyed", "Destroyed", JOptionPane.PLAIN_MESSAGE);
+    }
+
+    public void showDestroyedDialog(String username)
+    {
+        JOptionPane.showMessageDialog(this, username + " has  been destroyed", "Destroyed", JOptionPane.PLAIN_MESSAGE);
     }
 
     public void initializeFieldSize(int length, int width)

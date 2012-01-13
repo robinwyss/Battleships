@@ -49,11 +49,13 @@
     <bean id="gameController" class="com.jostrobin.battleships.controller.GameController"
           p:applicationController-ref="applicationController"
           p:gameFrame-ref="gameFrame"
-          p:soundEffects-ref="soundEffects"/>
+          p:soundEffects-ref="soundEffects">
+        <property name="gameModel" ref="gameSelectionModel"/>
+    </bean>
 
     <!-- Model -->
     <bean id="shipsModel" class="com.jostrobin.battleships.model.ShipsModel"/>
-    <bean id="gameSelectionModel" class="com.jostrobin.battleships.model.GameSelectionModel"/>
+    <bean id="gameSelectionModel" class="com.jostrobin.battleships.model.GameModel"/>
 
     <!-- View -->
     <bean id="registrationDialog" class="com.jostrobin.battleships.view.frames.RegistrationDialog"/>
@@ -67,7 +69,7 @@
           p:shipsModel-ref="shipsModel"/>
     <bean id="chatPanel" class="com.jostrobin.battleships.view.panels.ChatPanel"/>
     <bean id="gameSelectionFrame" class="com.jostrobin.battleships.view.frames.GameSelectionFrame"
-          p:gameSelectionModel-ref="gameSelectionModel"/>
+          p:gameModel-ref="gameSelectionModel"/>
     <bean id="createGameFrame" class="com.jostrobin.battleships.view.frames.CreateGameFrame"/>
 
     <!-- Network -->

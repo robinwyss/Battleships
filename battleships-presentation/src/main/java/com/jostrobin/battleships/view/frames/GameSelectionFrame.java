@@ -11,7 +11,7 @@ import javax.swing.event.ListSelectionListener;
 
 import com.jostrobin.battleships.common.data.GameState;
 import com.jostrobin.battleships.common.data.Player;
-import com.jostrobin.battleships.model.GameSelectionModel;
+import com.jostrobin.battleships.model.GameModel;
 import com.jostrobin.battleships.view.listeners.EventListener;
 
 public class GameSelectionFrame extends JPanel implements ActionListener
@@ -36,7 +36,7 @@ public class GameSelectionFrame extends JPanel implements ActionListener
 
     private BattleshipTableModel tableModel;
 
-    private GameSelectionModel gameSelectionModel;
+    private GameModel gameModel;
 
     int x = 0;
 
@@ -236,7 +236,7 @@ public class GameSelectionFrame extends JPanel implements ActionListener
 
     public void updatePlayerList()
     {
-        tableModel.setPlayers(gameSelectionModel.getPlayers());
+        tableModel.setPlayers(gameModel.getPlayers());
         repaint();
     }
 
@@ -270,8 +270,8 @@ public class GameSelectionFrame extends JPanel implements ActionListener
         createGameListeners.remove(createGameListener);
     }
 
-    public void setGameSelectionModel(GameSelectionModel gameSelectionModel)
+    public void setGameModel(GameModel gameModel)
     {
-        this.gameSelectionModel = gameSelectionModel;
+        this.gameModel = gameModel;
     }
 }

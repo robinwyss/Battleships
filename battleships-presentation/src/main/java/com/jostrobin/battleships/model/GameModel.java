@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.jostrobin.battleships.common.data.Player;
 
-public class GameSelectionModel
+public class GameModel
 {
     private List<Player> players = new ArrayList<Player>();
 
@@ -32,5 +32,17 @@ public class GameSelectionModel
     public void setClientId(Long clientId)
     {
         this.clientId = clientId;
+    }
+
+    public Player findPlayerById(Long id)
+    {
+        for (Player player : players)
+        {
+            if (player.getId().equals(id))
+            {
+                return player;
+            }
+        }
+        return null;
     }
 }

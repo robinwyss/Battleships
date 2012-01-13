@@ -14,7 +14,7 @@ import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.network.NetworkHandler;
 import com.jostrobin.battleships.common.network.NetworkListener;
 import com.jostrobin.battleships.common.network.NetworkWriter;
-import com.jostrobin.battleships.model.GameSelectionModel;
+import com.jostrobin.battleships.model.GameModel;
 import com.jostrobin.battleships.view.controller.UIController;
 
 /**
@@ -32,7 +32,7 @@ public class ApplicationController
     // TODO: Refactor to run in its own thread
     private NetworkWriter writer;
 
-    private GameSelectionModel model;
+    private GameModel model;
 
     private UIController uiController;
 

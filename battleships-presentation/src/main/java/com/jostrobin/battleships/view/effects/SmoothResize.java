@@ -24,10 +24,11 @@ import java.awt.*;
 public class SmoothResize
 {
     private int steps = 10;
-    private int delay = 10;
+    private int delay = 1;
 
     public void resize(Component component, Dimension newSize)
     {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int initialWidth = component.getWidth();
         int initialHeight = component.getHeight();
         int deltaW = ((int) newSize.getWidth()) - initialWidth;
@@ -38,6 +39,7 @@ public class SmoothResize
         {
             int width = initialWidth + stepW * i;
             int height = initialHeight + stepH * i;
+            centerWindow(component, screenSize, width, height);
             component.setSize(width, height);
             try
             {
@@ -48,5 +50,12 @@ public class SmoothResize
             }
         }
         component.setSize(newSize);
+    }
+
+    private void centerWindow(Component component, Dimension screenSize, int width, int height)
+    {
+        int posX = (int) ((screenSize.getWidth() / 2) - width / 2);
+        int postY = (int) ((screenSize.getHeight() / 2) - height / 2);
+        component.setLocation(posX, postY);
     }
 }

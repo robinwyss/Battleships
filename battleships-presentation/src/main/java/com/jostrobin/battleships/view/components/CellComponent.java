@@ -15,17 +15,14 @@
 
 package com.jostrobin.battleships.view.components;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JComponent;
+import javax.swing.*;
 
 import com.jostrobin.battleships.common.data.Cell;
 import com.jostrobin.battleships.common.data.Orientation;
@@ -77,16 +74,16 @@ public class CellComponent extends JComponent implements Cell
         }
         if (hit)
         {
-        	// there is nothing to be hit
-        	if (type == CellType.WATER)
-        	{
-        		graphics.setColor(Color.BLACK);
-        	}
-        	// this is a part of a ship
-        	else
-        	{
-        		graphics.setColor(Color.RED);
-        	}
+            // there is nothing to be hit
+            if (type == CellType.WATER)
+            {
+                graphics.setColor(Color.BLACK);
+            }
+            // this is a part of a ship
+            else
+            {
+                graphics.setColor(Color.RED);
+            }
             graphics.drawLine(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
             graphics.drawLine(1, CELL_SIZE - 1, CELL_SIZE - 1, 1);
         }
@@ -101,9 +98,9 @@ public class CellComponent extends JComponent implements Cell
 
     private void drawBackground(Graphics graphics)
     {
-    	// draw the water first
+        // draw the water first
         graphics.drawImage(theme.getBackground(), 0, 0, CELL_SIZE, CELL_SIZE, boardX * CELL_SIZE, boardY * CELL_SIZE, (boardX + 1) * CELL_SIZE, (boardY + 1) * CELL_SIZE, null);
-        
+
         if (CellType.SHIP.equals(type))
         {
 //            graphics.setColor(Color.GRAY);
@@ -143,12 +140,12 @@ public class CellComponent extends JComponent implements Cell
                     }
                 }
 
-            	// if the ship has been destroyed, make it greeeey
-            	if (ship.isShipDestroyed())
-            	{
-	                graphics.setColor(grey);
-	                graphics.fillRect(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
-            	}
+                // if the ship has been destroyed, make it greeeey
+                if (ship.isShipDestroyed())
+                {
+                    graphics.setColor(grey);
+                    graphics.fillRect(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
+                }
             }
         }
     }
