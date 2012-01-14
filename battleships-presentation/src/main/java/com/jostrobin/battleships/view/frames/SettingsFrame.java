@@ -18,11 +18,14 @@ package com.jostrobin.battleships.view.frames;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 
 import com.jostrobin.battleships.common.data.GameMode;
 import com.jostrobin.battleships.model.Settings;
 import com.jostrobin.battleships.view.components.ComboBoxItem;
+import com.jostrobin.battleships.view.listeners.EventListener;
 import com.jostrobin.battleships.view.theme.ThemeDescription;
 
 /**
@@ -49,9 +52,12 @@ public class SettingsFrame extends JPanel implements ActionListener
     private JButton createGameButton;
 
     private int y;
+
     private JCheckBox enableSoundCheckBox;
 
     private Settings settings;
+
+    private List<EventListener<Object>> eventListenerList = new ArrayList<EventListener<Object>>();
 
     public SettingsFrame()
     {
@@ -61,7 +67,7 @@ public class SettingsFrame extends JPanel implements ActionListener
     private void buildGui()
     {
         this.setLayout(new GridBagLayout());
-        this.setPreferredSize(new Dimension(300, 200));
+        this.setPreferredSize(new Dimension(300, 150));
 
         createGameLabel = new JLabel("Settings");
         GridBagConstraints c = createConstraint(0, 0);
@@ -72,14 +78,14 @@ public class SettingsFrame extends JPanel implements ActionListener
         optionsPanel = new JPanel(new GridBagLayout());
         c = createConstraint(0, 1);
         c.anchor = GridBagConstraints.FIRST_LINE_START;
-        c.insets = new Insets(5, 0, 0, 0);
+        c.insets = new Insets(0, 5, 0, 0);
 
         c.weightx = 1;
         c.weighty = 1;
         this.add(optionsPanel, c);
 
         buttonPanel = new JPanel();
-        createGameButton = new JButton("Create");
+        createGameButton = new JButton("OK");
         createGameButton.addActionListener(this);
         buttonPanel.add(createGameButton);
         c = createConstraint(0, 3);
@@ -95,7 +101,7 @@ public class SettingsFrame extends JPanel implements ActionListener
         modeLabel = new JLabel("Theme");
         GridBagConstraints c = createConstraint(0, y);
         c.anchor = GridBagConstraints.LINE_START;
-        c.insets = new Insets(5, 0, 0, 0);
+        c.insets = new Insets(5, 0, 0, 5);
         c.weightx = 1;
         optionsPanel.add(modeLabel, c);
 
@@ -116,7 +122,7 @@ public class SettingsFrame extends JPanel implements ActionListener
 
         nrOfPlayersLabel = new JLabel("Enable Sounds");
         c = createConstraint(0, y);
-        c.insets = new Insets(5, 0, 0, 0);
+        c.insets = new Insets(5, 0, 0, 5);
         c.anchor = GridBagConstraints.LINE_START;
         optionsPanel.add(nrOfPlayersLabel, c);
 
@@ -140,12 +146,32 @@ public class SettingsFrame extends JPanel implements ActionListener
     @Override
     public void actionPerformed(ActionEvent actionEvent)
     {
-
+        if (actionEvent.getSource() == createGameButton)
+        {
+            settings.setSoundEnabled(enableSoundCheckBox.isEnabled());
+            ComboBoxItem item = (ComboBoxItem) modeComboBox.getSelectedItem();
+            ThemeDescription theme = (ThemeDescription) item.getKey();
+            settings.setTheme(theme);
+            for (EventListener<Object> listener : eventListenerList)
+            {
+                listener.actionPerformed(null);
+            }
+        }
     }
 
 
     public void setSettings(Settings settings)
     {
         this.settings = settings;
+    }
+
+    public List<EventListener<Object>> getEventListenerList()
+    {
+        return eventListenerList;
+    }
+
+    public void setEventListenerList(List<EventListener<Object>> eventListenerList)
+    {
+        this.eventListenerList = eventListenerList;
     }
 }

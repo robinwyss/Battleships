@@ -34,6 +34,7 @@ public class GameSelectionController implements NetworkListener, InitializingBea
         gameSelectionFrame.addCreateGameListener(new CreateGameListener());
         gameSelectionFrame.addExitListener(new ExitListener());
         gameSelectionFrame.addJoinGameListener(new JoinGameListener());
+        gameSelectionFrame.addShowSettingsListener(new ShowSettingsListener());
     }
 
 

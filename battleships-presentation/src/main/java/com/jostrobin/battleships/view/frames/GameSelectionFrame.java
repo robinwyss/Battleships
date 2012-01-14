@@ -131,6 +131,7 @@ public class GameSelectionFrame extends JPanel implements ActionListener
         buttonsPanel.add(createGameButton, c);
 
         settingsButton = createButton("Settings");
+        settingsButton.addActionListener(this);
         c = createConstraint(0, buttonsY++);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(buttonInsets, buttonInsets, buttonInsets, buttonInsets);
