@@ -2,6 +2,7 @@ package com.jostrobin.battleships.view.frames;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.table.AbstractTableModel;
 
 import com.jostrobin.battleships.common.data.GameData;
@@ -45,7 +46,7 @@ public class BattleshipTableModel extends AbstractTableModel
             GameData gameData = player.getGameData();
             if (gameData != null)
             {
-                return gameData.getMode().name();
+                return gameData.getMode().getText();
             }
         }
         else if (columnIndex == 2)
@@ -65,7 +66,7 @@ public class BattleshipTableModel extends AbstractTableModel
         }
         else if (columnIndex == 3)
         {
-            return player.getState();
+            return player.getState().getText();
         }
         return "";
     }
