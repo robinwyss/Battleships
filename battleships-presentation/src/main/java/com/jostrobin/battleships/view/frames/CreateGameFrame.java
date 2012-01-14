@@ -76,6 +76,15 @@ public class CreateGameFrame extends JPanel implements ActionListener
         buildGui();
         updateUiState();
         this.setVisible(true);
+        
+        addCreateGameListener(new EventListener<GameMode>()
+		{
+			@Override
+			public void actionPerformed(GameMode value)
+			{
+	            showWaitingForPlayers();
+			}
+		});
     }
 
     private void buildGui()
@@ -343,13 +352,26 @@ public class CreateGameFrame extends JPanel implements ActionListener
         Object source = e.getSource();
         if (source == createGameButton)
         {
-            ComboBoxItem item = (ComboBoxItem) modeComboBox.getSelectedItem();
-            GameMode mode = (GameMode) item.getKey();
-            for (EventListener<GameMode> listener : createGameListeners)
+            int nrOfShips = 0;
+            nrOfShips += this.getNumberOfAircraftCarriers();
+            nrOfShips += this.getNumberOfBattleships();
+            nrOfShips += this.getNumberOfDestroyers();
+            nrOfShips += this.getNumberOfPatrolBoats();
+            nrOfShips += this.getNumberOfSubmarines();
+            
+            if (nrOfShips < 1)
             {
-                listener.actionPerformed(mode);
+                JOptionPane.showMessageDialog(this, "You have to add at least one ship.", "Error", JOptionPane.PLAIN_MESSAGE);
             }
-            showWaitingForPlayers();
+            else
+            {
+	            ComboBoxItem item = (ComboBoxItem) modeComboBox.getSelectedItem();
+	            GameMode mode = (GameMode) item.getKey();
+	            for (EventListener<GameMode> listener : createGameListeners)
+	            {
+	                listener.actionPerformed(mode);
+	            }
+            }
         }
         else if (source == modeComboBox)
         {
