@@ -44,6 +44,7 @@ public class GameSelectionFrame extends JPanel implements ActionListener
 
     private List<EventListener<Object>> exitListeners = new ArrayList<EventListener<Object>>();
     private List<EventListener<Object>> createGameListeners = new ArrayList<EventListener<Object>>();
+    private List<EventListener<Object>> showSettingsListeners = new ArrayList<EventListener<Object>>();
     private List<EventListener<Player>> joinGameListeners = new ArrayList<EventListener<Player>>();
 
     public GameSelectionFrame()
@@ -214,6 +215,14 @@ public class GameSelectionFrame extends JPanel implements ActionListener
                 eventListener.actionPerformed(null);
             }
         }
+        else if (source == settingsButton)
+        {
+            for (EventListener<Object> showSettingsListener : showSettingsListeners)
+            {
+                showSettingsListener.actionPerformed(null);
+            }
+        }
+
     }
 
     /**
@@ -268,6 +277,16 @@ public class GameSelectionFrame extends JPanel implements ActionListener
     public void removeCreateGameListener(EventListener<Object> createGameListener)
     {
         createGameListeners.remove(createGameListener);
+    }
+
+    public void addShowSettingsListener(EventListener<Object> showSettingsListener)
+    {
+        showSettingsListeners.add(showSettingsListener);
+    }
+
+    public void removeShowSettingsListener(EventListener<Object> showSettingsListener)
+    {
+        showSettingsListeners.remove(showSettingsListener);
     }
 
     public void setGameModel(GameModel gameModel)

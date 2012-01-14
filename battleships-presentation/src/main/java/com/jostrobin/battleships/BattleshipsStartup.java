@@ -68,11 +68,11 @@ public class BattleshipsStartup
         // set the look and feel
         try
         {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
         }
         catch (Exception e)
         {
-            logger.warn("Could not set system look and fell", e);
+            e.printStackTrace();
         }
     }
 }

@@ -196,4 +196,9 @@ public class ApplicationController
     {
         uiController.showPlacementFrame(length, width, participants, ships);
     }
+
+    public void showSettingsFrame()
+    {
+        uiController.showSettingsFrame();
+    }
 }

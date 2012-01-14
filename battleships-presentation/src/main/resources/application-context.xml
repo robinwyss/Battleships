@@ -31,7 +31,9 @@
           p:gameSelectionFrame-ref="gameSelectionFrame"
           p:createGameFrame-ref="createGameFrame"
           p:placementController-ref="placementController"
-          depends-on="configurableTheme"/>
+          depends-on="configurableTheme">
+        <property name="settingsFrame" ref="settingsFrame"/>
+    </bean>
     <bean id="placementController" class="com.jostrobin.battleships.controller.PlacementController"
           p:model-ref="shipsModel" p:placementPanel-ref="placementPanel"
           p:applicationController-ref="applicationController"/>
@@ -58,6 +60,7 @@
     <!-- Model -->
     <bean id="shipsModel" class="com.jostrobin.battleships.model.ShipsModel"/>
     <bean id="gameSelectionModel" class="com.jostrobin.battleships.model.GameModel"/>
+    <bean id="settings" class="com.jostrobin.battleships.model.Settings"/>
 
     <!-- View -->
     <bean id="registrationDialog" class="com.jostrobin.battleships.view.frames.RegistrationDialog"/>
@@ -73,6 +76,9 @@
     <bean id="gameSelectionFrame" class="com.jostrobin.battleships.view.frames.GameSelectionFrame"
           p:gameModel-ref="gameSelectionModel"/>
     <bean id="createGameFrame" class="com.jostrobin.battleships.view.frames.CreateGameFrame"/>
+    <bean id="settingsFrame" class="com.jostrobin.battleships.view.frames.SettingsFrame">
+        <property name="settings" ref="settings"/>
+    </bean>
 
     <!-- Network -->
     <bean id="networkHandler" class="com.jostrobin.battleships.common.network.NetworkHandler"/>

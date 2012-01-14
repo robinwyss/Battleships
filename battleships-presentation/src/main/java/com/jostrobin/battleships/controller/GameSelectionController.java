@@ -152,4 +152,14 @@ public class GameSelectionController implements NetworkListener, InitializingBea
             applicationController.showCreateGame();
         }
     }
+
+    private class ShowSettingsListener implements EventListener<Object>
+    {
+
+        @Override
+        public void actionPerformed(Object value)
+        {
+            applicationController.showSettingsFrame();
+        }
+    }
 }

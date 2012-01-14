@@ -1,19 +1,11 @@
 package com.jostrobin.battleships.view.frames;
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import com.jostrobin.battleships.common.data.GameMode;
 import com.jostrobin.battleships.view.components.ComboBoxItem;
@@ -26,7 +18,7 @@ public class CreateGameFrame extends JPanel implements ActionListener
     private JLabel createGameLabel;
 
     private JPanel optionsPanel;
-    
+
     private JButton createGameButton;
 
     private JButton cancelButton;
@@ -44,25 +36,25 @@ public class CreateGameFrame extends JPanel implements ActionListener
     private JLabel fieldSizeLabel;
 
     private JComboBox fieldSizeComboBox;
-    
+
     private JLabel aircraftCarrierLabel;
-    
+
     private JComboBox aircraftCarrierComboBox;
-    
+
     private JLabel battleshipLabel;
-    
+
     private JComboBox battleshipComboBox;
-    
+
     private JLabel destroyerLabel;
-    
+
     private JComboBox destroyerComboBox;
-    
+
     private JLabel submarineLabel;
-    
+
     private JComboBox submarineComboBox;
-    
+
     private JLabel patrolBoatLabel;
-    
+
     private JComboBox patrolBoatComboBox;
 
     private int y = 0;
@@ -92,7 +84,7 @@ public class CreateGameFrame extends JPanel implements ActionListener
         optionsPanel = new JPanel(new GridBagLayout());
         c = createConstraint(0, 1);
         c.anchor = GridBagConstraints.FIRST_LINE_START;
-        c.insets = new Insets(0, 0, 0, 0);
+        c.insets = new Insets(0, 5, 0, 0);
 //        c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.weighty = 1;
@@ -167,31 +159,31 @@ public class CreateGameFrame extends JPanel implements ActionListener
         c.insets = new Insets(5, 0, 0, 0);
         c.anchor = GridBagConstraints.LINE_START;
         optionsPanel.add(fieldSizeComboBox, c);
-        
+
         addShips();
     }
-    
+
     private void addShips()
     {
-    	aircraftCarrierLabel = new JLabel("Aircraft carrier");
-    	battleshipLabel = new JLabel("Battleship");
-    	destroyerLabel = new JLabel("Destroyer");
-    	submarineLabel = new JLabel("Submarine");
-    	patrolBoatLabel = new JLabel("Patrol boat");
-    	
-    	ComboBoxItem[] items = new ComboBoxItem[5];
-    	items[0] = new ComboBoxItem(0, "0");
-    	items[1] = new ComboBoxItem(1, "1");
-    	items[2] = new ComboBoxItem(2, "2");
-    	items[3] = new ComboBoxItem(3, "3");
-    	items[4] = new ComboBoxItem(4, "4");
-    	
-    	aircraftCarrierComboBox = new JComboBox(items);
-    	battleshipComboBox = new JComboBox(items);
-    	destroyerComboBox = new JComboBox(items);
-    	submarineComboBox = new JComboBox(items);
-    	patrolBoatComboBox = new JComboBox(items);
-    	initializeClassicShips();
+        aircraftCarrierLabel = new JLabel("Aircraft carrier");
+        battleshipLabel = new JLabel("Battleship");
+        destroyerLabel = new JLabel("Destroyer");
+        submarineLabel = new JLabel("Submarine");
+        patrolBoatLabel = new JLabel("Patrol boat");
+
+        ComboBoxItem[] items = new ComboBoxItem[5];
+        items[0] = new ComboBoxItem(0, "0");
+        items[1] = new ComboBoxItem(1, "1");
+        items[2] = new ComboBoxItem(2, "2");
+        items[3] = new ComboBoxItem(3, "3");
+        items[4] = new ComboBoxItem(4, "4");
+
+        aircraftCarrierComboBox = new JComboBox(items);
+        battleshipComboBox = new JComboBox(items);
+        destroyerComboBox = new JComboBox(items);
+        submarineComboBox = new JComboBox(items);
+        patrolBoatComboBox = new JComboBox(items);
+        initializeClassicShips();
 
         GridBagConstraints c = createConstraint(0, y);
         c.insets = new Insets(5, 0, 0, 0);
@@ -243,60 +235,60 @@ public class CreateGameFrame extends JPanel implements ActionListener
         c.anchor = GridBagConstraints.LINE_START;
         optionsPanel.add(patrolBoatComboBox, c);
     }
-    
+
     private void initializeClassicShips()
     {
-    	aircraftCarrierComboBox.setSelectedIndex(0);
-    	battleshipComboBox.setSelectedIndex(1);
-    	destroyerComboBox.setSelectedIndex(1);
-    	submarineComboBox.setSelectedIndex(1);
-    	patrolBoatComboBox.setSelectedIndex(1);
+        aircraftCarrierComboBox.setSelectedIndex(0);
+        battleshipComboBox.setSelectedIndex(1);
+        destroyerComboBox.setSelectedIndex(1);
+        submarineComboBox.setSelectedIndex(1);
+        patrolBoatComboBox.setSelectedIndex(1);
     }
-    
+
     private void initializeCustomShips()
     {
-    	aircraftCarrierComboBox.setSelectedIndex(1);
-    	battleshipComboBox.setSelectedIndex(1);
-    	destroyerComboBox.setSelectedIndex(0);
-    	submarineComboBox.setSelectedIndex(1);
-    	patrolBoatComboBox.setSelectedIndex(2);
+        aircraftCarrierComboBox.setSelectedIndex(1);
+        battleshipComboBox.setSelectedIndex(1);
+        destroyerComboBox.setSelectedIndex(0);
+        submarineComboBox.setSelectedIndex(1);
+        patrolBoatComboBox.setSelectedIndex(2);
     }
-    
+
     private void initializeHardcoreShips()
     {
-    	aircraftCarrierComboBox.setSelectedIndex(0);
-    	battleshipComboBox.setSelectedIndex(0);
-    	destroyerComboBox.setSelectedIndex(2);
-    	submarineComboBox.setSelectedIndex(2);
-    	patrolBoatComboBox.setSelectedIndex(2);
+        aircraftCarrierComboBox.setSelectedIndex(0);
+        battleshipComboBox.setSelectedIndex(0);
+        destroyerComboBox.setSelectedIndex(2);
+        submarineComboBox.setSelectedIndex(2);
+        patrolBoatComboBox.setSelectedIndex(2);
     }
-    
+
     private void showShipsPanel()
     {
-    	aircraftCarrierComboBox.setVisible(true);
-    	aircraftCarrierLabel.setVisible(true);
-    	battleshipComboBox.setVisible(true);
-    	battleshipLabel.setVisible(true);
-    	destroyerComboBox.setVisible(true);
-    	destroyerLabel.setVisible(true);
-    	submarineComboBox.setVisible(true);
-    	submarineLabel.setVisible(true);
-    	patrolBoatComboBox.setVisible(true);
-    	patrolBoatLabel.setVisible(true);
+        aircraftCarrierComboBox.setVisible(true);
+        aircraftCarrierLabel.setVisible(true);
+        battleshipComboBox.setVisible(true);
+        battleshipLabel.setVisible(true);
+        destroyerComboBox.setVisible(true);
+        destroyerLabel.setVisible(true);
+        submarineComboBox.setVisible(true);
+        submarineLabel.setVisible(true);
+        patrolBoatComboBox.setVisible(true);
+        patrolBoatLabel.setVisible(true);
     }
-    
+
     private void hideShipsPanel()
     {
-    	aircraftCarrierComboBox.setVisible(false);
-    	aircraftCarrierLabel.setVisible(false);
-    	battleshipComboBox.setVisible(false);
-    	battleshipLabel.setVisible(false);
-    	destroyerComboBox.setVisible(false);
-    	destroyerLabel.setVisible(false);
-    	submarineComboBox.setVisible(false);
-    	submarineLabel.setVisible(false);
-    	patrolBoatComboBox.setVisible(false);
-    	patrolBoatLabel.setVisible(false);
+        aircraftCarrierComboBox.setVisible(false);
+        aircraftCarrierLabel.setVisible(false);
+        battleshipComboBox.setVisible(false);
+        battleshipLabel.setVisible(false);
+        destroyerComboBox.setVisible(false);
+        destroyerLabel.setVisible(false);
+        submarineComboBox.setVisible(false);
+        submarineLabel.setVisible(false);
+        patrolBoatComboBox.setVisible(false);
+        patrolBoatLabel.setVisible(false);
     }
 
     /**
@@ -308,21 +300,21 @@ public class CreateGameFrame extends JPanel implements ActionListener
         GameMode mode = (GameMode) item.getKey();
         if (mode == GameMode.CLASSIC)
         {
-        	initializeClassicShips();
+            initializeClassicShips();
             nrOfPlayersComboBox.setEnabled(false);
             fieldSizeComboBox.setEnabled(false);
             hideShipsPanel();
         }
         else if (mode == GameMode.HARDCORE)
         {
-        	initializeHardcoreShips();
+            initializeHardcoreShips();
             nrOfPlayersComboBox.setEnabled(false);
             fieldSizeComboBox.setEnabled(false);
             hideShipsPanel();
         }
         else if (mode == GameMode.CUSTOM)
         {
-        	initializeCustomShips();
+            initializeCustomShips();
             nrOfPlayersComboBox.setEnabled(true);
             fieldSizeComboBox.setEnabled(true);
             showShipsPanel();
@@ -364,61 +356,61 @@ public class CreateGameFrame extends JPanel implements ActionListener
             cancelGame();
         }
     }
-    
+
     public int getNumberOfPlayersAllowed()
     {
-    	String number = (String) nrOfPlayersComboBox.getSelectedItem();
-    	try
-    	{
-    		int numberOfPlayers = Integer.parseInt(number);
-    		return numberOfPlayers;
-    	}
-    	catch (NumberFormatException e)
-    	{
-    		return 2; // DEFAULT
-    	}
+        String number = (String) nrOfPlayersComboBox.getSelectedItem();
+        try
+        {
+            int numberOfPlayers = Integer.parseInt(number);
+            return numberOfPlayers;
+        }
+        catch (NumberFormatException e)
+        {
+            return 2; // DEFAULT
+        }
     }
-    
+
     public int getSelectedFieldSize()
     {
-    	String size = (String) fieldSizeComboBox.getSelectedItem();
-    	try
-    	{
-    		String[] sizeParts = size.split(" x ");
-    		int fieldSize = Integer.parseInt(sizeParts[0]);
-    		return fieldSize;
-    	}
-    	catch (NumberFormatException e)
-    	{
-    		return 10; // DEFAULT
-    	}
+        String size = (String) fieldSizeComboBox.getSelectedItem();
+        try
+        {
+            String[] sizeParts = size.split(" x ");
+            int fieldSize = Integer.parseInt(sizeParts[0]);
+            return fieldSize;
+        }
+        catch (NumberFormatException e)
+        {
+            return 10; // DEFAULT
+        }
     }
-    
+
     public int getNumberOfAircraftCarriers()
     {
-    	return (Integer)((ComboBoxItem)aircraftCarrierComboBox.getSelectedItem()).getKey();
+        return (Integer) ((ComboBoxItem) aircraftCarrierComboBox.getSelectedItem()).getKey();
     }
-    
+
     public int getNumberOfBattleships()
     {
-    	return (Integer)((ComboBoxItem)battleshipComboBox.getSelectedItem()).getKey();
+        return (Integer) ((ComboBoxItem) battleshipComboBox.getSelectedItem()).getKey();
     }
-    
+
     public int getNumberOfDestroyers()
     {
-    	return (Integer)((ComboBoxItem)destroyerComboBox.getSelectedItem()).getKey();
+        return (Integer) ((ComboBoxItem) destroyerComboBox.getSelectedItem()).getKey();
     }
-    
+
     public int getNumberOfSubmarines()
     {
-    	return (Integer)((ComboBoxItem)submarineComboBox.getSelectedItem()).getKey();
+        return (Integer) ((ComboBoxItem) submarineComboBox.getSelectedItem()).getKey();
     }
-    
+
     public int getNumberOfPatrolBoats()
     {
-    	return (Integer)((ComboBoxItem)patrolBoatComboBox.getSelectedItem()).getKey();
+        return (Integer) ((ComboBoxItem) patrolBoatComboBox.getSelectedItem()).getKey();
     }
-    
+
     public void cancelGame()
     {
         createGameLabel.setText("New game");

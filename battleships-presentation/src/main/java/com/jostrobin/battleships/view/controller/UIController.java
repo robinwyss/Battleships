@@ -24,10 +24,7 @@ import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.controller.GameSelectionController;
 import com.jostrobin.battleships.controller.PlacementController;
 import com.jostrobin.battleships.view.effects.SmoothResize;
-import com.jostrobin.battleships.view.frames.CreateGameFrame;
-import com.jostrobin.battleships.view.frames.GameFrame;
-import com.jostrobin.battleships.view.frames.GameSelectionFrame;
-import com.jostrobin.battleships.view.frames.RegistrationDialog;
+import com.jostrobin.battleships.view.frames.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,6 +45,7 @@ public class UIController
     private SmoothResize smoothResize = new SmoothResize();
     private GameSelectionController gameSelectionController;
     private PlacementController placementController;
+    private JPanel settingsFrame;
 
     public UIController()
     {
@@ -72,11 +70,6 @@ public class UIController
         show(createGameFrame);
     }
 
-    public void showWinnerScreen()
-    {
-
-    }
-
     public void showGameView(Long startingPlayer)
     {
         gameFrame.showGameView(startingPlayer);
@@ -91,6 +84,11 @@ public class UIController
         placementController.initializeShips(ships);
         gameFrame.initializeFields(length, width, participants);
         gameFrame.showPlacementView();
+    }
+
+    public void showSettingsFrame()
+    {
+        show(settingsFrame);
     }
 
     private void show(JPanel newFrame)
@@ -137,4 +135,9 @@ public class UIController
         this.placementController = placementController;
     }
 
+
+    public void setSettingsFrame(SettingsFrame settingsFrame)
+    {
+        this.settingsFrame = settingsFrame;
+    }
 }
