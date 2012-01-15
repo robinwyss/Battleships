@@ -319,14 +319,18 @@ public class CreateGameFrame extends JPanel implements ActionListener
         {
             initializeClassicShips();
             nrOfPlayersComboBox.setEnabled(false);
+            nrOfPlayersComboBox.setSelectedIndex(0);
             fieldSizeComboBox.setEnabled(false);
+            fieldSizeComboBox.setSelectedIndex(0);
             hideShipsPanel();
         }
         else if (mode == GameMode.HARDCORE)
         {
             initializeHardcoreShips();
             nrOfPlayersComboBox.setEnabled(false);
+            nrOfPlayersComboBox.setSelectedIndex(0);
             fieldSizeComboBox.setEnabled(false);
+            fieldSizeComboBox.setSelectedIndex(2);
             hideShipsPanel();
         }
         else if (mode == GameMode.CUSTOM)
@@ -449,6 +453,7 @@ public class CreateGameFrame extends JPanel implements ActionListener
         modeComboBox.setSelectedItem(GameMode.CLASSIC);
         nrOfPlayersComboBox.setEnabled(false);
         fieldSizeComboBox.setEnabled(false);
+        updateUiState();
     }
 
     public void showWaitingForPlayers()
