@@ -15,7 +15,7 @@
 
 package com.jostrobin.battleships.view.theme;
 
-import java.awt.*;
+import java.awt.Image;
 
 import com.jostrobin.battleships.common.data.enums.ShipType;
 
@@ -30,5 +30,9 @@ public interface Theme
     Image getBackground();
 
     Image getByShipType(ShipType type);
+    
+    Image getGreendDot();
+    
+    Image getRedDot();
 
 }

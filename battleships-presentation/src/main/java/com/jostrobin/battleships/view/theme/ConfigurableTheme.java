@@ -73,4 +73,16 @@ public class ConfigurableTheme extends BaseTheme implements InitializingBean
         return currentTheme.getByShipType(type);
     }
 
+	@Override
+	public Image getGreendDot()
+	{
+		return currentTheme.getGreendDot();
+	}
+
+	@Override
+	public Image getRedDot()
+	{
+		return currentTheme.getRedDot();
+	}
+
 }
