@@ -1,11 +1,15 @@
 package com.jostrobin.battleships.view.panels;
 
-import java.awt.*;
+import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.swing.*;
+
+import javax.swing.JPanel;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.jostrobin.battleships.common.PlacementHelper;
 import com.jostrobin.battleships.common.data.Cell;
@@ -14,8 +18,6 @@ import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.model.ShipsModel;
 import com.jostrobin.battleships.view.listeners.AttackListener;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel
@@ -74,6 +76,13 @@ public class GamePanel extends JPanel
 
             this.add(panel);
         }
+    }
+    
+    public void reset()
+    {
+    	battlefieldPanels = null;
+    	shipsModel.setCells(new ArrayList<Cell>());
+    	this.removeAll();
     }
 
     public void initializeFieldSize(int length, int width)

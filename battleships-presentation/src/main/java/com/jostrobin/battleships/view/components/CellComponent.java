@@ -15,14 +15,17 @@
 
 package com.jostrobin.battleships.view.components;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.*;
+
+import javax.swing.JComponent;
 
 import com.jostrobin.battleships.common.data.Cell;
 import com.jostrobin.battleships.common.data.Orientation;
@@ -74,18 +77,22 @@ public class CellComponent extends JComponent implements Cell
         }
         if (hit)
         {
+        	Image dot = null;
             // there is nothing to be hit
             if (type == CellType.WATER)
             {
-                graphics.setColor(Color.BLACK);
+            	dot = theme.getGreendDot();
+//                graphics.setColor(Color.BLACK);
             }
             // this is a part of a ship
             else
             {
-                graphics.setColor(Color.RED);
+            	dot = theme.getRedDot();
+//                graphics.setColor(Color.RED);
             }
-            graphics.drawLine(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
-            graphics.drawLine(1, CELL_SIZE - 1, CELL_SIZE - 1, 1);
+            graphics.drawImage(dot, 0, 0, CELL_SIZE, CELL_SIZE, 0, 0, TILE_SIZE, TILE_SIZE, null);
+//            graphics.drawLine(1, 1, CELL_SIZE - 1, CELL_SIZE - 1);
+//            graphics.drawLine(1, CELL_SIZE - 1, CELL_SIZE - 1, 1);
         }
         if (selected)
         {

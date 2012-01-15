@@ -20,6 +20,8 @@ import org.springframework.beans.factory.InitializingBean;
 import com.jostrobin.battleships.ApplicationController;
 import com.jostrobin.battleships.common.data.GameData;
 import com.jostrobin.battleships.common.data.GameMode;
+import com.jostrobin.battleships.common.network.Command;
+import com.jostrobin.battleships.common.network.NetworkListener;
 import com.jostrobin.battleships.view.frames.CreateGameFrame;
 import com.jostrobin.battleships.view.listeners.EventListener;
 
@@ -27,7 +29,7 @@ import com.jostrobin.battleships.view.listeners.EventListener;
  * @author rowyss
  *         Date: 04.12.11 Time: 10:31
  */
-public class CreateGameController implements InitializingBean
+public class CreateGameController implements InitializingBean, NetworkListener
 {
     private CreateGameFrame frame;
 
@@ -49,11 +51,23 @@ public class CreateGameController implements InitializingBean
         applicationController.createGame(game);
     }
 
+	@Override
+	public void notify(Command command)
+	{
+		switch (command.getCommand())
+		{
+		case Command.CLOSE_GAME:
+			frame.cancelGame();
+			break;
+		}
+	}
+
     @Override
     public void afterPropertiesSet() throws Exception
     {
         frame.addCancelListener(new CancelListener());
         frame.addCreateGameListener(new CreateGameListener());
+        applicationController.addNetworkListener(this);
     }
 
     private void cancel()
