@@ -15,11 +15,10 @@
 
 package com.jostrobin.battleships.view.theme;
 
-import java.awt.Image;
-
-import org.springframework.cache.annotation.Cacheable;
+import java.awt.*;
 
 import com.jostrobin.battleships.common.data.enums.ShipType;
+import org.springframework.cache.annotation.Cacheable;
 
 /**
  * @author rowyss
@@ -52,7 +51,7 @@ public class FolderBasedTheme extends BaseTheme implements DescriptionBasedTheme
         return themeDescription.getName();
     }
 
-    @Cacheable("images")
+    @Cacheable(value = "images", key = "'background'")
     @Override
     public Image getBackground()
     {
@@ -78,9 +77,10 @@ public class FolderBasedTheme extends BaseTheme implements DescriptionBasedTheme
         return buffer.toString();
     }
 
-	@Override
-	public Image getGreendDot()
-	{
+    @Cacheable(value = "images", key = "'greenDor'")
+    @Override
+    public Image getGreendDot()
+    {
         StringBuffer buffer = new StringBuffer(BASE_DIR);
         buffer.append("/")//
                 .append(themeDescription.getFolder())//
@@ -88,11 +88,12 @@ public class FolderBasedTheme extends BaseTheme implements DescriptionBasedTheme
                 .append("green_dot")//
                 .append(".bmp");
         return loadImage(buffer.toString());
-	}
+    }
 
-	@Override
-	public Image getRedDot()
-	{
+    @Cacheable(value = "images", key = "'redDot'")
+    @Override
+    public Image getRedDot()
+    {
         StringBuffer buffer = new StringBuffer(BASE_DIR);
         buffer.append("/")//
                 .append(themeDescription.getFolder())//
@@ -100,5 +101,5 @@ public class FolderBasedTheme extends BaseTheme implements DescriptionBasedTheme
                 .append("red_dot")//
                 .append(".bmp");
         return loadImage(buffer.toString());
-	}
+    }
 }
