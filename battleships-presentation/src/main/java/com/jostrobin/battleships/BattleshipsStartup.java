@@ -1,10 +1,14 @@
 package com.jostrobin.battleships;
 
 import java.net.InetAddress;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.swing.*;
 
 import com.jostrobin.battleships.controller.ServerDetectionController;
-import com.jostrobin.battleships.view.frames.ServerDetectionFrame;
+import com.jostrobin.battleships.server.BattleshipsServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -52,7 +56,8 @@ public class BattleshipsStartup
             serverDetectionController.init();
             // start the detection controller in its own thread to wait for server answers
             // the server detection controller will start the application controller once a server is ready
-            serverDetectionController.addObserver(new ServerDetectionFrame(serverDetectionController));
+            serverDetectionController.addObserver(new ServerObserver(serverDetectionController));
+            logger.info("Send Broadcast...");
             Thread detectionThread = new Thread(serverDetectionController);
             detectionThread.start();
 
@@ -73,6 +78,45 @@ public class BattleshipsStartup
         catch (Exception e)
         {
             e.printStackTrace();
+        }
+    }
+
+    private static class ServerObserver implements Observer
+    {
+
+        private static final int TIMEOUT = 3000;
+        private ServerDetectionController serverDetectionController;
+        private boolean serverFound;
+
+        private ServerObserver(final ServerDetectionController serverDetectionController)
+        {
+            this.serverDetectionController = serverDetectionController;
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask()
+            {
+                @Override
+                public void run()
+                {
+                    if (!serverFound)
+                    {
+                        logger.info("No server has been found, the client will start a new server");
+                        BattleshipsServer.startNewServer();
+                        serverDetectionController.broadcastFindServer();
+                    }
+                }
+            }, TIMEOUT);
+        }
+
+        @Override
+        public void update(Observable observable, Object o)
+        {
+            if (observable instanceof ServerDetectionController && o instanceof InetAddress)
+            {
+                // we found a server
+                serverFound = true;
+                serverDetectionController.startApplication((InetAddress) o);
+
+            }
         }
     }
 }

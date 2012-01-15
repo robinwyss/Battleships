@@ -112,6 +112,11 @@ public class ServerDetectionController extends Observable implements Runnable
             {
                 logger.error("Could not read UDP request", e);
             }
+            finally
+            {
+                socket.close();
+                running = false;
+            }
         }
     }
 

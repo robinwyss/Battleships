@@ -1,2 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: com.jostrobin.battleships.App
+Main-Class: com.jostrobin.battleships.BattleshipsStartup
+SplashScreen-Image: images/splash.png

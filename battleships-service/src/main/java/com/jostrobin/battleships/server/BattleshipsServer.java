@@ -60,6 +60,11 @@ public class BattleshipsServer implements Runnable, ApplicationContextAware
             }
         }
 
+        startNewServer();
+    }
+
+    public static void startNewServer()
+    {
         ApplicationContext context = new ClassPathXmlApplicationContext("classpath:service-context.xml");
         BattleshipsServer server = context.getBean(BattleshipsServer.class);
         Thread serverThread = new Thread(server);
