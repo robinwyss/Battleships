@@ -41,15 +41,17 @@ public class SettingsFrame extends JPanel implements ActionListener
 
     private JPanel buttonPanel;
 
-    private JLabel modeLabel;
+    private JLabel themeLabel;
 
-    private JComboBox modeComboBox;
+    private JComboBox themeComboBox;
 
-    private JLabel nrOfPlayersLabel;
+    private JLabel enableSoundLabel;
 
     private JComboBox nrOfPlayersComboBox;
 
-    private JButton createGameButton;
+    private JButton okButton;
+
+    private JButton cancelButton;
 
     private int y;
 
@@ -57,7 +59,9 @@ public class SettingsFrame extends JPanel implements ActionListener
 
     private Settings settings;
 
-    private List<EventListener<Object>> eventListenerList = new ArrayList<EventListener<Object>>();
+    private List<EventListener<Object>> okListeners = new ArrayList<EventListener<Object>>();
+
+    private List<EventListener<Object>> cancelListeners = new ArrayList<EventListener<Object>>();
 
     public SettingsFrame()
     {
@@ -85,9 +89,12 @@ public class SettingsFrame extends JPanel implements ActionListener
         this.add(optionsPanel, c);
 
         buttonPanel = new JPanel();
-        createGameButton = new JButton("OK");
-        createGameButton.addActionListener(this);
-        buttonPanel.add(createGameButton);
+        okButton = new JButton("OK");
+        okButton.addActionListener(this);
+        cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(this);
+        buttonPanel.add(cancelButton);
+        buttonPanel.add(okButton);
         c = createConstraint(0, 3);
         c.insets = new Insets(15, 15, 15, 15);
         c.anchor = GridBagConstraints.LAST_LINE_END;
@@ -98,41 +105,48 @@ public class SettingsFrame extends JPanel implements ActionListener
 
     private void addOptions()
     {
-        modeLabel = new JLabel("Theme");
+        themeLabel = new JLabel("Theme");
         GridBagConstraints c = createConstraint(0, y);
         c.anchor = GridBagConstraints.LINE_START;
         c.insets = new Insets(5, 0, 0, 5);
         c.weightx = 1;
-        optionsPanel.add(modeLabel, c);
+        optionsPanel.add(themeLabel, c);
 
-        // add all the game modes to a dropdown
-        ComboBoxItem[] modes = new ComboBoxItem[GameMode.values().length];
+        // add all the game themes to a dropdown
+        ComboBoxItem[] themes = new ComboBoxItem[GameMode.values().length];
         int i = 0;
         for (ThemeDescription theme : ThemeDescription.values())
         {
             ComboBoxItem item = new ComboBoxItem(theme, theme.getName());
-            modes[i++] = item;
+            themes[i++] = item;
         }
-        modeComboBox = new JComboBox(modes);
-        modeComboBox.addActionListener(this);
+        themeComboBox = new JComboBox(themes);
+        themeComboBox.addActionListener(this);
         c = createConstraint(1, y++);
         c.insets = new Insets(5, 0, 0, 0);
         c.anchor = GridBagConstraints.LINE_START;
-        optionsPanel.add(modeComboBox, c);
+        optionsPanel.add(themeComboBox, c);
 
-        nrOfPlayersLabel = new JLabel("Enable Sounds");
+        enableSoundLabel = new JLabel("Enable Sounds");
         c = createConstraint(0, y);
         c.insets = new Insets(5, 0, 0, 5);
         c.anchor = GridBagConstraints.LINE_START;
-        optionsPanel.add(nrOfPlayersLabel, c);
+        optionsPanel.add(enableSoundLabel, c);
 
-        enableSoundCheckBox = new JCheckBox("", true);
+        enableSoundCheckBox = new JCheckBox();
         enableSoundCheckBox.addActionListener(this);
         c = createConstraint(1, y++);
         c.insets = new Insets(5, 0, 0, 0);
         c.anchor = GridBagConstraints.LINE_START;
         optionsPanel.add(enableSoundCheckBox, c);
 
+    }
+
+    public void resetSettings()
+    {
+        enableSoundCheckBox.setSelected(settings.isSoundEnabled());
+        ThemeDescription theme = settings.getTheme();
+        themeComboBox.setSelectedItem(new ComboBoxItem(theme, theme.getName()));
     }
 
     private GridBagConstraints createConstraint(int gridx, int gridy)
@@ -146,13 +160,20 @@ public class SettingsFrame extends JPanel implements ActionListener
     @Override
     public void actionPerformed(ActionEvent actionEvent)
     {
-        if (actionEvent.getSource() == createGameButton)
+        if (actionEvent.getSource() == okButton)
         {
-            settings.setSoundEnabled(enableSoundCheckBox.isEnabled());
-            ComboBoxItem item = (ComboBoxItem) modeComboBox.getSelectedItem();
+            settings.setSoundEnabled(enableSoundCheckBox.isSelected());
+            ComboBoxItem item = (ComboBoxItem) themeComboBox.getSelectedItem();
             ThemeDescription theme = (ThemeDescription) item.getKey();
             settings.setTheme(theme);
-            for (EventListener<Object> listener : eventListenerList)
+            for (EventListener<Object> listener : okListeners)
+            {
+                listener.actionPerformed(null);
+            }
+        }
+        else if (actionEvent.getSource() == cancelButton)
+        {
+            for (EventListener<Object> listener : cancelListeners)
             {
                 listener.actionPerformed(null);
             }
@@ -165,13 +186,23 @@ public class SettingsFrame extends JPanel implements ActionListener
         this.settings = settings;
     }
 
-    public List<EventListener<Object>> getEventListenerList()
+    public void removeOkListener(EventListener<Object> eventListener)
     {
-        return eventListenerList;
+        okListeners.remove(eventListener);
     }
 
-    public void setEventListenerList(List<EventListener<Object>> eventListenerList)
+    public void addOkListener(EventListener<Object> eventListener)
     {
-        this.eventListenerList = eventListenerList;
+        this.okListeners.add(eventListener);
+    }
+
+    public void removeCancelListener(EventListener<Object> eventListener)
+    {
+        cancelListeners.remove(eventListener);
+    }
+
+    public void addCancelListener(EventListener<Object> eventListener)
+    {
+        this.cancelListeners.add(eventListener);
     }
 }

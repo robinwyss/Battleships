@@ -16,6 +16,8 @@
 package com.jostrobin.battleships.view.controller;
 
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.util.List;
 import java.util.Map;
 import javax.swing.*;
@@ -46,6 +48,8 @@ public class UIController
     private GameSelectionController gameSelectionController;
     private PlacementController placementController;
     private JPanel settingsFrame;
+    private boolean moved;
+    private WindowComponentListener windowComponentListener;
 
     public UIController()
     {
@@ -53,6 +57,18 @@ public class UIController
         frame.getRootPane().setDoubleBuffered(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Battleships");
+        // add listeners
+        windowComponentListener = new WindowComponentListener();
+        frame.addComponentListener(windowComponentListener);
+        centerFrame();
+    }
+
+    private void centerFrame()
+    {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int posX = (int) (screenSize.getWidth() / 2) - frame.getWidth() / 2;
+        int posY = (int) (screenSize.getHeight() / 2) - frame.getHeight() / 2;
+        frame.setLocation(posX, posY);
     }
 
     public void showRegistrationDialog()
@@ -107,7 +123,7 @@ public class UIController
 
     private void resize(Dimension newSize)
     {
-        smoothResize.resize(frame, newSize);
+        smoothResize.resize(frame, newSize, !moved);
     }
 
     public void setGameFrame(GameFrame gameFrame)
@@ -139,5 +155,34 @@ public class UIController
     public void setSettingsFrame(SettingsFrame settingsFrame)
     {
         this.settingsFrame = settingsFrame;
+    }
+
+    private class WindowComponentListener implements ComponentListener
+    {
+
+        @Override
+        public void componentResized(ComponentEvent componentEvent)
+        {
+            Dimension size = componentEvent.getComponent().getSize();
+            currentFrame.setPreferredSize(size);
+        }
+
+        @Override
+        public void componentMoved(ComponentEvent componentEvent)
+        {
+
+        }
+
+        @Override
+        public void componentShown(ComponentEvent componentEvent)
+        {
+        }
+
+        @Override
+        public void componentHidden(ComponentEvent componentEvent)
+        {
+        }
+
+
     }
 }

@@ -16,16 +16,14 @@
 package com.jostrobin.battleships.view.sound;
 
 import java.io.InputStream;
-
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
+import com.jostrobin.battleships.common.util.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
-
-import com.jostrobin.battleships.common.util.IOUtils;
 
 /**
  * @author rowyss
@@ -37,6 +35,7 @@ public class DefaultSoundEffects implements SoundEffects
 
     public static final String EXPLOSION_SOUND_FILE_PATH = "sounds/explosion.wav";
     public static final String SPLASH_SOUND_FILE_PATH = "sounds/splash.wav";
+    private boolean enabled = true;
 
     @Override
     @Async
@@ -52,28 +51,44 @@ public class DefaultSoundEffects implements SoundEffects
         playSound(SPLASH_SOUND_FILE_PATH);
     }
 
+    @Override
+    public void setEnabled(boolean enabled)
+    {
+        this.enabled = enabled;
+    }
+
+    @Override
+    public boolean isEnabled()
+    {
+        return enabled;
+    }
+
     private void playSound(final String path)
     {
-        InputStream is = ClassLoader.getSystemResourceAsStream(path);
-        AudioInputStream audioInputStream = null;
-        try
+        if (enabled)
         {
-            audioInputStream = AudioSystem.getAudioInputStream(is);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.start();
-            while (clip.isRunning())
+
+            InputStream is = ClassLoader.getSystemResourceAsStream(path);
+            AudioInputStream audioInputStream = null;
+            try
             {
-                Thread.sleep(10);
+                audioInputStream = AudioSystem.getAudioInputStream(is);
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
+                clip.start();
+                while (clip.isRunning())
+                {
+                    Thread.sleep(10);
+                }
             }
-        }
-        catch (Exception e)
-        {
-            logger.warn("Could not play sound effect", e);
-        }
-        finally
-        {
-            IOUtils.closeSilently(is, audioInputStream);
+            catch (Exception e)
+            {
+                logger.warn("Could not play sound effect", e);
+            }
+            finally
+            {
+                IOUtils.closeSilently(is, audioInputStream);
+            }
         }
     }
 

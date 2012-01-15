@@ -13,22 +13,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.jostrobin.battleships.view.sound;
+package com.jostrobin.battleships.view.theme;
 
 /**
  * @author rowyss
- *         Date: 27.12.11 Time: 10:41
+ *         Date: 15.01.12 Time: 10:31
  */
-public interface SoundEffects
+public interface DescriptionBasedTheme
 {
-    /**
-     * Plays an explosion sound.
-     */
-    void explosion();
+    ThemeDescription getThemeDescription();
 
-    void splash();
+    void setThemeDescription(ThemeDescription themeDescription);
 
-    void setEnabled(boolean enabled);
-
-    boolean isEnabled();
+    void setThemeDescription(String themeDescriptionName);
 }

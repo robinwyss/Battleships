@@ -31,8 +31,8 @@
           p:gameSelectionFrame-ref="gameSelectionFrame"
           p:createGameFrame-ref="createGameFrame"
           p:placementController-ref="placementController"
+          p:settingsFrame-ref="settingsFrame"
           depends-on="configurableTheme">
-        <property name="settingsFrame" ref="settingsFrame"/>
     </bean>
     <bean id="placementController" class="com.jostrobin.battleships.controller.PlacementController"
           p:model-ref="shipsModel" p:placementPanel-ref="placementPanel"
@@ -53,8 +53,14 @@
     <bean id="gameController" class="com.jostrobin.battleships.controller.GameController"
           p:applicationController-ref="applicationController"
           p:gameFrame-ref="gameFrame"
-          p:soundEffects-ref="soundEffects">
-        <property name="gameModel" ref="gameSelectionModel"/>
+          p:soundEffects-ref="soundEffects"
+          p:gameModel-ref="gameSelectionModel"/>
+    <bean id="settingsController" class="com.jostrobin.battleships.controller.SettingsController"
+          p:descriptionBasedTheme-ref="folderBasedTheme"
+          p:settings-ref="settings"
+          p:settingsFrame-ref="settingsFrame"
+          p:soundEffects-ref="soundEffects"
+          p:applicationController-ref="applicationController">
     </bean>
 
     <!-- Model -->

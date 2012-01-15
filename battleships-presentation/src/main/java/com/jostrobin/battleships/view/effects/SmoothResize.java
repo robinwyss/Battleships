@@ -26,9 +26,9 @@ public class SmoothResize
     private int steps = 10;
     private int delay = 1;
 
-    public void resize(Component component, Dimension newSize)
+    public void resize(Component component, Dimension newSize, boolean recenter)
     {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
         int initialWidth = component.getWidth();
         int initialHeight = component.getHeight();
         int deltaW = ((int) newSize.getWidth()) - initialWidth;
@@ -39,7 +39,10 @@ public class SmoothResize
         {
             int width = initialWidth + stepW * i;
             int height = initialHeight + stepH * i;
-            centerWindow(component, screenSize, width, height);
+            if (true)
+            {
+                centerWindow(component, stepW, stepH, width, height);
+            }
             component.setSize(width, height);
             try
             {
@@ -52,10 +55,28 @@ public class SmoothResize
         component.setSize(newSize);
     }
 
-    private void centerWindow(Component component, Dimension screenSize, int width, int height)
+    private void centerWindow(Component component, int stepW, int stepH, int width, int height)
     {
-        int posX = (int) ((screenSize.getWidth() / 2) - width / 2);
-        int postY = (int) ((screenSize.getHeight() / 2) - height / 2);
-        component.setLocation(posX, postY);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Point location = component.getLocation();
+        int newPosX = (int) (location.getX() - (stepW / 2));
+        if (newPosX < 0)
+        {
+            newPosX = 0;
+        }
+        else if (newPosX + width > screenSize.getWidth())
+        {
+            newPosX = (int) (screenSize.getWidth() - width);
+        }
+        int newPosY = (int) (location.getY() - (stepH / 2));
+        if (newPosY < 0)
+        {
+            newPosY = 0;
+        }
+        else if (newPosY + height > screenSize.getHeight())
+        {
+            newPosY = (int) (screenSize.getHeight() - height);
+        }
+        component.setLocation(newPosX, newPosY);
     }
 }

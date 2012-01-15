@@ -23,9 +23,9 @@ import com.jostrobin.battleships.view.theme.ThemeDescription;
  */
 public class Settings
 {
-    public boolean soundEnabled = true;
+    private boolean soundEnabled = true;
 
-    public ThemeDescription theme;
+    private ThemeDescription theme;
 
     public boolean isSoundEnabled()
     {

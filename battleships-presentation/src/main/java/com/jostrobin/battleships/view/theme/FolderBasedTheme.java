@@ -24,7 +24,7 @@ import org.springframework.cache.annotation.Cacheable;
  * @author rowyss
  *         Date: 13.01.12 Time: 23:57
  */
-public class FolderBasedTheme extends BaseTheme
+public class FolderBasedTheme extends BaseTheme implements DescriptionBasedTheme
 {
 
     private ThemeDescription themeDescription;
