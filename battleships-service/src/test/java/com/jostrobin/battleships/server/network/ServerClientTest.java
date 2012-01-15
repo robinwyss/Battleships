@@ -15,13 +15,27 @@
 
 package com.jostrobin.battleships.server.network;
 
-import java.io.*;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.jostrobin.battleships.common.data.*;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.jostrobin.battleships.common.data.AttackResult;
+import com.jostrobin.battleships.common.data.GameData;
+import com.jostrobin.battleships.common.data.GameMode;
+import com.jostrobin.battleships.common.data.GameState;
+import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.data.enums.GameUpdate;
 import com.jostrobin.battleships.common.data.enums.ShipType;
 import com.jostrobin.battleships.common.network.Command;
@@ -29,10 +43,6 @@ import com.jostrobin.battleships.common.network.NetworkHandler;
 import com.jostrobin.battleships.common.network.NetworkListener;
 import com.jostrobin.battleships.server.client.Client;
 import com.jostrobin.battleships.server.game.Game;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * @author rowyss
@@ -161,6 +171,40 @@ public class ServerClientTest
             }
         });
         clientWriter.sendStartGame(startingClient);
+    }
+
+    @Test
+    public void testAcceptPlayer() throws Exception
+    {
+        final Long clientId = 4l;
+        networkHandler.addNetworkListener(new NetworkListener()
+        {
+            @Override
+            public void notify(Command command)
+            {
+                assertThat(command.getCommand(), is(Command.ACCEPTED));
+                assertThat(command.getClientId(), is(clientId));
+                networkHandler.stop();
+            }
+        });
+        clientWriter.acceptPlayer(clientId);
+    }
+
+    @Test
+    public void testLogin() throws Exception
+    {
+        final Long clientId = 4l;
+        networkHandler.addNetworkListener(new NetworkListener()
+        {
+            @Override
+            public void notify(Command command)
+            {
+                assertThat(command.getCommand(), is(Command.ACCEPTED));
+                assertThat(command.getClientId(), is(clientId));
+                networkHandler.stop();
+            }
+        });
+        clientWriter.acceptPlayer(clientId);
     }
 
     private class MockClient extends Client

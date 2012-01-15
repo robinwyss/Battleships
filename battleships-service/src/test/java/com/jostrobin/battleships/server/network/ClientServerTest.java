@@ -15,7 +15,17 @@
 
 package com.jostrobin.battleships.server.network;
 
-import java.io.*;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import com.jostrobin.battleships.common.data.GameData;
 import com.jostrobin.battleships.common.data.GameMode;
@@ -23,10 +33,6 @@ import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.common.network.NetworkHandler;
 import com.jostrobin.battleships.common.network.NetworkListener;
 import com.jostrobin.battleships.common.network.NetworkWriter;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * @author rowyss

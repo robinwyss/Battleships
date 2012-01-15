@@ -45,7 +45,7 @@ public class CreateGameController implements InitializingBean
         game.setNrOfDestroyers(frame.getNumberOfDestroyers());
         game.setNrOfPatrolBoats(frame.getNumberOfPatrolBoats());
         game.setNrOfSubmarines(frame.getNumberOfSubmarines());
-        
+        	
         applicationController.createGame(game);
     }
 
@@ -97,7 +97,7 @@ public class CreateGameController implements InitializingBean
         @Override
         public void actionPerformed(GameMode mode)
         {
-            createGame(mode);
+        	createGame(mode);
         }
     }
 }

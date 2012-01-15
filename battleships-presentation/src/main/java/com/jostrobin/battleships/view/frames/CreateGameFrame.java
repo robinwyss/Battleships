@@ -1,11 +1,19 @@
 package com.jostrobin.battleships.view.frames;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.*;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import com.jostrobin.battleships.common.data.GameMode;
 import com.jostrobin.battleships.view.components.ComboBoxItem;
@@ -68,6 +76,15 @@ public class CreateGameFrame extends JPanel implements ActionListener
         buildGui();
         updateUiState();
         this.setVisible(true);
+        
+        addCreateGameListener(new EventListener<GameMode>()
+		{
+			@Override
+			public void actionPerformed(GameMode value)
+			{
+	            showWaitingForPlayers();
+			}
+		});
     }
 
     private void buildGui()
@@ -119,7 +136,7 @@ public class CreateGameFrame extends JPanel implements ActionListener
         int i = 0;
         for (GameMode mode : GameMode.values())
         {
-            ComboBoxItem item = new ComboBoxItem(mode, mode.name());
+            ComboBoxItem item = new ComboBoxItem(mode, mode.getText());
             modes[i++] = item;
         }
         modeComboBox = new JComboBox(modes);
@@ -335,13 +352,26 @@ public class CreateGameFrame extends JPanel implements ActionListener
         Object source = e.getSource();
         if (source == createGameButton)
         {
-            ComboBoxItem item = (ComboBoxItem) modeComboBox.getSelectedItem();
-            GameMode mode = (GameMode) item.getKey();
-            for (EventListener<GameMode> listener : createGameListeners)
+            int nrOfShips = 0;
+            nrOfShips += this.getNumberOfAircraftCarriers();
+            nrOfShips += this.getNumberOfBattleships();
+            nrOfShips += this.getNumberOfDestroyers();
+            nrOfShips += this.getNumberOfPatrolBoats();
+            nrOfShips += this.getNumberOfSubmarines();
+            
+            if (nrOfShips < 1)
             {
-                listener.actionPerformed(mode);
+                JOptionPane.showMessageDialog(this, "You have to add at least one ship.", "Error", JOptionPane.PLAIN_MESSAGE);
             }
-            showWaitingForPlayers();
+            else
+            {
+	            ComboBoxItem item = (ComboBoxItem) modeComboBox.getSelectedItem();
+	            GameMode mode = (GameMode) item.getKey();
+	            for (EventListener<GameMode> listener : createGameListeners)
+	            {
+	                listener.actionPerformed(mode);
+	            }
+            }
         }
         else if (source == modeComboBox)
         {
