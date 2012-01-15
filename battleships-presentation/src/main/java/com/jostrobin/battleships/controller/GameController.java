@@ -72,6 +72,9 @@ public class GameController implements NetworkListener, InitializingBean, Attack
             	// the game has been aborted, go back to main screen
             	JOptionPane.showMessageDialog(gameFrame, "The game has been aborted by another player.", "Error", JOptionPane.ERROR_MESSAGE);
             	applicationController.showGameSelection();
+            	gameModel.setPlayers(null);
+            	gameModel.setClientId(null);
+            	gameFrame.reset();
             	break;
         }
     }

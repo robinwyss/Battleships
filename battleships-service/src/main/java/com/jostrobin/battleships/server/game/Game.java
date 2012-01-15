@@ -101,7 +101,12 @@ public class Game extends GameData
     	for (Client client : players)
     	{
     		client.sendCloseGame();
+    		client.setGame(null);
+    		client.setState(GameState.NEW);
+    		client.setGameData(null);
     	}
+    	owner = null;
+    	players.clear();
     }
 
     public List<Client> getPlayers()

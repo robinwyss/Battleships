@@ -15,21 +15,25 @@
 
 package com.jostrobin.battleships.view.panels;
 
-import java.awt.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.*;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 
 import com.jostrobin.battleships.common.data.Cell;
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.model.ShipsModel;
 import com.jostrobin.battleships.view.listeners.EventListener;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author rowyss
@@ -90,6 +94,11 @@ public class PlacementPanel extends JPanel implements ActionListener, Initializi
         add(ready, readyButtonConstraints);
 
         updateShips();
+    }
+    
+    public void reset()
+    {
+    	
     }
 
     public void addShipSelectionListener(SelectionListener<Ship> shipSelectionListener)
