@@ -174,4 +174,15 @@ public class ClientWriter implements Writer
         }
     }
 
+	@Override
+	public void sendCloseGame() throws Exception
+	{
+        synchronized (outputStream)
+        {
+        	outputStream.writeInt(Command.CLOSE_GAME);
+        	outputStream.flush();
+        	logger.debug("sent CLOSE_GAME");
+        }
+	}
+
 }

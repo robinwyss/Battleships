@@ -15,6 +15,10 @@
 
 package com.jostrobin.battleships.controller;
 
+import javax.swing.JOptionPane;
+
+import org.springframework.beans.factory.InitializingBean;
+
 import com.jostrobin.battleships.ApplicationController;
 import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.data.Player;
@@ -24,7 +28,6 @@ import com.jostrobin.battleships.model.GameModel;
 import com.jostrobin.battleships.view.frames.GameFrame;
 import com.jostrobin.battleships.view.listeners.AttackListener;
 import com.jostrobin.battleships.view.sound.SoundEffects;
-import org.springframework.beans.factory.InitializingBean;
 
 public class GameController implements NetworkListener, InitializingBean, AttackListener
 {
@@ -65,6 +68,11 @@ public class GameController implements NetworkListener, InitializingBean, Attack
                     gameFrame.changeCurrentPlayer(command.getClientId());
                 }
                 break;
+            case Command.CLOSE_GAME:
+            	// the game has been aborted, go back to main screen
+            	JOptionPane.showMessageDialog(gameFrame, "The game has been aborted by another player.", "Error", JOptionPane.ERROR_MESSAGE);
+            	applicationController.showGameSelection();
+            	break;
         }
     }
 

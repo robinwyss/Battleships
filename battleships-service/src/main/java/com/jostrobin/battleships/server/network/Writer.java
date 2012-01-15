@@ -26,5 +26,7 @@ public interface Writer
     public void sendAttackResult(int x, int y, AttackResult result, Ship ship, Long attacker, Long attacked, GameUpdate gameUpdate, Long nextPlayer) throws Exception;
 
     public void sendStartGame(Long clientId) throws Exception;
+    
+    public void sendCloseGame() throws Exception;
 
 }

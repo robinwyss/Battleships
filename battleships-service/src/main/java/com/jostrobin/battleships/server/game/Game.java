@@ -59,6 +59,12 @@ public class Game extends GameData
         }
         return added;
     }
+    
+    public void removePlayer(Client client)
+    {
+    	players.remove(client);
+    	setCurrentPlayers(getCurrentPlayers()-1);
+    }
 
     /**
      * Notifies all the clients of this game that they can start preparing.
@@ -85,6 +91,17 @@ public class Game extends GameData
         {
             player.sendChatMessage(username, message);
         }
+    }
+    
+    /**
+     * If a player disappeared, close the game.
+     */
+    public void closeGame()
+    {
+    	for (Client client : players)
+    	{
+    		client.sendCloseGame();
+    	}
     }
 
     public List<Client> getPlayers()

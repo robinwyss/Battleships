@@ -68,6 +68,11 @@ public class Command
      */
     public static final int CANCEL_GAME = 11;
 
+    /**
+     * If a game is aborted
+     */
+    public static final int CLOSE_GAME = 12;
+
     public static final int DISCONNECT = 100;
 
     private int command;
