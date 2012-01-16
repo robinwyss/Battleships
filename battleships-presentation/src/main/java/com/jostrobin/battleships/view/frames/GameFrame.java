@@ -15,24 +15,21 @@
 
 package com.jostrobin.battleships.view.frames;
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.util.ArrayList;
+import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
+import javax.swing.*;
 
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
-import org.springframework.beans.factory.InitializingBean;
-
+import com.jostrobin.battleships.common.PlacementHelper;
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.network.Command;
+import com.jostrobin.battleships.model.ShipsModel;
 import com.jostrobin.battleships.view.listeners.AttackListener;
+import com.jostrobin.battleships.view.panels.BattleFieldPanel;
 import com.jostrobin.battleships.view.panels.ChatPanel;
 import com.jostrobin.battleships.view.panels.GamePanel;
 import com.jostrobin.battleships.view.panels.PlacementPanel;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author rowyss
@@ -41,56 +38,73 @@ import com.jostrobin.battleships.view.panels.PlacementPanel;
 @SuppressWarnings("serial")
 public class GameFrame extends JPanel implements InitializingBean, AttackListener
 {
-    private int y;
     private GamePanel gamePanel;
     private PlacementPanel placementPanel;
     private ChatPanel chatPanel;
-    private Map<Long, String> participants;
+    private SortedMap<Long, String> participants;
     private List<AttackListener> attackListeners = new ArrayList<AttackListener>();
+    private int length;
+    private int width;
+    private ShipsModel shipsModel;
+    private PlacementHelper placementHelper;
+    private Long playerId;
+    private BattleFieldPanel battleFieldPanel;
 
     public void reset()
     {
-    	participants = null;
-    	gamePanel.reset();
-    	placementPanel.reset();
+        participants = null;
+        gamePanel.reset();
+        placementPanel.reset();
     }
-    
+
     @Override
     public void afterPropertiesSet() throws Exception
     {
+
         setLayout(new GridBagLayout());
 
-        GridBagConstraints battlefieldConstraints = new GridBagConstraints();
-        battlefieldConstraints.weightx = 1.0;
-        battlefieldConstraints.weighty = 0.8;
-        battlefieldConstraints.gridy = y;
-        battlefieldConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
-        battlefieldConstraints.fill = GridBagConstraints.BOTH;
-        add(gamePanel, battlefieldConstraints);
+        addGamePanel(0, 0, 1);
+        addPlacementPanel(0, 0);
+        addChatPanel(0, 1);
         gamePanel.setVisible(false);
+        placementPanel.setVisible(true);
+        setVisible(true);
 
+        setPreferredSize(new Dimension(400, 450));
+        gamePanel.addAttackListener(this);
+        //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private void addPlacementPanel(int gridX, int gridY)
+    {
         GridBagConstraints placementPanelConstraints = new GridBagConstraints();
         placementPanelConstraints.weightx = 1.0;
         placementPanelConstraints.weighty = 0.8;
         placementPanelConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
         placementPanelConstraints.fill = GridBagConstraints.BOTH;
-        placementPanelConstraints.gridy = y++;
+        placementPanelConstraints.gridy = gridY;
+        placementPanelConstraints.gridx = gridX;
         add(placementPanel, placementPanelConstraints);
-        placementPanel.setVisible(true);
-
-        addChatPanel();
-
-        setVisible(true);
-
-        setPreferredSize(new Dimension(600, 600));
-        gamePanel.addAttackListener(this);
-        //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public void addChatPanel()
+    private void addGamePanel(int gridX, int gridY, int gridWidth)
+    {
+        GridBagConstraints battlefieldConstraints = new GridBagConstraints();
+        battlefieldConstraints.weightx = 1.0;
+        battlefieldConstraints.weighty = 0.8;
+        battlefieldConstraints.gridy = gridY;
+        battlefieldConstraints.gridx = gridX;
+        battlefieldConstraints.gridwidth = gridWidth;
+        battlefieldConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
+        battlefieldConstraints.fill = GridBagConstraints.BOTH;
+        add(gamePanel, battlefieldConstraints);
+    }
+
+    public void addChatPanel(int gridX, int gridY)
     {
         GridBagConstraints chatPanelConstraints = new GridBagConstraints();
-        chatPanelConstraints.gridy = y++;
+        chatPanelConstraints.gridy = gridY;
+        chatPanelConstraints.gridx = gridX;
         chatPanelConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
         chatPanelConstraints.fill = GridBagConstraints.BOTH;
         chatPanelConstraints.weightx = 1.0;
@@ -100,10 +114,12 @@ public class GameFrame extends JPanel implements InitializingBean, AttackListene
 
     public void showGameView(Long startingPlayer)
     {
-        gamePanel.changeCurrentPlayer(startingPlayer);
+        setPreferredSize(new Dimension(600, 600));
         gamePanel.setVisible(true);
         placementPanel.setVisible(false);
-        gamePanel.placeShips();
+        createGameView(length, width, participants.get(participants.firstKey()));
+        changeCurrentPlayer(startingPlayer);
+        placeShips();
     }
 
     public void showPlacementView()
@@ -112,16 +128,54 @@ public class GameFrame extends JPanel implements InitializingBean, AttackListene
         placementPanel.setVisible(true);
     }
 
-    public void initializeFields(int length, int width, Map<Long, String> participants)
+    public void initializeFields(int length, int width, SortedMap<Long, String> participants)
     {
+        this.width = width;
+        this.length = length;
         this.participants = participants;
-        gamePanel.initUi(length, width, participants);
+        // first entry is the current player
+        playerId = participants.firstKey();
+        // remove it from the map 
+        Map<Long, String> opponents = new HashMap<Long, String>(participants);
+        opponents.remove(playerId);
+        gamePanel.initUi(length, width, opponents);
         initializeFieldSize(length, width);
+    }
+
+    private void createGameView(int length, int width, String playerName)
+    {
+        removeAll();
+        addBattleField(length, width, playerName, 0, 0);
+        addChatPanel(1, 0);
+        addGamePanel(0, 1, 2);
+    }
+
+    private void addBattleField(int length, int width, String playerName, int gridX, int gridY)
+    {
+        battleFieldPanel = new BattleFieldPanel(playerName);
+        battleFieldPanel.initializeFieldSize(length, width);
+        battleFieldPanel.setSelectable(false);
+        placementHelper = new PlacementHelper(battleFieldPanel);
+        GridBagConstraints battlefieldConstraints = new GridBagConstraints();
+        battlefieldConstraints.weightx = 1.0;
+        battlefieldConstraints.weighty = 0.8;
+        battlefieldConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
+        battlefieldConstraints.fill = GridBagConstraints.BOTH;
+        battlefieldConstraints.gridy = gridY;
+        battlefieldConstraints.gridx = gridX;
+        add(battleFieldPanel, battlefieldConstraints);
     }
 
     public void hitCell(Command command)
     {
-        gamePanel.hitCell(command);
+        if (command.getAttackedClient().equals(playerId))
+        {
+            battleFieldPanel.hitCell(command.getX(), command.getY(), command.getAttackResult());
+        }
+        else
+        {
+            gamePanel.hitCell(command);
+        }
     }
 
     /**
@@ -132,7 +186,16 @@ public class GameFrame extends JPanel implements InitializingBean, AttackListene
      */
     public void addShip(Long attackedClientId, Ship ship)
     {
-        gamePanel.addShip(attackedClientId, ship);
+        if (attackedClientId.equals(playerId))
+        {
+            placementHelper.placeShipWithoutCheck(ship, ship.getPositionX(), ship.getPositionY());
+            ship.setSelected(false);
+        }
+        else
+        {
+            gamePanel.addShip(attackedClientId, ship);
+
+        }
     }
 
     public void showWinnerDialog()
@@ -201,7 +264,7 @@ public class GameFrame extends JPanel implements InitializingBean, AttackListene
         return participants;
     }
 
-    public void setParticipants(Map<Long, String> participants)
+    public void setParticipants(SortedMap<Long, String> participants)
     {
         this.participants = participants;
     }
@@ -218,5 +281,20 @@ public class GameFrame extends JPanel implements InitializingBean, AttackListene
     public void changeCurrentPlayer(Long playerId)
     {
         gamePanel.changeCurrentPlayer(playerId);
+        battleFieldPanel.setCurrent(playerId.equals(this.playerId));
+    }
+
+    public void placeShips()
+    {
+        for (Ship ship : shipsModel.getShips())
+        {
+            placementHelper.placeShip(ship, ship.getPositionX(), ship.getPositionY());
+            ship.setSelected(false);
+        }
+    }
+
+    public void setShipsModel(ShipsModel shipsModel)
+    {
+        this.shipsModel = shipsModel;
     }
 }

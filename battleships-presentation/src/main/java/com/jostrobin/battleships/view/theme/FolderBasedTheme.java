@@ -18,6 +18,7 @@ package com.jostrobin.battleships.view.theme;
 import java.awt.*;
 
 import com.jostrobin.battleships.common.data.enums.ShipType;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
 /**
@@ -35,11 +36,13 @@ public class FolderBasedTheme extends BaseTheme implements DescriptionBasedTheme
         return themeDescription;
     }
 
+    @CacheEvict(value = "images", allEntries = true)
     public void setThemeDescription(ThemeDescription themeDescription)
     {
         this.themeDescription = themeDescription;
     }
 
+    @CacheEvict(value = "images", allEntries = true)
     public void setThemeDescription(String themeDescriptionName)
     {
         this.themeDescription = ThemeDescription.valueOf(themeDescriptionName);
@@ -55,7 +58,14 @@ public class FolderBasedTheme extends BaseTheme implements DescriptionBasedTheme
     @Override
     public Image getBackground()
     {
-        return loadImage("tiles/paper-theme/background.bmp");
+        StringBuffer buffer = new StringBuffer(BASE_DIR);
+        buffer.append("/")//
+                .append(themeDescription.getFolder())//
+                .append("/")//
+                .append("background")//
+                .append(".bmp");
+        String imgUrl = buffer.toString();
+        return loadImage(imgUrl);
     }
 
     @Cacheable(value = "images")

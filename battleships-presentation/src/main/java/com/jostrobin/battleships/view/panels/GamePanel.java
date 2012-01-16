@@ -1,15 +1,11 @@
 package com.jostrobin.battleships.view.panels;
 
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.swing.JPanel;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.swing.*;
 
 import com.jostrobin.battleships.common.PlacementHelper;
 import com.jostrobin.battleships.common.data.Cell;
@@ -18,6 +14,8 @@ import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.model.ShipsModel;
 import com.jostrobin.battleships.view.listeners.AttackListener;
 import com.jostrobin.battleships.view.listeners.SelectionListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel
@@ -25,7 +23,7 @@ public class GamePanel extends JPanel
     private Logger logger = LoggerFactory.getLogger(GamePanel.class);
 
     /**
-     * Map holding a battlefieldpanel for each of the participants. clientId as key, panel as value.
+     * Map holding a battlefieldpanel for each of the opponents. clientId as key, panel as value.
      */
     private Map<Long, BattleFieldPanel> battlefieldPanels;
 
@@ -37,52 +35,40 @@ public class GamePanel extends JPanel
     /**
      * Initializes the UI for the specified game type.
      *
-     * @param length       field length
-     * @param width        field width
-     * @param participants list of participants
+     * @param length    field length
+     * @param width     field width
+     * @param opponents list of opponents
      */
-    public void initUi(int length, int width, Map<Long, String> participants)
+    public void initUi(int length, int width, Map<Long, String> opponents)
     {
         setLayout(new FlowLayout());
 
         battlefieldPanels = new HashMap<Long, BattleFieldPanel>();
-        boolean first = true;
-        for (Map.Entry<Long, String> entry : participants.entrySet())
+        for (Map.Entry<Long, String> entry : opponents.entrySet())
         {
             final Long id = entry.getKey();
             BattleFieldPanel panel = new BattleFieldPanel(entry.getValue());
             panel.initializeFieldSize(length, width);
             battlefieldPanels.put(id, panel);
 
-            // be notified about click events
-            // only add selection listener to the first panel, because this one belongs to the current player.
-            if (!first)
+            panel.addSelectionListener(new SelectionListener<Cell>()
             {
-                panel.addSelectionListener(new SelectionListener<Cell>()
+                @Override
+                public void selected(Cell cell)
                 {
-                    @Override
-                    public void selected(Cell cell)
-                    {
-                        cellClicked(cell, id);
-                    }
-                });
-            }
-            else
-            {
-                panel.setSelectable(false);
-                first = false;
-                placementHelper = new PlacementHelper(panel);
-            }
+                    cellClicked(cell, id);
+                }
+            });
 
             this.add(panel);
         }
     }
-    
+
     public void reset()
     {
-    	battlefieldPanels = null;
-    	shipsModel.setCells(new ArrayList<Cell>());
-    	this.removeAll();
+        battlefieldPanels = null;
+        shipsModel.setCells(new ArrayList<Cell>());
+        this.removeAll();
     }
 
     public void initializeFieldSize(int length, int width)
@@ -141,17 +127,4 @@ public class GamePanel extends JPanel
         }
     }
 
-    public void placeShips()
-    {
-        for (Ship ship : shipsModel.getShips())
-        {
-            placementHelper.placeShip(ship, ship.getPositionX(), ship.getPositionY());
-            ship.setSelected(false);
-        }
-    }
-
-    public void setShipsModel(ShipsModel shipsModel)
-    {
-        this.shipsModel = shipsModel;
-    }
 }

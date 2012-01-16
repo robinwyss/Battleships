@@ -73,11 +73,11 @@
     <bean id="gameFrame" class="com.jostrobin.battleships.view.frames.GameFrame"
           p:gamePanel-ref="gamePanel"
           p:placementPanel-ref="placementPanel"
-          p:chatPanel-ref="chatPanel"/>
+          p:chatPanel-ref="chatPanel"
+          p:shipsModel-ref="shipsModel"/>
     <bean id="placementPanel" class="com.jostrobin.battleships.view.panels.PlacementPanel"
           p:shipsModel-ref="shipsModel"/>
-    <bean id="gamePanel" class="com.jostrobin.battleships.view.panels.GamePanel"
-          p:shipsModel-ref="shipsModel"/>
+    <bean id="gamePanel" class="com.jostrobin.battleships.view.panels.GamePanel"/>
     <bean id="chatPanel" class="com.jostrobin.battleships.view.panels.ChatPanel"/>
     <bean id="gameSelectionFrame" class="com.jostrobin.battleships.view.frames.GameSelectionFrame"
           p:gameModel-ref="gameSelectionModel"/>

@@ -26,7 +26,7 @@ public class SmoothResize
     private int steps = 10;
     private int delay = 1;
 
-    public void resize(Component component, Dimension newSize, boolean recenter)
+    public void resize(Component component, Dimension newSize)
     {
 
         int initialWidth = component.getWidth();

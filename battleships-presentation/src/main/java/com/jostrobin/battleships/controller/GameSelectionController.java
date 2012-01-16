@@ -96,7 +96,7 @@ public class GameSelectionController implements NetworkListener, InitializingBea
                 }
 
                 Comparator<Long> comparator = new ParticipantComparator(model.getClientId());
-                Map<Long, String> sortedMap = new TreeMap<Long, String>(comparator);
+                SortedMap<Long, String> sortedMap = new TreeMap<Long, String>(comparator);
                 sortedMap.putAll(participants);
 
                 applicationController.showGameFrame(length, width, sortedMap, ships);

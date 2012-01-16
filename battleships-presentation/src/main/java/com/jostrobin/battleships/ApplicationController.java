@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.List;
-import java.util.Map;
+import java.util.SortedMap;
 
 import com.jostrobin.battleships.common.data.GameData;
 import com.jostrobin.battleships.common.data.Player;
@@ -192,7 +192,7 @@ public class ApplicationController
         uiController.showGameView(startingPlayer);
     }
 
-    public void showGameFrame(int length, int width, Map<Long, String> participants, List<Ship> ships)
+    public void showGameFrame(int length, int width, SortedMap<Long, String> participants, List<Ship> ships)
     {
         uiController.showPlacementFrame(length, width, participants, ships);
     }

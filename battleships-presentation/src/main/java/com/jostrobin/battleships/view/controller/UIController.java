@@ -19,7 +19,7 @@ import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.List;
-import java.util.Map;
+import java.util.SortedMap;
 import javax.swing.*;
 
 import com.jostrobin.battleships.common.data.Ship;
@@ -39,6 +39,8 @@ public class UIController
     private static final Logger logger = LoggerFactory.getLogger(UIController.class);
 
     private JFrame frame;
+    //    private JPanel contentPanel;
+//    private JScrollPane scrollPane;
     private JPanel currentFrame;
     private RegistrationDialog registrationDialog;
     private GameSelectionFrame gameSelectionFrame;
@@ -48,7 +50,6 @@ public class UIController
     private GameSelectionController gameSelectionController;
     private PlacementController placementController;
     private JPanel settingsFrame;
-    private boolean moved;
     private WindowComponentListener windowComponentListener;
 
     public UIController()
@@ -60,6 +61,9 @@ public class UIController
         // add listeners
         windowComponentListener = new WindowComponentListener();
         frame.addComponentListener(windowComponentListener);
+//        contentPanel = new JPanel();
+//        scrollPane = new JScrollPane(contentPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+//        frame.add(scrollPane);
         centerFrame();
     }
 
@@ -89,9 +93,11 @@ public class UIController
     public void showGameView(Long startingPlayer)
     {
         gameFrame.showGameView(startingPlayer);
+        // call show to adjust the size
+        show(gameFrame);
     }
 
-    public void showPlacementFrame(int length, int width, Map<Long, String> participants, List<Ship> ships)
+    public void showPlacementFrame(int length, int width, SortedMap<Long, String> participants, List<Ship> ships)
     {
         if (!gameFrame.equals(currentFrame))
         {
@@ -117,13 +123,16 @@ public class UIController
         frame.add(newFrame);
         frame.setVisible(true);
         resize(newFrame.getPreferredSize());
+        frame.setPreferredSize(newFrame.getPreferredSize());
         frame.setMinimumSize(newFrame.getMinimumSize());
         frame.setMaximumSize(newFrame.getMaximumSize());
     }
 
     private void resize(Dimension newSize)
     {
-        smoothResize.resize(frame, newSize, !moved);
+        smoothResize.resize(frame, newSize);
+//        frame.setSize((int) newSize.getWidth(), (int) (newSize.getHeight() + 20));
+//        contentPanel.setSize(newSize);
     }
 
     public void setGameFrame(GameFrame gameFrame)
