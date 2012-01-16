@@ -95,12 +95,16 @@ public class Game extends GameData
     
     /**
      * If a player disappeared, close the game.
+     * @param notify If true, clients are notified about the closed game.
      */
-    public void closeGame()
+    public void closeGame(boolean notify)
     {
     	for (Client client : players)
     	{
-    		client.sendCloseGame();
+    		if (notify)
+    		{
+    			client.sendCloseGame();
+    		}
     		client.setGame(null);
     		client.setState(GameState.NEW);
     		client.setGameData(null);
@@ -146,11 +150,15 @@ public class Game extends GameData
 
     public Player getNextPlayer()
     {
-        players.removeAll(destroyedPlayers);
         int index = players.indexOf(currentPlayer);
         int nextPlayerIndex = ++index % players.size();
         Player nextPlayer = players.get(nextPlayerIndex);
         setCurrentPlayer(nextPlayer);
+        
+        if (destroyedPlayers.contains(nextPlayer))
+        {
+        	return getNextPlayer();
+        }
         return nextPlayer;
     }
 }

@@ -271,14 +271,6 @@ public class Client extends Player implements NetworkListener
      */
     public void sendAttackResult(int x, int y, AttackResult result, Ship ship, Long attacker, Long attacked, GameUpdate gameUpdate, Long nextPlayer) throws Exception
     {
-        if (gameUpdate == GameUpdate.PLAYER_HAS_WON && attacker.equals(getId()))
-        {
-            gameUpdate = GameUpdate.YOU_HAVE_WON;
-        }
-        if (gameUpdate == GameUpdate.PLAYER_HAS_BEEN_DESTROYED && attacked.equals(getId()))
-        {
-            gameUpdate = GameUpdate.YOU_ARE_DESTROYED;
-        }
         clientWriter.sendAttackResult(x, y, result, ship, attacker, attacked, gameUpdate, nextPlayer);
     }
 

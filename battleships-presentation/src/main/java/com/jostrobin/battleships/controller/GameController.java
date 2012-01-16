@@ -22,6 +22,7 @@ import org.springframework.beans.factory.InitializingBean;
 import com.jostrobin.battleships.ApplicationController;
 import com.jostrobin.battleships.common.data.AttackResult;
 import com.jostrobin.battleships.common.data.Player;
+import com.jostrobin.battleships.common.data.enums.GameUpdate;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.common.network.NetworkListener;
 import com.jostrobin.battleships.model.GameModel;
@@ -72,9 +73,9 @@ public class GameController implements NetworkListener, InitializingBean, Attack
             	// the game has been aborted, go back to main screen
             	JOptionPane.showMessageDialog(gameFrame, "The game has been aborted by another player.", "Error", JOptionPane.ERROR_MESSAGE);
             	applicationController.showGameSelection();
-            	gameModel.setPlayers(null);
-            	gameModel.setClientId(null);
             	gameFrame.reset();
+                gameModel.setPlayers(null);
+            	gameModel.setClientId(null);
             	break;
         }
     }
@@ -97,6 +98,15 @@ public class GameController implements NetworkListener, InitializingBean, Attack
             case YOU_ARE_DESTROYED:
                 gameFrame.showDestroyedDialog();
                 break;
+        }
+        
+        // switch back to the main screen
+        if (command.getGameUpdate() == GameUpdate.PLAYER_HAS_WON || command.getGameUpdate() == GameUpdate.YOU_HAVE_WON)
+        {
+        	applicationController.showGameSelection();
+        	gameFrame.reset();
+            gameModel.setPlayers(null);
+        	gameModel.setClientId(null);
         }
     }
 

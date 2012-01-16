@@ -20,6 +20,7 @@ import org.springframework.beans.factory.InitializingBean;
 import com.jostrobin.battleships.ApplicationController;
 import com.jostrobin.battleships.common.data.GameData;
 import com.jostrobin.battleships.common.data.GameMode;
+import com.jostrobin.battleships.common.data.enums.GameUpdate;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.common.network.NetworkListener;
 import com.jostrobin.battleships.view.frames.CreateGameFrame;
@@ -58,6 +59,12 @@ public class CreateGameController implements InitializingBean, NetworkListener
 		{
 		case Command.CLOSE_GAME:
 			frame.cancelGame();
+			break;
+		case Command.ATTACK_RESULT:
+			if (command.getGameUpdate() == GameUpdate.YOU_HAVE_WON || command.getGameUpdate() == GameUpdate.PLAYER_HAS_WON)
+			{
+				frame.cancelGame();
+			}
 			break;
 		}
 	}

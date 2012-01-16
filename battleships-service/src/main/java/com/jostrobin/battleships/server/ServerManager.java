@@ -51,7 +51,7 @@ public class ServerManager
         if (game != null)
         {
         	game.removePlayer(client);
-        	game.closeGame();
+        	game.closeGame(true);
         }
     }
 
@@ -222,11 +222,14 @@ public class ServerManager
     private void notifyParticipants(Client attacker, Client attacked, int x, int y, Player nextPlayer, AttackResult result)
     {
         List<Client> clients = attacked.getGame().getPlayers();
+        
+        // check if all but the attacking player are destroyed 
         boolean gameOver = true;
         for (Client client : clients)
         {
-            gameOver &= client.isDestroyed() || client.equals(attacker);
+            gameOver &= (client.isDestroyed() || client.equals(attacker));
         }
+        
         for (Client toBeNotified : attacked.getGame().getPlayers())
         {
             Ship ship = null;
@@ -235,14 +238,32 @@ public class ServerManager
                 // we also need to transmit the ship which has been destroyed
                 ship = attacked.getShipAtPosition(x, y);
             }
+            
             GameUpdate gameUpdate = GameUpdate.NOTHING;
-            if (gameOver)
+            // if all but the attacking player are destroyed, tell the attacker he has won
+            if (gameOver && toBeNotified.equals(attacker))
             {
-                gameUpdate = GameUpdate.PLAYER_HAS_WON;
+                gameUpdate = GameUpdate.YOU_HAVE_WON;
             }
-            if (result == AttackResult.PLAYER_DESTROYED)
+            // if all but the attacking player are destroyed, tell the attacked clients they have lost
+            else if (gameOver && !toBeNotified.equals(attacker))
             {
-                gameUpdate = GameUpdate.PLAYER_HAS_BEEN_DESTROYED;
+            	gameUpdate = GameUpdate.PLAYER_HAS_WON;
+            }
+            // if there is still more than 1 client alive
+            else if (!gameOver)
+            {
+                if (result == AttackResult.PLAYER_DESTROYED)
+                {
+                	if (toBeNotified.equals(attacked))
+                	{
+                		gameUpdate = GameUpdate.YOU_ARE_DESTROYED;
+                	}
+                	else
+                	{
+                		gameUpdate = GameUpdate.PLAYER_HAS_BEEN_DESTROYED;
+                	}
+                }
             }
             // TODO: continue here, send game update
             // TODO: remove GAME_STATE from Communication
@@ -258,6 +279,14 @@ public class ServerManager
                 removeClient(toBeNotified);
                 resendPlayerLists();
             }
+        }
+        
+        // clear the game but don't notify clients (they already know)
+        if (gameOver)
+        {
+            Game game = attacked.getGame();
+            game.closeGame(false);
+            resendPlayerLists();
         }
     }
 
