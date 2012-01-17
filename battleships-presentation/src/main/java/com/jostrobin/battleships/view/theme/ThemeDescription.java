@@ -23,7 +23,8 @@ public enum ThemeDescription
 {
     DEFAULT_THEME("Default Theme", "default-theme"),
     PAPER_THEME("Paper Theme", "paper-theme"),
-    SPACE_THEME("Space Theme", "space-theme");
+    SPACE_THEME("Space Theme", "space-theme"),
+    FRUIT_THEME("Fruit Theme", "fruit-theme");
 
     private String name;
     private String folder;
