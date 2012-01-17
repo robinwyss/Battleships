@@ -43,6 +43,7 @@ public class GamePanel extends JPanel
      */
     public void initUi(int length, int width, Map<Long, String> opponents)
     {
+    	this.removeAll();
         setLayout(new FlowLayout());
 
         battlefieldPanels = new HashMap<Long, BattleFieldPanel>();

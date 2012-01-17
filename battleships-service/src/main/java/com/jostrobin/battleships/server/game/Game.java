@@ -105,6 +105,7 @@ public class Game extends GameData
     		{
     			client.sendCloseGame();
     		}
+    		client.reset();
     		client.setGame(null);
     		client.setState(GameState.NEW);
     		client.setGameData(null);
