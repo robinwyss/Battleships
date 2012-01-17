@@ -161,13 +161,17 @@ public class BattleFieldPanel extends JPanel implements ActionListener
 
     public void setSelectable(boolean selectable)
     {
-        for (Cell[] cells : cellArray)
+        if (cellArray != null)
         {
-            for (Cell cell : cells)
+
+            for (Cell[] cells : cellArray)
             {
-                if (cell instanceof CellComponent)
+                for (Cell cell : cells)
                 {
-                    ((CellComponent) cell).setSelectable(selectable);
+                    if (cell instanceof CellComponent)
+                    {
+                        ((CellComponent) cell).setSelectable(selectable);
+                    }
                 }
             }
         }
