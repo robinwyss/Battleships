@@ -3,6 +3,7 @@ package com.jostrobin.battleships.server;
 import java.io.IOException;
 import java.net.*;
 import java.util.Scanner;
+import javax.swing.*;
 
 import com.jostrobin.battleships.server.client.Client;
 import com.jostrobin.battleships.server.util.IdGenerator;
@@ -59,8 +60,9 @@ public class BattleshipsServer implements Runnable, ApplicationContextAware
                 }
             }
         }
-
         startNewServer();
+        JOptionPane.showConfirmDialog(null, "Server is running, to terminate the server click OK", "Server", JOptionPane.CLOSED_OPTION);
+        System.exit(0);
     }
 
     public static void startNewServer()
