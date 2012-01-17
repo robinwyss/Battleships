@@ -59,6 +59,14 @@ public class Client extends Player implements NetworkListener
         this.serverManager = serverManager;
         this.clientWriter = clientWriter;
     }
+    
+    public void reset()
+    {
+    	ready = false;
+    	ships = null;
+    	field = null;
+    	game = null;
+    }
 
     public void init(Socket socket, Long id, String username) throws IOException
     {

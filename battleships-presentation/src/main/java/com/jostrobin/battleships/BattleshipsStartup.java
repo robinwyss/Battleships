@@ -5,14 +5,16 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.swing.*;
 
-import com.jostrobin.battleships.controller.ServerDetectionController;
-import com.jostrobin.battleships.server.BattleshipsServer;
+import javax.swing.UIManager;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.jostrobin.battleships.controller.ServerDetectionController;
+import com.jostrobin.battleships.server.BattleshipsServer;
 
 
 public class BattleshipsStartup
