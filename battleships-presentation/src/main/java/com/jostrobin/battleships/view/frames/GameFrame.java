@@ -15,19 +15,10 @@
 
 package com.jostrobin.battleships.view.frames;
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
-
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
-import org.springframework.beans.factory.InitializingBean;
+import javax.swing.*;
 
 import com.jostrobin.battleships.common.PlacementHelper;
 import com.jostrobin.battleships.common.data.Ship;
@@ -38,6 +29,7 @@ import com.jostrobin.battleships.view.panels.BattleFieldPanel;
 import com.jostrobin.battleships.view.panels.ChatPanel;
 import com.jostrobin.battleships.view.panels.GamePanel;
 import com.jostrobin.battleships.view.panels.PlacementPanel;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author rowyss
@@ -71,16 +63,20 @@ public class GameFrame extends JPanel implements InitializingBean, AttackListene
 
         setLayout(new GridBagLayout());
 
-        addGamePanel(0, 0, 1);
-        addPlacementPanel(0, 0);
-        addChatPanel(0, 1);
-        gamePanel.setVisible(false);
-        placementPanel.setVisible(true);
-        setVisible(true);
+        createPlacementView();
 
         setPreferredSize(new Dimension(400, 450));
         gamePanel.addAttackListener(this);
         //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private void createPlacementView()
+    {
+        removeAll();
+        placementPanel.reset();
+        addPlacementPanel(0, 0);
+        chatPanel.reset();
+        addChatPanel(0, 1);
     }
 
     private void addPlacementPanel(int gridX, int gridY)
@@ -123,8 +119,6 @@ public class GameFrame extends JPanel implements InitializingBean, AttackListene
     public void showGameView(Long startingPlayer)
     {
         setPreferredSize(new Dimension(600, 600));
-        gamePanel.setVisible(true);
-        placementPanel.setVisible(false);
         createGameView(length, width, participants.get(participants.firstKey()));
         changeCurrentPlayer(startingPlayer);
         placeShips();
@@ -132,8 +126,7 @@ public class GameFrame extends JPanel implements InitializingBean, AttackListene
 
     public void showPlacementView()
     {
-        gamePanel.setVisible(false);
-        placementPanel.setVisible(true);
+        createPlacementView();
     }
 
     public void initializeFields(int length, int width, SortedMap<Long, String> participants)
