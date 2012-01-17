@@ -61,8 +61,8 @@ public class PlacementPanel extends JPanel implements ActionListener, Initializi
         gamePanelConstraints.weightx = 0.6;
         gamePanelConstraints.weighty = 1.0;
         gamePanelConstraints.gridy = y;
-        gamePanelConstraints.gridheight = 2;
-        gamePanelConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
+        gamePanelConstraints.gridheight = 4;
+        gamePanelConstraints.anchor = GridBagConstraints.ABOVE_BASELINE;
         gamePanelConstraints.fill = GridBagConstraints.BOTH;
         add(battleField, gamePanelConstraints);
 
@@ -71,7 +71,8 @@ public class PlacementPanel extends JPanel implements ActionListener, Initializi
         GridBagConstraints leftButtonConstraints = new GridBagConstraints();
         leftButtonConstraints.gridy = y++;
         leftButtonConstraints.gridx = 1;
-        leftButtonConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
+        leftButtonConstraints.fill = GridBagConstraints.NONE;
+        leftButtonConstraints.anchor = GridBagConstraints.ABOVE_BASELINE;
         add(rotate, leftButtonConstraints);
 
         random = new JButton("Random");
@@ -79,15 +80,16 @@ public class PlacementPanel extends JPanel implements ActionListener, Initializi
         GridBagConstraints randomButtonConstraints = new GridBagConstraints();
         randomButtonConstraints.gridy = y++;
         randomButtonConstraints.gridx = 1;
-        randomButtonConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
+        randomButtonConstraints.fill = GridBagConstraints.NONE;
+        randomButtonConstraints.anchor = GridBagConstraints.ABOVE_BASELINE;
         random.addActionListener(this);
         add(random, randomButtonConstraints);
 
         shipsPanel = new ShipsPanel();
         GridBagConstraints shipsPanelConstraints = new GridBagConstraints();
-        shipsPanelConstraints.weightx = 0.1;
+        shipsPanelConstraints.weightx = 1.0;
         shipsPanelConstraints.weighty = 1.0;
-        shipsPanelConstraints.anchor = GridBagConstraints.BASELINE_LEADING;
+        shipsPanelConstraints.anchor = GridBagConstraints.BASELINE;
         shipsPanelConstraints.fill = GridBagConstraints.BOTH;
         shipsPanelConstraints.gridy = y++;
         shipsPanelConstraints.gridx = 1;
@@ -98,7 +100,7 @@ public class PlacementPanel extends JPanel implements ActionListener, Initializi
         GridBagConstraints readyButtonConstraints = new GridBagConstraints();
         readyButtonConstraints.gridy = y++;
         readyButtonConstraints.gridx = 1;
-        readyButtonConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
+        readyButtonConstraints.anchor = GridBagConstraints.ABOVE_BASELINE;
         ready.setEnabled(false);
         add(ready, readyButtonConstraints);
 
