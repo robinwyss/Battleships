@@ -15,14 +15,21 @@
 
 package com.jostrobin.battleships.view.frames;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.*;
 
-import com.jostrobin.battleships.common.data.GameMode;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import com.jostrobin.battleships.model.Settings;
 import com.jostrobin.battleships.view.components.ComboBoxItem;
 import com.jostrobin.battleships.view.listeners.EventListener;
@@ -113,7 +120,7 @@ public class SettingsFrame extends JPanel implements ActionListener
         optionsPanel.add(themeLabel, c);
 
         // add all the game themes to a dropdown
-        ComboBoxItem[] themes = new ComboBoxItem[GameMode.values().length];
+        ComboBoxItem[] themes = new ComboBoxItem[ThemeDescription.values().length];
         int i = 0;
         for (ThemeDescription theme : ThemeDescription.values())
         {
