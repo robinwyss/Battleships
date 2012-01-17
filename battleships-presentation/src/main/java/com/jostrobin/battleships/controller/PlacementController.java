@@ -16,10 +16,12 @@
 package com.jostrobin.battleships.controller;
 
 import java.util.List;
+import java.util.Random;
 
 import com.jostrobin.battleships.ApplicationController;
 import com.jostrobin.battleships.common.PlacementHelper;
 import com.jostrobin.battleships.common.data.Cell;
+import com.jostrobin.battleships.common.data.Orientation;
 import com.jostrobin.battleships.common.data.Ship;
 import com.jostrobin.battleships.common.network.Command;
 import com.jostrobin.battleships.common.network.NetworkListener;
@@ -49,7 +51,7 @@ public class PlacementController implements InitializingBean, NetworkListener
         placementPanel.addShipSelectionListener(new ShipSelectionListener());
         placementPanel.addRotationListener(new RotationListener());
         placementPanel.addReadyListener(new ReadyListener());
-
+        placementPanel.addRandomListener(new RandomListener());
         placementHelper = new PlacementHelper(placementPanel.getBattleField());
     }
 
@@ -147,6 +149,36 @@ public class PlacementController implements InitializingBean, NetworkListener
         return null;
     }
 
+    public boolean placeShipsRandomly()
+    {
+        boolean allShipsPlaced = true;
+        for (Ship ship : model.getShips())
+        {
+            boolean placed = false;
+            int tries = 0;
+            while (!placed && tries < 100)
+            {
+                int x = new Random().nextInt(placementPanel.getFieldWidth());
+                int y = new Random().nextInt(placementPanel.getFieldLength());
+                Orientation orientation = Math.random() > 0.5 ? Orientation.HORIZONTAL : Orientation.VERTICAL;
+                ship.setOrientation(orientation);
+                placed = placeShip(ship, x, y);
+                tries++;
+            }
+            allShipsPlaced &= placed;
+            if (!placed)
+            {
+                ship.clearCells();
+                ship.setPlaced(false);
+                ship.setOrientation(Orientation.HORIZONTAL);
+            }
+            ship.setSelected(false);
+        }
+        placementPanel.updateShips();
+        checkAllShipsPlaced();
+        return allShipsPlaced;
+    }
+
     public ShipsModel getModel()
     {
         return model;
@@ -226,6 +258,16 @@ public class PlacementController implements InitializingBean, NetworkListener
             case Command.START_GAME:
                 applicationController.showGameView(command.getStartingPlayer());
                 break;
+        }
+    }
+
+    private class RandomListener implements EventListener<Object>
+    {
+
+        @Override
+        public void actionPerformed(Object value)
+        {
+            placeShipsRandomly();
         }
     }
 }

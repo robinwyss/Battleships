@@ -46,6 +46,10 @@ public class PlacementPanel extends JPanel implements ActionListener, Initializi
     private ShipsModel shipsModel;
     private List<EventListener<Object>> rotationListeners = new ArrayList<EventListener<Object>>();
     private List<EventListener<Object>> readyListeners = new ArrayList<EventListener<Object>>();
+    private List<EventListener<Object>> randomListeners = new ArrayList<EventListener<Object>>();
+    private JButton random;
+    private int fieldLength;
+    private int fieldWidth;
 
     @Override
     public void afterPropertiesSet() throws Exception
@@ -69,6 +73,15 @@ public class PlacementPanel extends JPanel implements ActionListener, Initializi
         leftButtonConstraints.gridx = 1;
         leftButtonConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
         add(rotate, leftButtonConstraints);
+
+        random = new JButton("Random");
+        random.addActionListener(this);
+        GridBagConstraints randomButtonConstraints = new GridBagConstraints();
+        randomButtonConstraints.gridy = y++;
+        randomButtonConstraints.gridx = 1;
+        randomButtonConstraints.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
+        random.addActionListener(this);
+        add(random, randomButtonConstraints);
 
         shipsPanel = new ShipsPanel();
         GridBagConstraints shipsPanelConstraints = new GridBagConstraints();
@@ -153,6 +166,13 @@ public class PlacementPanel extends JPanel implements ActionListener, Initializi
             ready.setEnabled(false);
             deselectShips();
         }
+        else if (actionEvent.getSource().equals(random))
+        {
+            for (EventListener<Object> randomListener : randomListeners)
+            {
+                randomListener.actionPerformed(null);
+            }
+        }
 
     }
 
@@ -184,8 +204,21 @@ public class PlacementPanel extends JPanel implements ActionListener, Initializi
         readyListeners.remove(listener);
     }
 
+    public void addRandomListener(EventListener<Object> listener)
+    {
+        randomListeners.add(listener);
+    }
+
+    public void removeRandomListener(EventListener<Object> listener)
+    {
+        randomListeners.remove(listener);
+    }
+
+
     public void setFieldSize(int length, int width)
     {
+        this.fieldWidth = width;
+        this.fieldLength = length;
         battleField.initializeFieldSize(length, width);
         revalidate();
     }
@@ -193,5 +226,15 @@ public class PlacementPanel extends JPanel implements ActionListener, Initializi
     public BattleFieldPanel getBattleField()
     {
         return battleField;
+    }
+
+    public int getFieldWidth()
+    {
+        return fieldWidth;
+    }
+
+    public int getFieldLength()
+    {
+        return fieldLength;
     }
 }
